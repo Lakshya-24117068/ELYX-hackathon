@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ELYX | Weekly Timeline</title>
+  <style>
+    /* ======= Provided CSS (embedded for preview) ======= */
+    /* Basic body and font styles */
+    body {
+      min-height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      line-height: 1.5;
+      background-color: #0a0a0a; /* Dark background from screenshot */
+      color: #fff;
+    }
+
+    /* Main timeline container */
+    .timeline-component {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 1120px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      position: relative;
+      padding: 48px 24px;
+    }
+
+    /* Heading styles */
+    .timeline-main_heading-wrapper {
+      color: #fff;
+      text-align: center;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .timeline-main_heading-wrapper h1 {
+      margin: 0 0 8px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .timeline-main_heading-wrapper p {
+      margin: 0 auto 24px;
+      opacity: 0.8;
+    }
+
+    /* Individual timeline entry container (date, circle, content) */
+    .timeline-item {
+      z-index: 2;
+      grid-column-gap: 8px; /* Appears to be a typo for column-gap */
+      grid-row-gap: 8px; /* Appears to be a typo for row-gap */
+      grid-template-rows: auto;
+      grid-template-columns: 1fr 40px 1fr; /* tuned for middle rail */
+      grid-auto-columns: 1fr;
+      padding-top: 80px;
+      padding-bottom: 80px;
+      display: grid;
+      position: relative;
+    }
+
+    /* Left-aligned date text */
+    .timeline_date-text {
+      color: #fff;
+      letter-spacing: -0.03em;
+      font-size: 32px; /* 48px looked oversized on narrow screens */
+      font-weight: 600;
+      line-height: 1.2;
+      position: sticky;
+      top: 50%;
+      align-self: start;
+    }
+
+    /* Rail column: circle + vertical progress line */
+    .timeline-rail {
+      position: relative;
+    }
+
+    /* The circular markers on the vertical line */
+    .timeline_circle {
+      background-color: #fff;
+      border-radius: 100%;
+      width: 15px;
+      height: 15px;
+      position: sticky;
+      top: 50%;
+      margin: 0 auto;
+      box-shadow: 0 0 8px #0a0a0a;
+    }
+
+    /* The vertical progress line */
+    .timeline-progress {
+      z-index: -1;
+      background: linear-gradient(to bottom, #ff6a00, #ff6a00, #ff6a00, #e9ed97);
+      width: 3px;
+      height: 100%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+    }
+
+    /* Content box styling */
+    .timeline_content {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .timeline_link {
+      opacity: 0.6;
+      color: #fff;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border-radius: 8px;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-decoration: none;
+      transition: opacity 0.3s;
+      display: inline-flex;
+      padding: 6px 10px;
+      border: 1px dashed rgba(255,255,255,0.2);
+      margin-top: 10px;
+    }
+
+    .timeline_link:hover { opacity: 1; }
+
+    /* Styles for a larger paragraph text */
+    .paragraph-large {
+      letter-spacing: -0.02em;
+      font-size: 18px;
+      margin: 8px 0 0;
+    }
+
+    /* Simple responsive tweak */
+    @media (max-width: 820px) {
+      .timeline-item { grid-template-columns: 1fr 28px 1fr; padding: 56px 0; }
+      .timeline_date-text { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="timeline-component">
+    <header class="timeline-main_heading-wrapper">
+      <h1>ELYX Health Timeline</h1>
+      <p>Week-by-week plan, starting Week 1 on <strong>Feb 14</strong>.</p>
+    </header>
+
+    <!-- Week 1 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 1<br/><small>Feb 14 – Feb 20</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Onboarding & Initial Assessments</h3>
+        <p class="paragraph-large">
+          Rajesh shared chronic concerns (BP, thyroid, arthritis, migraines) and travel challenges. The team set a baseline via full diagnostics and launched quick wins: breakfast fix (Carla), HRV-focused box breathing + electrolytes (Advik), and a mobility routine (Rachel). Dr. Warren clarified the diagnostic rationale. Test kit dispatched; structured plan initiated.
+        </p>
+        <a class="timeline_link" href="#">View Week 1 Notes</a>
+      </div>
+    </article>
+
+    <!-- Week 2 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 2<br/><small>Feb 21 – Feb 27</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Diagnostics & Baseline Review</h3>
+        <p class="paragraph-large">
+          Complete test kit and compile baseline. Align targets for BP, thyroid markers, inflammation, and migraine triggers. Finalize initial nutrition, mobility, and recovery protocols.
+        </p>
+        <a class="timeline_link" href="#">View Week 2 Plan</a>
+      </div>
+    </article>
+
+    <!-- Week 3 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 3<br/><small>Feb 28 – Mar 6</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Performance Check & Habit Consolidation</h3>
+        <p class="paragraph-large">
+          Verify breakfast adherence, HRV response to breathing + hydration, and joint comfort from mobility drills. Calibrate travel-friendly routines and reinforce migraine hygiene (sleep timing, hydration, light exposure).
+        </p>
+        <a class="timeline_link" href="#">View Week 3 Check-in</a>
+      </div>
+    </article>
+
+    <!-- Week 4 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 4<br/><small>Mar 7 – Mar 13</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Strength & Mobility Progression</h3>
+        <p class="paragraph-large">
+          Add low-impact strength work (2–3 sessions) layered onto daily mobility. Track pain, ROM, and functional markers. Introduce protein target and travel snack kit.
+        </p>
+        <a class="timeline_link" href="#">View Week 4 Workouts</a>
+      </div>
+    </article>
+
+    <!-- Week 5 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 5<br/><small>Mar 14 – Mar 20</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>BP & Thyroid Tuning</h3>
+        <p class="paragraph-large">
+          Review BP trends and thyroid panel changes; adjust salt, electrolytes, steps, and meal timing. Evaluate migraine triggers with a simple log.
+        </p>
+        <a class="timeline_link" href="#">View Week 5 Targets</a>
+      </div>
+    </article>
+
+    <!-- Week 6 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 6<br/><small>Mar 21 – Mar 27</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Travel-Proofing Routines</h3>
+        <p class="paragraph-large">
+          Create airport/hotel playbooks: 10‑minute mobility, meal templates, hydration cadence, and light/jet lag strategy. Validate with wearable metrics.
+        </p>
+        <a class="timeline_link" href="#">View Week 6 Playbooks</a>
+      </div>
+    </article>
+
+    <!-- Week 7 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 7<br/><small>Mar 28 – Apr 3</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Recovery & Sleep Depth</h3>
+        <p class="paragraph-large">
+          Emphasize sleep consistency, pre‑bed wind‑down, and magnesium/electrolyte timing. Monitor HRV and morning readiness; adjust evening carbs and caffeine cut‑off.
+        </p>
+        <a class="timeline_link" href="#">View Week 7 Protocol</a>
+      </div>
+    </article>
+
+    <!-- Week 8 -->
+    <article class="timeline-item">
+      <div class="timeline_date-text">Week 8<br/><small>Apr 4 – Apr 10</small></div>
+      <div class="timeline-rail">
+        <div class="timeline-progress" aria-hidden="true"></div>
+        <div class="timeline_circle" aria-hidden="true"></div>
+      </div>
+      <div class="timeline_content">
+        <h3>Milestone Review & Next Block</h3>
+        <p class="paragraph-large">
+          Review progress vs. baseline across BP, thyroid markers, pain/mobility, migraines, and travel resilience. Lock in what works and set goals for the next 4–8 weeks.
+        </p>
+        <a class="timeline_link" href="#">View Milestone Summary</a>
+      </div>
+    </article>
+
+  </section>
+</body>
+</html>
