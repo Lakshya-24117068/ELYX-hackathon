@@ -6,7 +6,2069 @@
   <title>Rajesh Chat Timeline</title>
   <style>
     :root {
+      --bg1: #0e2a47;<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rajesh Chat Timeline</title>
+  <style>
+    :root {
       --bg1: #0e2a47;
+      --bg2: #1b4b7a;
+      --ink: #eaf2ff;
+      --muted: #a9c3e6;
+      --accent: #7bd3ff;
+      --good: #39d98a;
+      --card: rgba(15, 25, 45, 0.9);
+      --shadow: 0 10px 30px rgba(0, 0, 0, .25);
+      --radius: 18px;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      height: 100%;
+      background: linear-gradient(160deg, var(--bg1), var(--bg2));
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    /* ==== Left icon navbar (added) ==== */
+    .side-nav{
+      position:fixed; left:12px; top:18px; bottom:18px; width:var(--sideW);
+      background:#06101ee6; border:1px solid #0a1c31; border-radius:18px;
+      backdrop-filter: blur(8px);
+      display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 6px;
+      box-shadow:var(--shadow); z-index:1000;
+    }
+    .side-nav .brand-dot{
+      width:38px; height:38px; border-radius:10px; margin:6px 0 4px;
+      background: conic-gradient(from 210deg, #8ae 0 25%, #4fd 25% 50%, #58f 50% 75%, #9ef 75% 100%);
+      box-shadow:0 6px 14px rgba(0,0,0,.25)
+    }
+    .nav-divider{width:48px; height:1px; background:#143053; margin:6px 0 2px; border-radius:1px}
+
+    .icon-link{
+      width:48px; height:48px; border-radius:14px; display:grid; place-items:center;
+      color:var(--ink); text-decoration:none; border:1px solid transparent; position:relative;
+      transition:transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      opacity:.9;
+    }
+    .icon-link:hover{ background:#0b203e; border-color:#183a67; transform:translateY(-1px); opacity:1 }
+    .icon-link.active{
+      background:linear-gradient(180deg,#0b2546,#0d284d);
+      border-color:#214c7e; box-shadow: inset 0 0 0 1px #235084;
+    }
+    .icon{ width:22px; height:22px; display:block }
+
+    /* tooltip on hover (no JS) */
+    .icon-link[data-tip]:hover::after{
+      content: attr(data-tip);
+      position:absolute; left:58px; top:50%; transform:translateY(-50%);
+      background:#0b203e; color:var(--ink); border:1px solid #183a67;
+      padding:4px 8px; border-radius:8px; white-space:nowrap; font-size:.85rem; pointer-events:none;
+      box-shadow:var(--shadow);
+    }
+.month-end {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #06101ee6;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.biomarker-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.biomarker-table th {
+  background: #0a1c31;
+  color: #fff;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #132c4f;
+}
+
+.biomarker-table td {
+  padding: 10px;
+  border-bottom: 1px solid #132c4f;
+  color: #ddd;
+}
+
+.biomarker-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.doctor-note, .member-note {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border-left: 4px solid #4facfe;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  font-style: italic;
+}
+
+    /* mobile: hide strip and remove padding */
+    @media (max-width:740px){
+      body{ padding-left: 0 }
+      .side-nav{ transform: translateX(-120%); left:8px }
+      .side-nav:hover{ transform: translateX(0) } /* peek out when hovered */
+    }
+    /* ==== /Left icon navbar ==== */
+
+
+    .chat-container {
+      background: var(--card); 
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 1000px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .date-label {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 6px 14px;
+      margin: 20px auto;
+      width: fit-content;
+      font-weight: bold;
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+
+    .message {
+      display: block;
+      padding: 14px 18px;
+      margin: 14px 0;
+      border-radius: var(--radius);
+      line-height: 1.6;
+      max-width: 80%;
+      background: #1a2940;
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      position: relative;
+      font-size: 0.95em;
+    }
+
+    .rajesh {
+      margin-left: auto;
+      border-left: 4px solid var(--good);
+    }
+
+    .elyx {
+      margin-right: auto;
+      border-left: 4px solid var(--accent);
+    }
+
+    .sender {
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 0.9em;
+      color: var(--muted);
+    }
+
+    .time {
+      font-size: 0.75em;
+      color: var(--muted);
+      position: absolute;
+      bottom: 6px;
+      right: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="section-title">📱 Month 1: Onboarding & Initial Tests</div>
+
+    <!-- Day 1 -->
+    <div class="date-label">14 Feb 2025</div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      Hi Ruby, I’m excited to start. Just so you know, I’ve been struggling with BP, thyroid meds, and frequent migraines. I travel a lot for work.
+      <div class="time">09:20 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Welcome, Rajesh 😊. I’ll make this smooth for you. Today, I’ll schedule your onboarding call with Dr. Warren and Carla. You’ll also receive your test kit at your Singapore address by Thursday.
+      <div class="time">09:45 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      That's great. I have a lot of questions about my lifestyle and how this will all fit in. My schedule is packed, so I appreciate the help with logistics.
+      <div class="time">02:10 PM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Absolutely, that's what I'm here for. I've already sent a calendar invite for the call at your preferred time. We'll start with a foundational conversation, and the team will build from there.
+      <div class="time">02:25 PM</div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="date-label">15 Feb 2025</div>
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Good morning, Rajesh. Following my review of your initial intake form, I have some thoughts. Do you have a moment to chat about your medical history?
+      <div class="time">08:50 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Dr. Warren</div>
+      Morning, Dr. Warren. Yes, I do. My main concern is my BP. I feel like it's a ticking time bomb. My old doc just kept increasing my meds.
+      <div class="time">09:05 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Dr. Warren</div>
+      I understand. Our approach is different. We need a full diagnostic panel to get a precise baseline for your BP, thyroid, cholesterol, and inflammatory markers. This helps us track real, sustained improvement over time, rather than just treating symptoms. It’s your starting map.
+      <div class="time">09:40 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Dr. Warren</div>
+      Doc, do I really need a full blood panel? I just had one 6 months ago.
+      <div class="time">11:15 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Dr. Warren</div>
+      Yes, Rajesh. We need a baseline... We also need to assess your current thyroid function to make sure your medication dosage is correct for your body's current state.
+      <div class="time">11:45 AM</div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="date-label">16 Feb 2025</div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Carla</div>
+      Hi Carla, Dr. Warren said you'd be looking at my diet. I’ve been tracking my food, but honestly, I often skip breakfast, especially on travel days. Is that a big problem?
+      <div class="time">08:30 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Skipping breakfast spikes cortisol, which worsens BP and migraines. Let’s start simple: carry a yogurt + nuts pack. We’ll test if this reduces your 11 am headaches...
+      <div class="time">08:50 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Carla</div>
+      My mornings are chaotic. I'm usually rushing to a call. What's a good alternative if I can't even grab the yogurt?
+      <div class="time">12:15 PM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla</div>
+      A good question. How about a high-protein shake mix you can just add water to? It’s a 90-second fix...
+      <div class="time">12:40 PM</div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="date-label">17 Feb 2025</div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Advik</div>
+      Hi Advik, I just received and set up my wearable. It shows poor recovery scores after flights. Any quick hacks?
+      <div class="time">07:20 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Yes — your HRV dips after flights because of stress. Try a 10 min box breathing at the hotel + 500ml water with electrolytes...
+      <div class="time">07:45 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Advik</div>
+      That’s interesting. I also feel weird lethargy in the afternoons, even if I get a full night's sleep...
+      <div class="time">03:15 PM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Advik</div>
+      I've been looking at your initial sleep data. Very little deep sleep and frequent awakenings... We’ll work on strategies with the team.
+      <div class="time">03:40 PM</div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="date-label">18 Feb 2025</div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Rachel</div>
+      Rachel, my knees and back ache after a long day of meetings. It's the arthritis flaring up. What can I do without hitting a gym?
+      <div class="time">10:10 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      We'll start with targeted, low-impact movements. Try this 15-min travel mobility routine — ankle rotations, hamstring stretches, hip openers...
+      <div class="time">10:40 AM</div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="date-label">19 Feb 2025</div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Rajesh, just confirming you received the test kit. Please bring it to your appointment next week. I'll send you a reminder tomorrow.
+      <div class="time">09:00 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      Yes, the kit is here. Thanks, Ruby. I really appreciate how you all are coordinating this.
+      <div class="time">09:20 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby</div>
+      That's exactly our goal. The whole team is here to support you. Have a great weekend!
+      <div class="time">05:30 PM</div>
+    </div>
+    
+        <!-- Day 10 -->
+    <div class="date-label">23 Feb 2025</div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Rachel</div>
+      My knees hurt after long flights. Is there a fix?
+      <div class="time">08:50 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      Rajesh, arthritis + immobility is the cause. I’ll send you 3 mobility drills (5 min total) for airports/hotels. Try these during your upcoming Bangkok trip. This will increase blood flow and reduce stiffness, addressing the root cause of your pain. Let me know how they feel.
+      <div class="time">09:15 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your wearable data from the last flight showed a significant drop in your HRV and a spike in your average heart rate post-flight. This tells us your body is under stress. Rachel's drills will help, and so will a focus on hydration and light walking during layovers. We're running a new experiment to see if combining these strategies reduces that stress marker.
+      <div class="time">10:05 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      To add to what Advik and Rachel said, focus on anti-inflammatory foods while traveling. I'll share a list of airport-friendly snacks like nuts or fruit. Avoiding salty, processed foods at the terminal will also help reduce inflammation that contributes to your arthritis.
+      <div class="time">11:20 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Wow, thanks, team. This is a lot more comprehensive than I expected. I'll be mindful of all of this.
+      <div class="time">11:45 AM</div>
+    </div>
+
+    <!-- Day 14 -->
+    <div class="date-label">27 Feb 2025</div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Reminder: physical exam scheduled at Mount Elizabeth Hospital tomorrow at 10 am. Car arranged. ✅
+      <div class="time">06:30 PM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      Thanks, Ruby. That's a huge help. I was worried about getting there on time.
+      <div class="time">06:45 PM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      That's what I'm here for! Your only job is to focus on your health. I've also sent the pre-exam instructions to your email.
+      <div class="time">07:10 PM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Rajesh, Dr. Warren here. Just a note before your exam: please ensure you've fasted for 12 hours as instructed. This is critical for accurate blood work, especially for your cholesterol and glucose markers. We're looking at these to get a full picture of your metabolic health, which is connected to your BP and thyroid condition.
+      <div class="time">07:45 PM</div>
+    </div>
+
+        <!-- Week 3 -->
+    <div class="section-title">📊 Week 3: Performance Check and Test Results</div>
+
+    <!-- Day 15 -->
+    <div class="date-label">28 Feb 2025</div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Hi Rajesh! Just wanted to check in on your week. How did those travel mobility drills feel? Did you manage to incorporate any of Carla's breakfast tips?
+      <div class="time">09:15 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      Hey Ruby. The mobility drills were a huge help! My knees were a lot less stiff after my flight. The protein shake for breakfast has been tough to stick with, maybe 3 out of 7 days. I keep forgetting to pack it.
+      <div class="time">10:00 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      That's great news about the drills! And no worries about the breakfast, progress is what matters. We can find a solution. Maybe we can set up a recurring reminder on your calendar or arrange a delivery service for the shake mix to your office.
+      <div class="time">07:30 PM</div>
+    </div>
+
+    <!-- Day 17 -->
+    <div class="date-label">2 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your wearable data from the past week is very interesting. We've seen a noticeable drop in your average resting heart rate from 78 to 72 bpm, and your average nightly HRV has risen from 32ms to 38ms. This is an early sign that your nervous system is calming down. This supports our hypothesis that even small changes like the mobility drills are reducing your overall stress and improving your body's recovery.
+      <div class="time">08:20 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Advik</div>
+      That's incredible to see! I actually feel a little less drained in the mornings. So the little things are actually making a difference?
+      <div class="time">09:05 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Exactly. The body responds to consistency, not intensity. We're on the right track here. We'll be looking to see this trend continue as we get your test results back and refine the plan.
+      <div class="time">09:45 AM</div>
+    </div>
+
+    <!-- Day 20 -->
+    <div class="date-label">5 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Good morning, Rajesh. Dr. Warren here. I have your full diagnostic test results. I want to share the key findings with you now before our call to discuss the full plan.
+      <div class="time">08:00 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Dr. Warren</div>
+      Okay, doc. I'm ready.
+      <div class="time">08:15 AM</div>
+    </div>
+
+    <!-- Week 4 -->
+    <div class="section-title">🧭 Week 4: Results and New Strategy</div>
+
+    <!-- Day 25 -->
+    <div class="date-label">10 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Good morning, Rajesh. Dr. Warren here. Let's review your test results and compare them to your baseline. This is our roadmap for the next phase of your journey.
+      <div class="time">09:10 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Dr. Warren</div>
+      Okay, doc. I'm ready to see the full picture.
+      <div class="time">09:25 AM</div>
+    </div>
+
+        <!-- Week 5 -->
+    <div class="section-title">🚀 Week 5 (Month 2): The Push for Consistency</div>
+
+    <!-- Day 31 -->
+    <div class="date-label">16 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Rajesh, happy start to Month 2! 🎉 We've got a great baseline now. Our goal for the next 4 weeks is to maintain that 50% adherence rate from last month and aim for just one extra healthy habit. How does that sound?
+      <div class="time">08:45 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      Okay, that's a manageable goal. I'll try to add a 10-minute evening walk daily. I've noticed my mind stays active after work calls, so maybe this can help me wind down.
+      <div class="time">09:20 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Perfect. That's a great choice, especially for helping to manage that high cortisol we saw in your test results. I’ve added it to your plan and will send you a daily reminder at 8 PM.
+      <div class="time">09:45 AM</div>
+    </div>
+
+    <!-- Day 33 -->
+    <div class="date-label">18 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Hi Rajesh! Just a quick follow-up on our breakfast swap experiment. How did you do this week? Did you manage to get those oats in?
+      <div class="time">07:40 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Carla</div>
+      Hey Carla. I managed oats twice. But today was a rough morning, so biscuits again 😅. It's tough with the early meetings.
+      <div class="time">08:10 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Two out of three is great progress, Rajesh! Don't let one day derail you. Remember, we're building consistency, not perfection. The 'why' behind this is to avoid that mid-morning sugar crash that leaves you feeling tired and can trigger a migraine. Let's find a way to make it easier for those tough mornings.
+      <div class="time">08:40 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Carla</div>
+      Yeah, it’s really about the time. I'm rushing out the door. Maybe I need an even faster option than oats?
+      <div class="time">09:05 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Exactly. Let's find a pre-made protein bar or a yogurt-based smoothie you can grab and go. I’ll send you some options.
+      <div class="time">09:25 AM</div>
+    </div>
+
+    <!-- Day 35 -->
+    <div class="date-label">20 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, just pulled your data from the last few days. Your average HRV is at 28ms—a slight dip from your average last month. Your sleep average is holding steady at 5.8 hours, but your overall recovery score is down to 47%. Any thoughts on why?
+      <div class="time">08:00 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Advik</div>
+      Travel week starting tomorrow, maybe that’s why. My stress always spikes before a big trip.
+      <div class="time">08:30 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Your gut feeling is spot on. The data confirms your body is already feeling the stress of the upcoming trip. We saw this in your last test with the high cortisol. This is a crucial window for a pre-travel intervention. Let’s focus on the basics: get a full 8 hours of sleep tonight if you can, and make sure you're well-hydrated before you fly. This will give you the best chance for a quick recovery once you land.
+      <div class="time">09:10 AM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Rajesh, with your travel starting tomorrow, I've activated your 'Travel Mode' on the ELYX app. It includes all the tips from Rachel, Advik, and Carla on how to manage your diet, movement, and sleep while you're away. I'll send you daily check-ins to see how you're doing.
+      <div class="time">10:00 AM</div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh → Ruby</div>
+      Perfect, thanks for getting ahead of that. I feel like the trip is already a bit less stressful just knowing this is in place.
+      <div class="time">10:30 AM</div>
+    </div>
+        <!-- Week 6 -->
+    <div class="section-title">🌍 Week 6 (In Dubai): Travel Disruption</div>
+
+    <!-- Day 36 -->
+    <div class="date-label">21 Mar 2025</div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Team, just landed in Dubai. It's already a whirlwind of back-to-back meetings. My schedule is packed, and I'm worried I'll fall back on fast food for every meal.
+      <div class="time">10:00 AM </div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Rajesh, don't worry. You're in a city with fantastic food. Instead of fast food, try to make simple swaps. Look for Middle Eastern grilled dishes like shish tawook or lamb kebabs. They're a great source of protein. You can even grab a shawarma if you ask them to hold the high-fat sauces like mayo and add extra hummus and salad. The goal is to manage the sodium and inflammation we saw in your bloodwork.
+      <div class="time">10:15 AM </div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Just finished a meeting. Heading out for lunch. I'll give that a try.
+      <div class="time">01:00 PM </div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Okay, I had grilled chicken with a side of hummus and a salad. It was a good option, thanks, Carla 👍.
+      <div class="time">02:30 PM</div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Rachel (Physio)</div>
+      Rajesh, Rachel here. I saw you checked into your hotel. Even with the busy schedule, your body needs movement to combat stiffness and keep that arthritis in check. Can you commit to a 10-minute hotel-room stretch routine before you get to your evening meetings? I've sent a quick video to the app. It will make a huge difference in how you feel.
+      <div class="time">05:00 PM </div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      That’s a good idea. My knees are already feeling stiff from the flight. I'll give it a shot right now.
+      <div class="time">07:00 PM </div>
+    </div>
+
+    <!-- Day 37 -->
+    <div class="date-label">22 Mar 2025</div>
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, good morning. I've been monitoring your wearable data from yesterday. Your stress markers (resting heart rate, HRV) are already reacting to the new time zone and high-intensity workdays. However, your sleep efficiency showed a small bump up last night. My hypothesis is that even that short 5-minute stretch routine you did was a key signal to your nervous system that it was okay to wind down. Let’s see if we can get a full 10 minutes today and observe the impact on your sleep quality tonight.
+      <div class="time">08:00 AM </div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      That’s really interesting, Advik. I actually felt a bit more rested this morning. I'll aim for the full 10 minutes tonight.
+      <div class="time">09:30 AM </div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Carla, meeting just ended. Any suggestions for a quick, healthy lunch today? I’m near a food court.
+      <div class="time">12:00 PM </div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Food courts can be tricky. Look for a salad bar with grilled protein, or a soup and sandwich shop. The key is to avoid anything deep-fried or heavily sauced. Think grilled, steamed, or baked to keep inflammation down.
+      <div class="time">12:05 PM </div>
+    </div>
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Rachel, I did the full 10 minutes of stretches tonight. My joints feel much better. Thanks for the tip.
+      <div class="time">08:00 PM </div>
+    </div>
+    <div class="message elyx">
+      <div class="sender">Rachel (Physio)</div>
+      That’s fantastic to hear, Rajesh! That's the power of consistency, even with short bursts of movement. Keep it up, and your body will thank you.
+      <div class="time">08:05 PM </div>
+    </div>
+        <!-- Week 6: Travel & Return -->
+    <div class="section-title">✈️ Week 6: Dubai Travel & Return</div>
+
+    <!-- Day 42 -->
+    <div class="date-label">27 Mar 2025 (Back in Singapore)</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Ugh, team. Back in Singapore. Feeling really bloated and sluggish after the travel week. My sleep scores are terrible, and I have a bad headache coming on.
+      <div class="time">09:00 AM </div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Hi Rajesh. That's completely normal after a hectic business trip and time zone change. Your body is trying to re-regulate. My advice is to focus on two things today: rehydration and a gentle re-entry into your routine. Forget about the numbers for 24 hours. Just rest.
+      <div class="time">09:15 AM</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Rajesh, the bloating is likely from the higher-sodium restaurant and plane food. Let's counter that. For the next 48 hours, focus on high-water content foods. Think cucumbers, celery, leafy greens, and melon. Add lemon to your water to help your system cleanse. This is the 'why' behind the suggestion—it helps flush out excess sodium and reduce inflammation.
+      <div class="time">10:30 AM </div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      Following up on that, Rajesh, don't rush into a big workout. Your body is still recovering. Instead of your usual routine, just get outside for a very light 15-minute walk today. It's a gentle way to get your body moving again, improve circulation, and combat the stiffness we talked about in Dubai.
+      <div class="time">11:00 AM </div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your wearable data confirms the post-travel slump. Your overnight HRV dropped to 25ms, a new low. This is a direct sign of accumulated stress. Don't worry about it. Let's focus on a full night of deep sleep tonight. I’ve updated your app with a 5-minute pre-sleep guided meditation. This is our primary intervention for the next 24 hours to help your nervous system calm down and recover.
+      <div class="time">02:00 PM </div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Thanks, team. This is exactly what I needed. It's so easy to just push through it and make things worse. I'll get some vegetables and try that meditation tonight.
+      <div class="time">08:30 PM </div>
+    </div>
+        <!-- Week 7: Mindful Patterns & Small Wins -->
+    <div class="section-title">🌿 Week 7: Mindful Patterns & Small Wins</div>
+
+    <!-- Day 45 -->
+    <div class="date-label">31 Mar 2025</div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Good morning, Rajesh. Just a quick data check-in. Your sleep is improving, averaging 6.1 hours a night now. Your HRV is back up to 34ms, and your average resting heart rate has stabilized at 80 bpm. Your body has successfully bounced back from the travel stress.
+      <div class="time">08:15 AM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      That's a huge relief. I'm honestly surprised it bounced back so fast. I was worried the last week would derail everything.
+      <div class="time">08:45 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      That’s resilience, Rajesh—your body’s ability to adapt. The short-term interventions the team provided are what allowed you to recover so quickly. We're not just fixing problems; we're building a more robust system for you. The data shows the foundation is solid. 👍
+      <div class="time">09:10 AM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      I've been feeling quite busy and stressed these days, but it's good to know my body is still holding up.
+      <div class="time">09:30 AM SGT</div>
+    </div>
+
+    <!-- Day 48 -->
+    <div class="date-label">03 Apr 2025</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Team, I’m quite stressed. I just had a really rough call with a client, and I ended up grabbing 3 pastries from the office pantry. Feeling pretty guilty about it.
+      <div class="time">04:15 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Rajesh, let's reframe this. This isn’t a failure; it’s a pattern you've just identified. You reached for a quick sugar fix in a moment of stress. Acknowledge it, but don't let it define the day.
+      <div class="time">04:25 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Neel (Concierge Lead)</div>
+      Rajesh, Neel here. Carla is spot on. This is actually a great moment for us. You're now aware of your emotional triggers. That's the first step. The next step is to create a physical pattern interruption. The next time you feel this way, the solution isn't willpower; it’s a simple swap. Let's make sure you always have a bag of almonds or a piece of fruit at your desk. The goal is to make the healthy choice the easy choice.
+      <div class="time">04:40 PM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Okay, that makes sense. I can carry almonds. It's a much better option.
+      <div class="time">04:50 PM SGT</div>
+    </div>
+
+    <!-- Day 50 -->
+    <div class="date-label">05 Apr 2025</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Rachel, quick update. I had a rough day at the office again, but instead of just sitting on the couch, I went for a walk. Walked 6km after dinner tonight 💪.
+      <div class="time">08:15 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      Amazing, Rajesh! That's a perfect example of how to manage stress and support your body. Walking after meals helps to manage glucose spikes from any food you've eaten, and it's a fantastic way to calm your nervous system, which is crucial for lowering your BP and reducing migraines.
+      <div class="time">08:25 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your wearable data for tonight already shows a positive effect. Your heart rate dropped significantly after the walk, which tells us your body is in recovery mode. This is the new pattern we're building—using movement as medicine.
+      <div class="time">09:00 PM SGT</div>
+    </div>
+
+
+
+        <!-- Week 9: Health Worsens & Intensive Intervention -->
+    <div class="section-title">⚠️ Week 9: Health Worsens & Intensive Intervention</div>
+
+    <!-- Day 61 -->
+    <div class="date-label">19 Apr 2025 – Rough Start</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Feeling drained today, even after 7 hours of sleep. My head feels heavy, and I have no energy.
+      <div class="time">08:20 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Hi Rajesh. That sounds tough. Did you happen to eat late last night? A heavy late meal can disrupt your sleep quality even if you get the hours in.
+      <div class="time">08:35 AM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Yes, I had a client dinner and ended up eating biryani around 11 PM.
+      <div class="time">08:50 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your wearable data confirms a tough night. Your overnight HRV dropped to 22ms, the lowest in 6 weeks, and your resting heart rate was up to 92 bpm. This is a clear indicator that your body spent the night digesting and fighting inflammation instead of recovering.
+      <div class="time">09:10 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Rajesh, this is a significant finding. Your symptoms and Advik's data point to a potential blood sugar fluctuation. Please check your fasting glucose first thing tomorrow morning and let me know the reading. We need to rule this out as a cause for your fatigue.
+      <div class="time">09:30 AM SGT</div>
+    </div>
+
+    <!-- Day 63 -->
+    <div class="date-label">21 Apr 2025 – High Sugar Report</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Doc, my fasting glucose was 162 today 😟. I'm really worried about this.
+      <div class="time">07:40 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      That's above the safe range, Rajesh. This is a clear red flag and requires closer monitoring. The primary cause is likely the refined carbs and late-night meals. This is an immediate concern for your overall metabolic health.
+      <div class="time">08:00 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Okay Rajesh, we have a clear link between your diet and your symptoms. For the next 10 days, we need to completely cut refined carbs. No biscuits, no white rice for dinner. Let's replace them with complex carbs like millet, brown rice, or a small portion of roti with a large serving of vegetables. This will stabilize your blood sugar and prevent these spikes. The goal is to get that number down.
+      <div class="time">08:20 AM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Okay, I'll try. It's a big change, but I understand why.
+      <div class="time">08:45 AM SGT</div>
+    </div>
+
+    <!-- Day 65 -->
+    <div class="date-label">23 Apr 2025 – Sleep Trouble</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      I woke up four times last night. Feeling restless and anxious. Why is my sleep getting worse?
+      <div class="time">06:50 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your recovery score is at a critical 35%, and your HRV is a low 24ms. This shows your nervous system is on high alert. The sleep disturbance is a symptom of this high stress.
+      <div class="time">07:05 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      Any body aches? Stress often manifests as tension. A stiff back can also prevent you from finding a comfortable sleep position.
+      <div class="time">07:20 AM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      My lower back feels incredibly stiff.
+      <div class="time">07:35 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      That’s a common issue from all your travel and stress. Let's add a gentle stretching routine before bed. I’ll send a 5-minute video focusing on your hips and lower back. The goal is to physically release the tension so your body can relax and get ready for sleep.
+      <div class="time">07:50 AM SGT</div>
+    </div>
+
+        <!-- Week 10: Gradual Stabilization -->
+    <div class="section-title">🌙 Week 10: Gradual Stabilization</div>
+
+    <!-- Day 67 -->
+    <div class="date-label">25 Apr 2025 – Anxiety Spike</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Heart started racing during a presentation today. Sweaty palms. What was that about?
+      <div class="time">11:30 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Neel (Concierge Lead)</div>
+      Rajesh, that's a common physiological response to stress, but if it's recurring, it's a sign that your body is having trouble regulating. This isn't just about work pressure; it's a symptom of your current physical state.
+      <div class="time">11:45 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Neel is right. Please monitor your BP this week. That racing heart could be a BP spike. Stress, plus your recent elevated glucose, could be a dangerous combination, triggering these episodes. The anxiety is a symptom of your body being out of balance. We need to get these core numbers under control.
+      <div class="time">12:00 PM SGT</div>
+    </div>
+
+    <!-- Day 70 -->
+    <div class="date-label">28 Apr 2025 – Travel & Crash</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Just landed in Singapore. Had three coffees and a muffin at the airport. Now I'm feeling incredibly jittery.
+      <div class="time">03:40 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Rajesh, that's a high caffeine and sugar combo. It's a direct route to blood sugar spikes, followed by a crash. Try to swap that out. Next time, opt for green tea or plain black coffee. This is a key step in managing that glucose.
+      <div class="time">03:55 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      I just got a wearable alert. Your heart rate shot up to 110 bpm. This is your nervous system on overdrive. The body is struggling to cope. We're getting close to our red zone.
+      <div class="time">04:10 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      Rajesh, rest. Hydrate with plain water. Do not have a heavy meal tonight. Your system is overtaxed. A light, early dinner is best. We need to prevent any more spikes.
+      <div class="time">04:25 PM SGT</div>
+    </div>
+
+    <!-- Day 73 -->
+    <div class="date-label">1 May 2025 – Family Concern</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      My wife says I’m irritable and snappy. It's affecting things at home. I don't know what's wrong with me.
+      <div class="time">08:20 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Rajesh, it's not you, it's your body reacting to the stress. Poor recovery isn't just physical; it's emotional. Let's add journaling for 5 minutes nightly. Just jotting down a few thoughts can help you process the day and reduce anxiety.
+      <div class="time">08:35 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Neel (Concierge Lead)</div>
+      You’ve handled bigger work storms than this. Think of your irritability as just another data point, like your HRV or blood sugar. It's a signal. The signal is telling us to adapt. We'll get through this. We are here for you.
+      <div class="time">08:50 PM SGT</div>
+    </div>
+
+    <!-- Day 75 -->
+    <div class="date-label">3 May 2025 – Temporary Stabilization</div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Slept 7.5 hours last night. HRV is up to 31ms, and my glucose was 124 this morning. I feel so much better.
+      <div class="time">07:10 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist)</div>
+      That's a very good sign, Rajesh. The interventions are working. Still, this is not a permanent solution. We need two more weeks of close watch to ensure this trend holds. I'll issue a full report in a few days.
+      <div class="time">07:30 AM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Team in sync</div>
+      Great work, Rajesh! Let’s reduce chat frequency to short daily nudges unless it's urgent. We’ll be monitoring in the background.
+      <div class="time">07:45 AM SGT</div>
+    </div>
+
+        <!-- Week 11 & 12: Gradual Stabilization & The Quarterly Report -->
+    <div class="section-title">📊 Week 11 & 12: Gradual Stabilization & The Quarterly Report</div>
+
+    <!-- Day 76 -->
+    <div class="date-label">4 May 2025 – Back to Basics</div>
+
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Hi Rajesh. Quick reminder: aim for an early dinner tonight to help with your sleep and blood sugar.
+      <div class="time">06:30 PM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Done ✅. Finished dinner by 8 PM.
+      <div class="time">08:05 PM SGT</div>
+    </div>
+
+    <!-- Day 78 -->
+    <div class="date-label">6 May 2025 – Nutritional Accountability</div>
+
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Hi Rajesh! Can you send me a photo of your lunch today?
+      <div class="time">01:15 PM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Veg thali.
+      <div class="time">01:20 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Carla (Nutritionist)</div>
+      Excellent. That's a perfect example of a balanced, anti-inflammatory meal. Keep it up!
+      <div class="time">01:30 PM SGT</div>
+    </div>
+
+    <!-- Day 80 -->
+    <div class="date-label">8 May 2025 – Consistent Movement</div>
+
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      Rajesh, did you manage to get a quick stretch in today? Your back stiffness is linked to your stress levels.
+      <div class="time">04:10 PM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Yeah, did 5 minutes in my office between calls. It felt good.
+      <div class="time">04:20 PM SGT</div>
+    </div>
+
+    <div class="message elyx">
+      <div class="sender">Rachel (PT)</div>
+      👍 That's all it takes. Consistency is key.
+      <div class="time">04:25 PM SGT</div>
+    </div>
+
+    <!-- Day 83 -->
+    <div class="date-label">11 May 2025 – Data & Feelings Align</div>
+
+    <div class="message elyx">
+      <div class="sender">Advik (Performance Scientist)</div>
+      Rajesh, your HRV is creeping up to a 36ms average this week. This is a very positive trend and shows your nervous system is calming down.
+      <div class="time">09:00 AM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      That makes sense. I've been feeling lighter and more energetic. It's cool to see the data and my feelings finally align.
+      <div class="time">09:20 AM SGT</div>
+    </div>
+
+    <!-- Day 86 -->
+    <div class="date-label">14 May 2025 – Proactive Self-Management</div>
+
+    <div class="message elyx">
+      <div class="sender">Neel (Concierge Lead)</div>
+      Rajesh, I've noticed your recent consistency. Have you encountered any major stress triggers this week?
+      <div class="time">05:00 PM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Less this week. I'm actively trying to manage things. I was able to control my sugar cravings, which is a huge win for me.
+      <div class="time">05:20 PM SGT</div>
+    </div>
+
+    <!-- Day 89 -->
+    <div class="date-label">17 May 2025 – Anticipation</div>
+
+    <div class="message elyx">
+      <div class="sender">Ruby (Concierge)</div>
+      Rajesh, just a heads-up. Tomorrow is your quarterly panel review with the team. Dr. Warren's medical report will be ready to discuss. Are you all set?
+      <div class="time">07:30 PM SGT</div>
+    </div>
+
+    <div class="message rajesh">
+      <div class="sender">Rajesh</div>
+      Ready. Fingers crossed.
+      <div class="time">07:40 PM SGT</div>
+    </div>
+
+    <!-- Day 90 -->
+    <div class="date-label">18 May 2025 – Quarterly Test & Medical Report</div>
+
+    <div class="message elyx">
+      <div class="sender">Dr. Warren (Medical Strategist, Report)</div>
+      Rajesh, I have your quarterly medical report. While we saw some stabilization in your day-to-day numbers, the long-term trends show we need to get stricter.
+      <br><br>
+      <strong>Quarterly Report Highlights:</strong><br>
+      • HbA1c: 7.1% (up from 6.7% baseline)<br>
+      • Fasting Glucose: 138 mg/dL (still high)<br>
+      • Lipids: Borderline high LDL ("bad cholesterol")<br>
+      • Blood Pressure: Fluctuating (130–138 / 88 mmHg)<br>
+      • Wearable: HRV avg = 34ms (low), Resting HR = 86 bpm (still high)
+      <br><br>
+      <strong>Interpretation:</strong> Your body is still under a significant stress load, and your glucose control is slipping, likely due to a combination of lifestyle choices and travel. The high HbA1c, in particular, shows that your blood sugar has been consistently high for the past three months. We need to reset and get stricter with adherence.
+      <div class="time">10:00 AM SGT</div>
+    </div>
+
+    <!-- Day 91 -->
+<div class="date-label">24 May 2025 – Team Recommendations</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  Rajesh, we need to take a more aggressive approach. I’m recommending strict carb control for the next four weeks to stabilize your blood sugar. That means no refined carbs, period.
+  <div class="time">09:10 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  To help with your metabolic health and stress, let's add two weekly strength training sessions, even if they're short and bodyweight-focused.
+  <div class="time">11:45 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  Rajesh, let's set a simple, non-negotiable goal for the month: 'No sugar snacks.' This will give you a clear win to focus on and build momentum.
+  <div class="time">03:20 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  I'll be setting up a daily 8 PM check-in reminder for you to reflect on your day's food and stress.
+  <div class="time">06:40 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Feeling worried but hopeful. Thanks all, I’ll commit stronger this time 🙏.
+  <div class="time">08:55 PM</div>
+</div>
+
+<!-- Week 13: Building the Foundation -->
+<div class="section-title">📊 Week 13: Building the Foundation (Day 91–97)</div>
+
+<!-- Day 91 -->
+<div class="date-label">19 May 2025 – Fresh Start</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Good morning team. I’m determined to reset this month. I know the numbers weren't great, but I'm ready to commit. Where do we begin?
+  <div class="time">07:45 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  Morning, Rajesh! That's exactly the spirit we need. Let’s anchor you with a foundational habit: fixed meal timings. It's the best way to get your body's rhythm back on track.
+  <div class="time">08:05 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  To start, can you commit to having breakfast by 9 am, lunch by 1:30 pm, and dinner by 8 pm? This will help stabilize your blood sugar throughout the day.
+  <div class="time">08:20 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Breakfast yes, but dinner by 8 pm is a tough one. I usually don't finish my calls until 9:30.
+  <div class="time">12:10 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  I understand. The goal isn't to starve. Let's make a plan. You can prep a light, easy-to-digest meal like a small bowl of khichdi or some dal and vegetables. A light meal at 8 PM is far better for your body than a heavy one at 9:30 or 10 PM. This is why we're doing this—to avoid that late-night metabolic stress.
+  <div class="time">12:40 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Okay, that's doable. I'll try tonight. What about snacks?
+  <div class="time">03:30 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  For now, stick to a small handful of almonds and a piece of fruit around 5 PM. It will prevent you from getting too hungry before dinner and keep you away from fried or sugary snacks.
+  <div class="time">03:50 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Noted. Thanks, team. It feels like a new phase is starting. 🚀
+  <div class="time">06:15 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  That’s because it is! New month, new Rajesh. We're right here with you.
+  <div class="time">06:40 PM</div>
+</div>
+
+<!-- Day 93 -->
+<div class="date-label">21 May 2025 – Exercise Push</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Morning, Rachel. I'm feeling ready to add some exercise to the routine. Can I start some light weights at home?
+  <div class="time">07:20 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  That's great, Rajesh. Let's begin with resistance bands instead of heavy weights. They’re much safer for your joints and allow us to focus on form. This is the why—we're building a stable foundation first.
+  <div class="time">07:45 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Okay, I have bands. Which exercises should I do?
+  <div class="time">09:10 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  Start with squats, rows, and shoulder presses. Do 2 sets of each, and we'll alternate days. I've sent you a quick video for a refresher on your form.
+  <div class="time">09:30 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Will this actually help with my high blood sugar?
+  <div class="time">11:15 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  Yes, Rajesh. Muscle activity improves glucose uptake significantly. Think of it as your muscles acting like sponges, pulling excess sugar from your bloodstream. It's a key intervention for your HbA1c.
+  <div class="time">11:45 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Good. How long should each session be?
+  <div class="time">02:00 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  20-25 minutes max. Consistency on a daily or alternate-day basis matters far more than intensity.
+  <div class="time">02:20 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  I’ll start today evening. Excited!
+  <div class="time">05:30 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  Don't forget to send us a pic of you with your bands! 😉
+  <div class="time">05:50 PM</div>
+</div>
+
+<!-- Day 96 -->
+<div class="date-label">24 May 2025 – Sleep Check</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Guys, you won't believe this—I slept 7 hours straight last night for the first time in months! It feels amazing.
+  <div class="time">07:00 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Advik (Performance Scientist)</div>
+  That's fantastic, Rajesh. And the data confirms it. Your HRV jumped from 36ms to 41ms, and your sleep recovery score is the highest it’s been all month. See, the hard work pays off.
+  <div class="time">07:20 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  So just better sleep can change those numbers so fast?
+  <div class="time">09:10 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  Absolutely. Poor sleep is a massive physiological stressor. It triggers the release of stress hormones, which in turn elevates your blood sugar. Better sleep directly addresses one of the root causes of your health issues.
+  <div class="time">09:40 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Should I keep my phone outside the bedroom? I think that helps a lot.
+  <div class="time">01:15 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  Yes, that's a great habit. Also, try dimming the lights for about an hour before bed. This sends a signal to your brain that it's time to wind down.
+  <div class="time">01:40 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  And remember our breathing exercises? A quick 5-minute breathing before bed is a powerful way to calm your nervous system. That's all you need.
+  <div class="time">05:30 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Okay, I'll try tonight. Feels hopeful.
+  <div class="time">09:00 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  And one more thing—remember, no late-night snacks! Your digestion needs to rest too.
+  <div class="time">09:20 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  Carry your own reusable water bottle. Target 2.5L a day. Staying hydrated is a top priority to combat fatigue and reduce bloating.
+  <div class="time">09:40 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Got it. Can I take black coffee before my meeting?
+  <div class="time">10:10 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  Yes, just make sure there's absolutely no sugar. This is a key part of your strict carb control.
+  <div class="time">10:30 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Thanks team, will update tonight.
+  <div class="time">10:50 PM</div>
+</div>
+
+<!-- Week 15: Adapting -->
+<div class="section-title">📊 Week 15: Adapting to Obstacles & Maintaining Discipline (Day 105–111)</div>
+
+
+  
+
+
+
+<!-- Day 108 -->
+<div class="date-label">5 Jun 2025 – Rainy Day</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  It’s raining, so my evening walk is cancelled. What should I do now? I don't want to skip.
+  <div class="time">06:10 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  Rajesh, don't worry. We have a plan for that. Do a 15-minute indoor march or spot jog. It's the movement that matters, not the location.
+  <div class="time">06:25 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Will that really help my sugar levels?
+  <div class="time">06:40 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  Yes. Even small bursts of activity keep your glucose levels steady and prevent those spikes. The consistency of movement is what we're after, regardless of the weather.
+  <div class="time">07:00 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Okay, will do. Any stretches after?
+  <div class="time">07:20 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  Yes—do some hamstring and shoulder stretches to cool down.
+  <div class="time">07:40 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Done! Feeling lighter already.
+  <div class="time">08:00 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  We are so proud of you for not skipping. That's a huge win for your discipline.
+  <div class="time">08:15 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Thanks. Discipline wins today.
+  <div class="time">08:30 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  That's the spirit 👏.
+  <div class="time">08:45 PM</div>
+</div>
+
+<!-- Week 16: Looking at the Big Picture -->
+<div class="section-title">📊 Week 16: Looking at the Big Picture & The Next Phase (Day 112–120)</div>
+
+<!-- Day 112 -->
+<div class="date-label">9 Jun 2025 – Data Day</div>
+
+<div class="message elyx">
+  <div class="sender">Advik (Performance Scientist)</div>
+  Rajesh, our weekly averages are in. Your average HRV is now at 42ms, Resting HR is 81bpm, and your overall recovery score is up by 7%.
+  <div class="time">09:00 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Is that good progress? What does it mean?
+  <div class="time">09:20 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  Yes, that is excellent progress. It means your body is recovering more efficiently from stress. If this continues, we may be able to reduce your medication at your next test. This is what we've been working towards.
+  <div class="time">09:45 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Seriously? That would be amazing. I'm so motivated now.
+  <div class="time">10:15 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  Stay consistent. Don't relax too soon. The goal is to make this a new normal.
+  <div class="time">10:40 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Should I increase my workout intensity now?
+  <div class="time">11:30 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  Not yet. Let’s wait two more weeks to ensure this trend holds. We don’t want to overload your system.
+  <div class="time">11:50 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Okay. Can I add fruit at night?
+  <div class="time">01:00 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  Only low-glycemic ones, like guava or papaya. Avoid high-sugar fruits before bed to prevent a glucose spike.
+  <div class="time">01:30 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Understood. Thanks all.
+  <div class="time">02:00 PM</div>
+</div>
+
+<!-- Day 118 -->
+<div class="date-label">15 Jun 2025 – Weekend Reflection</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  This weekend, I actually felt lighter. My clothes are a bit loose too. I feel the change.
+  <div class="time">09:15 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  That's the best kind of progress—the kind you can see and feel, not just on a chart.
+  <div class="time">09:40 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  But my scale weight hasn't changed much.
+  <div class="time">11:00 AM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  Don't worry about the number on the scale. Muscle weighs more than fat, so you might be gaining muscle while losing fat. This is a much healthier, more sustainable kind of progress.
+  <div class="time">11:30 AM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Oh, that makes so much sense. I never thought about it that way.
+  <div class="time">12:15 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  Are your knees feeling better during your walks?
+  <div class="time">12:40 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Yes, much less strain. I've even been able to walk longer.
+  <div class="time">04:10 PM</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  Keep that protein intake steady to support the muscle gain. If you want more vegetarian options for dinner protein, I can send you a list.
+  <div class="time">04:40 PM</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  Perfect. Adding to my list.
+  <div class="time">05:00 PM</div>
+</div>
+
+<!-- Day 120 – Month Close -->
+<div class="date-label">17 June 2025</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  <div class="text">Four months done. I'm feeling so much more confident and in control. Where do I stand now?</div>
+  <div class="time">10:12 am</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Advik (Performance Scientist)</div>
+  <div class="text">Your glucose trends are steady, your recovery score is up, and your heart rate is improving. We’re in a great place.</div>
+  <div class="time">10:14 am</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  <div class="text">That's great. What’s next month’s focus?</div>
+  <div class="time">10:16 am</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Ruby (Concierge)</div>
+  <div class="text">Deeper consistency in your sleep and food timings.</div>
+  <div class="time">10:18 am</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Carla (Nutritionist)</div>
+  <div class="text">Reducing night cravings further.</div>
+  <div class="time">10:20 am</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Rachel (PT)</div>
+  <div class="text">Building a consistent strength training routine.</div>
+  <div class="time">10:23 am</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Dr. Warren (Medical Strategist)</div>
+  <div class="text">Our main goal for the next quarter is to get your HbA1c to below 6.5% at your next quarterly check. This is achievable with the momentum we have.</div>
+  <div class="time">10:27 am</div>
+</div>
+
+<div class="message rajesh">
+  <div class="sender">Rajesh</div>
+  <div class="text">Got it. Thanks team. You’ve really kept me going.</div>
+  <div class="time">10:30 am</div>
+</div>
+
+<div class="message elyx">
+  <div class="sender">Neel (Concierge Lead)</div>
+  <div class="text">Month 4 ✅. Next stop = transformation! 🚀</div>
+  <div class="time">10:32 am</div>
+</div>
+
+<!-- Day 121 - 18 June 2025 -->
+<div class="date-label">18 June 2025</div>
+
+<div class="message rajesh">
+  Rajesh: "Hi Ruby, just confirming—my blood test is scheduled for today, right?"
+  <span class="time">9:12 AM</span>
+</div>
+<div class="message ruby">
+  Ruby: "Yes Rajesh, it’s today. I’ve arranged for the lab visit at 10 AM. No food before the test."
+  <span class="time">9:14 AM</span>
+</div>
+<div class="message rajesh">
+  Rajesh: "Got it. Feeling a bit nervous, but ready."
+  <span class="time">9:15 AM</span>
+</div>
+
+<!-- Day 122 - 19 June 2025 -->
+<div class="date-label">19 June 2025</div>
+
+<div class="message ruby">
+  Ruby: "Rajesh, the results are in. HbA1c is now 6.7% (down from 7.4%). LDL is down, Vitamin D is improving too."
+  <span class="time">8:45 AM</span>
+</div>
+<div class="message rajesh">
+  Rajesh: "That’s incredible! I can actually see the progress."
+  <span class="time">8:47 AM</span>
+</div>
+<div class="message drwarren">
+  Dr. Warren: "This is a turning point. You’re moving from high risk into much safer territory. Keep building consistency."
+  <span class="time">8:49 AM</span>
+</div>
+<div class="message rajesh">
+  Rajesh: "Thank you all. This gives me more motivation than ever."
+  <span class="time">8:50 AM</span>
+</div>
+
+<!-- Day 124 - 21 June 2025 -->
+<div class="date-label">21 June 2025</div>
+
+<div class="message rajesh">
+  Rajesh: "Back from the trip. Feeling a bit off though—HRV dropped, sleep was disturbed."
+  <span class="time">10:05 PM</span>
+</div>
+<div class="message neel">
+  Neel: "Expected after travel. Don’t stress. Focus on rehydration and getting back to your normal sleep schedule."
+  <span class="time">10:07 PM</span>
+</div>
+<div class="message ruby">
+  Ruby: "HRV dip is temporary. Let’s give it 2–3 days of steady routines."
+  <span class="time">10:08 PM</span>
+</div>
+
+<!-- Day 127 - 24 June 2025 -->
+<div class="date-label">24 June 2025</div>
+
+<div class="message ruby">
+  Ruby: "Weekly check-in: Glucose stable, recovery score is back to baseline, HRV is improving again."
+  <span class="time">7:30 AM</span>
+</div>
+<div class="message rajesh">
+  Rajesh: "That’s reassuring. I was worried about the setback."
+  <span class="time">7:32 AM</span>
+</div>
+<div class="message carla">
+  Carla: "Great job bouncing back quickly. That shows resilience."
+  <span class="time">7:33 AM</span>
+</div>
+<div class="message drwarren">
+  Dr. Warren: "Consistency through ups and downs is the real success here."
+  <span class="time">7:35 AM</span>
+</div>
+
+<!-- Day 135 -->
+<div class="date-label">2 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Ruby, just landed in Hong Kong. I'm here for the next 6 days. Will my diet and exercise plan adjust?"</p>
+  <span class="time">9:15 AM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Yes, your travel-optimized plan has already been synced with Carla and Rachel. A new schedule + food suggestions sent to your hotel chef."</p>
+  <span class="time">9:20 AM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Rajesh, stick to steamed fish, greens, avoid dim sum fried items."</p>
+  <span class="time">9:22 AM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Workout plan uploaded – resistance band + bodyweight in room."</p>
+  <span class="time">9:25 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>"You guys think of everything 😅"</p>
+  <span class="time">9:27 AM</span>
+</div>
+
+
+<!-- Day 136 -->
+<div class="date-label">3 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Hotel chef just brought me the steamed fish and greens Carla recommended. It was great!"</p>
+  <span class="time">1:05 PM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Perfect! Glad you like it."</p>
+  <span class="time">1:10 PM</span>
+</div>
+
+
+<!-- Day 137 -->
+<div class="date-label">4 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Did my resistance band workout this morning. Feeling less stiff."</p>
+  <span class="time">7:40 AM</span>
+</div>
+
+<div class="message elyx">
+  <p>"That's the goal! Keep it up."</p>
+  <span class="time">7:45 AM</span>
+</div>
+
+
+<!-- Day 138 -->
+<div class="date-label">5 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Advik, my sleep was terrible last night. Woke up 3 times."</p>
+  <span class="time">8:30 AM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Just checked your data. Your HR spiked overnight. That could be from the stressful meeting yesterday. Try our meditation before bed tonight."</p>
+  <span class="time">8:35 AM</span>
+</div>
+
+
+<!-- Day 139 -->
+<div class="date-label">6 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Carla, I have a client dinner tonight. Lots of options. What should I do?"</p>
+  <span class="time">6:50 PM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Start with a light soup, then choose a lean protein and veggie dish. Avoid heavy sauces and excessive rice."</p>
+  <span class="time">6:55 PM</span>
+</div>
+
+
+<!-- Day 140 -->
+<div class="date-label">7 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Rachel, quick question. Are there any stretches I can do on the plane?"</p>
+  <span class="time">10:15 AM</span>
+</div>
+
+<div class="message elyx">
+  <p>"Yes! I just sent you a quick video with some simple in-seat stretches. Focus on your ankles and shoulders."</p>
+  <span class="time">10:20 AM</span>
+</div>
+
+
+<!-- Day 141 -->
+<div class="date-label">8 July 2025</div>
+
+<div class="message rajesh">
+  <p>"Just landed back in Singapore. Feeling a bit drained, but not as bad as last time. Thanks for all the support, team."</p>
+  <span class="time">8:40 PM</span>
+</div>
+
+<div class="message elyx">
+  <p>"That's exactly what we wanted to hear. Welcome home!"</p>
+  <span class="time">8:45 PM</span>
+</div>
+
+<!-- Week 20 -->
+<div class="date-label">July 9, 2025</div>
+<div class="message neel">Rajesh, a quick midpoint review. Despite the travel, you’ve maintained great consistency. Your average HRV is now 40ms, your blood sugar is trending down, and you’ve managed a 75% adherence rate with your workouts. The big win is your consistency. We’re all really proud of the effort 👏. <span class="time">9:05 AM</span></div>
+<div class="message rajesh">Thanks, Neel. Honestly, it feels good to see the numbers improving. It's proof that I can actually do this. <span class="time">9:12 AM</span></div>
+
+<div class="date-label">July 12, 2025</div>
+<div class="message rajesh">I'm having some knee pain after squats yesterday. Should I stop? <span class="time">7:45 AM</span></div>
+<div class="message rachel">Yes, pause squats for 3 days. Do glute bridges instead to activate your posterior chain. Can you send me a quick video of your squat form? I suspect it's a technique issue, not a fundamental problem. <span class="time">8:02 AM</span></div>
+<div class="message rajesh">Done. Sending it now. <span class="time">8:05 AM</span></div>
+<div class="message rachel">Yep, your knees are caving in. That puts stress on the joint. I'll correct your stance in our next session. Good thing you checked in! <span class="time">8:15 AM</span></div>
+
+<div class="date-label">July 15, 2025</div>
+<div class="message ruby">Rajesh, here is your summary for Month 5 📊. Here are the key highlights and what we've achieved this month:<br><br>
+✅ HbA1c improved (6.5 → 6.2)<br>
+✅ HRV improved (32 → 40)<br>
+⚠ BP still inconsistent (avg 134/88)<br>
+✅ Workouts 75% adherence<br>
+✅ Nutrition improved (less snacking)<br>
+❌ Travel remains a main blocker <span class="time">9:00 AM</span></div>
+
+<div class="message drwarren">Overall, you are trending in the right direction. Your long-term numbers are improving, which is what we want. The next full test is due at Month 8. Let's keep the focus on BP and recovery. We know the triggers, now we just have to avoid them. <span class="time">9:18 AM</span></div>
+<div class="message rajesh">Thanks, team. Honestly, I feel so much better than I did two months ago. I feel like I'm finally in control. <span class="time">9:25 AM</span></div>
+
+
+<!-- Week 21 -->
+<div class="date-label">July 18, 2025</div>
+<div class="message rajesh">Good morning, team. Can we set this month's goal specifically around BP? My last report said it was the main area to improve. <span class="time">8:02 AM</span></div>
+<div class="message neel">Absolutely, Rajesh. Last month, your sugars improved, now we go harder on BP. Dr. Warren will tweak your plan today. <span class="time">8:15 AM</span></div>
+<div class="message drwarren">Rajesh, let’s run a few experiments to get your blood pressure down. We’ll test three key interventions: a 20-minute meditation session daily, a focus on lower salt intake and watching alcohol, and the addition of evening walks after dinner. We'll track your daily BP to see what moves the needle. <span class="time">8:30 AM</span></div>
+<div class="message rajesh">Okay, let’s try it. <span class="time">8:45 AM</span></div>
+<div class="message carla">Rajesh, let's also swap your evening snack. Instead of anything processed, replace it with a handful of soaked almonds. This helps with both BP and sleep. <span class="time">9:00 AM</span></div>
+<div class="message rajesh">Noted. <span class="time">9:05 AM</span></div>
+
+<div class="date-label">July 20, 2025</div>
+<div class="message rajesh">Rachel, I have some knee discomfort again after doing lunges. Is there a better alternative? <span class="time">7:40 AM</span></div>
+<div class="message rachel">That's a good observation, Rajesh. Okay, swap lunges for step-ups. They provide the same benefits for your legs and glutes with less direct strain on the knee joint. Remember our focus on form over intensity. <span class="time">7:55 AM</span></div>
+<div class="message rajesh">Should I ice it after the workout? <span class="time">8:05 AM</span></div>
+<div class="message rachel">Yes, a quick 10-minute application post-workout is a great way to reduce any potential inflammation. <span class="time">8:15 AM</span></div>
+<div class="message rajesh">Done ✅. <span class="time">8:25 AM</span></div>
+
+<div class="date-label">July 22, 2025</div>
+<div class="message carla">Rajesh, let’s try a new dietary experiment for your BP. How do you feel about a 14:10 intermittent fast? You'd only eat between 10 AM and 8 PM. <span class="time">10:00 AM</span></div>
+<div class="message rajesh">I've heard about that. Will it spike my sugar in the mornings? And won't I be starving? <span class="time">10:12 AM</span></div>
+<div class="message carla">That's a valid concern. We'll start with this gentle window. The goal isn't to starve but to give your system a longer break. We'll monitor your glucose closely for the first three days to ensure it doesn't spike. This is a scientific experiment on your body, so we'll adjust if needed. <span class="time">10:20 AM</span></div>
+<div class="message rajesh">Sounds tough… but let’s do it. <span class="time">10:30 AM</span></div>
+<div class="message neel">Rajesh, love your commitment 👏. This is what separates good from great. <span class="time">10:45 AM</span></div>
+
+<div class="date-label">July 24, 2025</div>
+<div class="message ruby">Rajesh, quick check-in for the week. You've hit 80% adherence on your workouts and 100% on the fasting so far. Your average BP is 132/87, a slight improvement! That’s great news. <span class="time">9:10 AM</span></div>
+<div class="message rajesh">Encouraging. But the fasting is making me really hungry at night. <span class="time">9:25 AM</span></div>
+<div class="message carla">That's a normal response at first. To help, I'll add a final snack at 8 PM: a chia pudding with almond milk. It’s high in fiber and healthy fats, which will keep you fuller for longer without spiking your sugar. <span class="time">9:35 AM</span></div>
+<div class="message rajesh">Great—thanks. This is exactly what I needed. <span class="time">9:45 AM</span></div>
+
+
+<!-- Week 22 -->
+<div class="date-label">July 27, 2025</div>
+<div class="message rajesh">My BP was 148/92 today. Big presentation stress. <span class="time">11:20 AM</span></div>
+<div class="message drwarren">That’s a significant spike, but not unusual given the stressor. Did you do your meditation today? <span class="time">11:30 AM</span></div>
+<div class="message rajesh">I skipped it this morning, didn't have time. <span class="time">11:35 AM</span></div>
+<div class="message drwarren">That’s the link. Let's do a quick 5-minute breathing exercise now. I'm sending you a link. Just focus on your breath for 5 minutes. <span class="time">11:40 AM</span></div>
+<div class="message rajesh">Doing it now. <span class="time">11:45 AM</span></div>
+<div class="message rajesh">(15 minutes later) BP is 138/88. Better. That's incredible. <span class="time">12:05 PM</span></div>
+<div class="message drwarren">See? Stress is half the battle, and meditation is a tool to control it. You're learning to regulate your nervous system in real-time. <span class="time">12:15 PM</span></div>
+
+<div class="date-label">July 31, 2025</div>
+<div class="message rajesh">Flying to Dubai tonight for 5 days. Please adjust my schedule. <span class="time">6:30 PM</span></div>
+<div class="message ruby">Done, Rajesh. Your custom travel plan is ready. I’ve already sent a food plan to your hotel chef and synced your workouts to your calendar. <span class="time">6:40 PM</span></div>
+<div class="message rachel">Rajesh, your workout plan for Dubai is up. Focus on resistance band workouts in your room. And let's aim for a step count of over 7,000 daily. It’s a great way to keep your heart rate up without a gym. <span class="time">6:55 PM</span></div>
+<div class="message carla">I’ve emailed the hotel about your low-salt request. For your meals, request low-salt options and stick to grilled or steamed. Avoid the bread baskets and high-sodium sauces. I've already shared the why behind this, so you can make confident choices. <span class="time">7:05 PM</span></div>
+<div class="message rajesh">Amazing. You guys are life savers 🙏 <span class="time">7:15 PM</span></div>
+
+
+<!-- Week 23 -->
+<div class="date-label">August 3, 2025</div>
+<div class="message rajesh">Carla, the buffet is too tempting. I had dessert twice last night 😓. <span class="time">8:10 AM</span></div>
+<div class="message carla">Don’t worry about it. Balance today with a higher protein and veggie intake. One slip won't undo all your progress. <span class="time">8:25 AM</span></div>
+<div class="message rajesh">Good, felt guilty about it. <span class="time">8:30 AM</span></div>
+<div class="message neel">Rajesh, this is important—guilt kills momentum. You’re doing 10 times better than you were in Month 2. You recognized the slip-up, reported it, and now you’re back on track. Focus forward. That’s resilience. <span class="time">8:45 AM</span></div>
+
+<div class="date-label">August 6, 2025</div>
+<div class="message ruby">Rajesh, here is your mid-month summary 📊. Your average BP is 132/85, a slight drop. Your blood sugar is stable, and your HRV is a strong 41. We've hit 82% workout adherence and 92% nutrition adherence. <span class="time">9:20 AM</span></div>
+<div class="message rajesh">That's motivating 🙌. <span class="time">9:30 AM</span></div>
+
+
+<!-- Week 24 -->
+<div class="date-label">August 11, 2025</div>
+<div class="message rajesh">Advik, I'm still waking up at 3 AM sometimes. Any fix? <span class="time">10:05 PM</span></div>
+<div class="message advik">That’s a common stress response. Let's try two things: taking a magnesium glycinate supplement before bed and completely eliminating screen time one hour before you sleep. <span class="time">10:20 PM</span></div>
+<div class="message rajesh">Screens might be the issue… I check emails late at night. <span class="time">10:25 PM</span></div>
+<div class="message advik">Exactly. Your brain needs time to shut down. Let’s test 5 nights screen-free before bed. This is our final sleep experiment. <span class="time">10:35 PM</span></div>
+<div class="message rajesh">Okay, deal. <span class="time">10:40 PM</span></div>
+
+<div class="date-label">August 13, 2025</div>
+<div class="message rajesh">Rachel, I noticed my stamina improving. I finished my HIIT workout faster today without feeling completely gassed. <span class="time">7:15 AM</span></div>
+<div class="message rachel">That’s a huge win! From Month 2 to now, your endurance is up by about 25%. This is the foundation we’ve been building. Next week, we'll increase your intensity slightly. <span class="time">7:30 AM</span></div>
+<div class="message rajesh">Love it 💪. <span class="time">7:35 AM</span></div>
+
+<div class="date-label">August 16, 2025</div>
+<div class="message ruby">Rajesh, here is your final summary for Month 6 📊. It's been a truly transformative month:<br><br>
+✅ BP avg improved to 130/85 (your best ever!)<br>
+✅ Sugar steady (your HbA1c check is due in Month 8)<br>
+✅ HRV is a consistent 41–42ms (smoother recovery)<br>
+✅ Fitness adherence is 85%<br>
+✅ Nutrition adherence is 90%<br>
+⚠ Sleep still broken on some days (our next target) <span class="time">9:00 AM</span></div>
+<div class="message drwarren">Rajesh, your overall trajectory is excellent. If your BP holds consistently below 130/85 next month, we can consider avoiding medication entirely. You've proven that lifestyle changes work. <span class="time">9:20 AM</span></div>
+<div class="message rajesh">That’s the best news I’ve heard all year 😃. Thanks, team! I feel like a new person. <span class="time">9:30 AM</span></div>
+
+
+<!-- Day 142 -->
+<div class="date-label">17 August 2025</div>
+
+<div class="message neel">
+  <p>Rajesh, a quick midpoint review. Despite the travel, you’ve maintained great consistency. Your average HRV is now 40ms, your blood sugar is trending down, and you’ve managed a 75% adherence rate with your workouts. The big win is your consistency. We’re all really proud of the effort 👏.</p>
+  <span class="time">9:15 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Thanks, Neel. Honestly, it feels good to see the numbers improving. It's proof that I can actually do this.</p>
+  <span class="time">9:28 AM</span>
+</div>
+
+
+<!-- Day 145 -->
+<div class="date-label">20 August 2025</div>
+
+<div class="message rajesh">
+  <p>I'm having some knee pain after squats yesterday. Should I stop?</p>
+  <span class="time">7:42 AM</span>
+</div>
+
+<div class="message rachel">
+  <p>Yes, pause squats for 3 days. Do glute bridges instead to activate your posterior chain. Can you send me a quick video of your squat form? I suspect it's a technique issue, not a fundamental problem.</p>
+  <span class="time">8:05 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Done. Sending it now.</p>
+  <span class="time">8:08 AM</span>
+</div>
+
+<div class="message rachel">
+  <p>Yep, your knees are caving in. That puts stress on the joint. I'll correct your stance in our next session. Good thing you checked in!</p>
+  <span class="time">8:22 AM</span>
+</div>
+
+
+<!-- Day 148 -->
+<div class="date-label">23 August 2025</div>
+
+<div class="message ruby">
+  <p>Rajesh, here is your summary for Month 5 📊. Here are the key highlights and what we've achieved this month:</p>
+  <ul>
+    <li>✅ HbA1c improved (6.5 → 6.2)</li>
+    <li>✅ HRV improved (32 → 40)</li>
+    <li>⚠ BP still inconsistent (avg 134/88)</li>
+    <li>✅ Workouts 75% adherence</li>
+    <li>✅ Nutrition improved (less snacking)</li>
+    <li>❌ Travel remains a main blocker</li>
+  </ul>
+  <span class="time">6:50 PM</span>
+</div>
+
+<div class="message drwarren">
+  <p>Overall, you are trending in the right direction. Your long-term numbers are improving, which is what we want. The next full test is due at Month 8. Let's keep the focus on BP and recovery. We know the triggers, now we just have to avoid them.</p>
+  <span class="time">7:12 PM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Thanks, team. Honestly, I feel so much better than I did two months ago. I feel like I'm finally in control.</p>
+  <span class="time">7:26 PM</span>
+</div>
+
+<!-- Day 211 -->
+<div class="date-label">25 October 2025</div>
+
+<div class="message ruby">
+  <p>Rajesh, your BP this morning was 124/76. That's fantastic. You're consistently in the optimal range now!</p>
+  <span class="time">7:05 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Nice. I’m feeling it too. More energetic and focused. It feels so good to not feel that constant pressure in my head.</p>
+  <span class="time">7:12 AM</span>
+</div>
+
+<div class="message drwarren">
+  <p>That's excellent progress, Rajesh. Your body is no longer in a state of chronic stress. This is a direct result of your consistent efforts. You've earned this.</p>
+  <span class="time">7:20 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Thank you, Doc. I'm motivated to keep it going. I can't imagine going back to how I was.</p>
+  <span class="time">7:25 AM</span>
+</div>
+
+<!-- Day 212 -->
+<div class="date-label">26 October 2025</div>
+
+<div class="message rajesh">
+  <p>Rachel, I walked for 35 minutes yesterday as planned. I had no knee pain at all this time.</p>
+  <span class="time">7:10 AM</span>
+</div>
+
+<div class="message rachel">
+  <p>That’s a great sign! It means your muscles are getting stronger and supporting your joints better. Your consistent walks are building a solid foundation.</p>
+  <span class="time">7:15 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Feels good to walk without fatigue. I used to feel drained after just 15 minutes.</p>
+  <span class="time">7:18 AM</span>
+</div>
+
+<!-- Day 213 -->
+<div class="date-label">27 October 2025</div>
+
+<div class="message rajesh">
+  <p>Carla, checking in on my diet. I'm still on one roti per meal and adding more veggies now.</p>
+  <span class="time">6:50 AM</span>
+</div>
+
+<div class="message carla">
+  <p>Fantastic. That small change makes a huge difference in your blood sugar and inflammation. As a bonus, weight control will get easier now.</p>
+  <span class="time">7:05 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Already noticing my shirts fitting better. It's a great feeling.</p>
+  <span class="time">7:10 AM</span>
+</div>
+
+<!-- Day 214 -->
+<div class="date-label">28 October 2025</div>
+
+<div class="message rajesh">
+  <p>Advik, my sleep tracker says I got 7 hours and 30 minutes last night! It was a peaceful night.</p>
+  <span class="time">6:55 AM</span>
+</div>
+
+<div class="message advik">
+  <p>That's amazing, Rajesh! The first time in years you’re crossing 7+ hours so consistently. That consistent, deep sleep naturally improves your BP and recovery.</p>
+  <span class="time">7:05 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>And my mornings feel so much lighter. I don’t need coffee to function anymore.</p>
+  <span class="time">7:10 AM</span>
+</div>
+
+<!-- Day 215 -->
+<div class="date-label">29 October 2025</div>
+
+<div class="message rajesh">
+  <p>Neel, just wanted to check in. How was my stress this week?</p>
+  <span class="time">7:00 AM</span>
+</div>
+
+<div class="message neel">
+  <p>Your wearable shows you handled it calmly. Heart rate rose slightly during a big meeting but dropped back down quickly.</p>
+  <span class="time">7:15 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>Yes, the breathing techniques are really helping. I even did a few during a break in a difficult meeting.</p>
+  <span class="time">7:20 AM</span>
+</div>
+
+<!-- Day 216 -->
+<div class="date-label">30 October 2025</div>
+
+<div class="message rajesh">
+  <p>Rachel, let’s increase the intensity. I did 20 minutes of brisk walking plus 10 bodyweight squats per set.</p>
+  <span class="time">7:05 AM</span>
+</div>
+
+<div class="message rachel">
+  <p>Superb 👏! That's a perfect progression. You’re building stamina and progressing to functional fitness. Your body is becoming more resilient.</p>
+  <span class="time">7:15 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>I feel stronger now. It’s a great feeling of accomplishment.</p>
+  <span class="time">7:20 AM</span>
+</div>
+
+<!-- Day 217 -->
+<div class="date-label">31 October 2025</div>
+
+<div class="message neel">
+  <p>Rajesh, here are your weekly stats: Avg BP: 124/77. Sleep avg: 7 hrs 20 mins. Walks: 6/7 days. Diet: 92% adherence. You’re setting a new standard for yourself.</p>
+  <span class="time">7:10 AM</span>
+</div>
+
+<div class="message carla">
+  <p>Your weight is down by ~1.5 kg this week. That's a huge milestone.</p>
+  <span class="time">7:20 AM</span>
+</div>
+
+<div class="message rajesh">
+  <p>That’s a big win for me 🙌. It feels so good to see the progress. Thanks, team.</p>
+  <span class="time">7:25 AM</span>
+</div>
+
+<div class="message rachel">
+  <p>Proud of you, Rajesh.</p>
+  <span class="time">7:30 AM</span>
+</div>
+
+
+  </div>
+
+      <!-- Left icon navbar (added) -->
+    <nav class="side-nav" aria-label="Section navigation">
+      <div class="brand-dot" aria-hidden="true"></div>
+      <div class="nav-divider"></div>
+
+      <!-- Profile -->
+      <a href="/profile"
+         class="icon-link {% if request.path == '/profile' %}active{% endif %}"
+         data-tip="Profile" aria-label="Profile">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+
+      <!-- Chats -->
+      <a href="/chats"
+         class="icon-link {% if request.path == '/chats' %}active{% endif %}"
+         data-tip="Chats" aria-label="Chats">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+        </svg>
+      </a>
+
+      <!-- Visuals & Stats -->
+      <a href="/visuals"
+         class="icon-link {% if request.path == '/stats' %}active{% endif %}"
+         data-tip="Visuals & Stats" aria-label="Visuals and Stats">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"/>
+          <rect x="7" y="10" width="3" height="7" rx="1"/>
+          <rect x="12" y="6" width="3" height="11" rx="1"/>
+          <rect x="17" y="12" width="3" height="5" rx="1"/>
+        </svg>
+      </a>
+
+      <!-- Reports -->
+      <a href="/Reports"
+         class="icon-link {% if request.path == '/reports' %}active{% endif %}"
+         data-tip="Reports" aria-label="Reports">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+        </svg>
+      </a>
+
+      <!-- Timeline (NEW) -->
+      <a href="/timeline"
+         class="icon-link {% if request.path == '/timeline' %}active{% endif %}"
+         data-tip="Health Journey" aria-label="Health Journey">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="7" cy="7" r="2"/>
+          <circle cx="17" cy="12" r="2"/>
+          <circle cx="7" cy="17" r="2"/>
+          <path d="M7 9v6"/>
+          <path d="M9 7h8"/>
+          <path d="M17 14v3"/>
+        </svg>
+      </a>
+    </nav>
+</body>
+
+
+</html>
+
       --bg2: #1b4b7a;
       --ink: #eaf2ff;
       --muted: #a9c3e6;
@@ -1912,4 +3974,5 @@
 
 
 </html>
+
 
