@@ -115,20 +115,21 @@
 
     /* Right Image Section */
     .right-section {
-      flex: 1.2; /* Give slightly more space to the image */
+      flex: 10; /* Give slightly more space to the image */
       position: relative;
       overflow: hidden;
     }
-    .right-section::before { /* Image overlay */
+    /* === THIS IS THE CHANGED PART === */
+    .right-section::before { /* Gradient overlay */
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: var(--color-bg);
-        opacity: 0.3;
-        z-index: 1;
+        /* This creates the right-to-left blend effect */
+        background: linear-gradient(to left, transparent 10%, var(--color-bg));
+        z-index: 3;
     }
     .right-section img {
       width: 100%;
@@ -175,7 +176,7 @@
     <ul class="nav-links">
       <li><a href="/profile">My Profile</a></li>
       <li><a href="/Chats">Chats</a></li>
-      <li><a href="/visuals">Wellness Stats</a></li>
+      <li><a href="/Stats">Wellness Stats</a></li>
       <li><a href="/Reports">Reports</a></li>
       <li><a href="/timeline">Health Journey</a></li>
     </ul>
