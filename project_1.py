@@ -41,6 +41,10 @@ def chats():
 def timeline():
     return render_template('timeline.html')
 
+@app.route('/Reports')
+def reports():
+    return render_template('reports.html')
+
 # Visuals page (BP chart)
 @app.route('/visuals')
 def visuals():
