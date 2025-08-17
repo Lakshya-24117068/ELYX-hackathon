@@ -5,18 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ELYX | Weekly Timeline</title>
   <style>
-    /* ======= Provided CSS (embedded for preview) ======= */
+    /* ======= ELYX Theme (from your persona page) ======= */
+    :root{
+      --bg1:#0e2a47; --bg2:#1b4b7a; --card:#0b1220; --ink:#eaf2ff; --muted:#a9c3e6;
+      --accent:#7bd3ff; --good:#39d98a; --bad:#ff6b6b; --chip:#0e2b4d;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --radius:18px;
+      --sideW:72px;
+    }
+
+    html, body { height: 100%; }
+
     /* Basic body and font styles */
     body {
       min-height: 100%;
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
       font-size: 14px;
       letter-spacing: 1px;
       line-height: 1.5;
-      background-color: #0a0a0a; /* Dark background from screenshot */
-      color: #fff;
+      color: var(--ink);
+
+      /* Site background from your palette */
+     background: radial-gradient(1200px 800px at 20% -10%, #2b5ea3 0%, transparent 50%),
+              radial-gradient(800px 600px at 120% 30%, #1b9ad6 0%, transparent 50%),
+              linear-gradient(160deg,var(--bg1),var(--bg2));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+      /* space for the left icon strip */
+      padding-left: calc(var(--sideW) + 16px);
     }
+
+    /* ==== Left icon navbar (added) ==== */
+    .side-nav{
+      position:fixed; left:12px; top:18px; bottom:18px; width:var(--sideW);
+      background:#06101ee6; border:1px solid #0a1c31; border-radius:18px;
+      backdrop-filter: blur(8px);
+      display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 6px;
+      box-shadow:var(--shadow); z-index:1000;
+    }
+    .side-nav .brand-dot{
+      width:38px; height:38px; border-radius:10px; margin:6px 0 4px;
+      background: conic-gradient(from 210deg, #8ae 0 25%, #4fd 25% 50%, #58f 50% 75%, #9ef 75% 100%);
+      box-shadow:0 6px 14px rgba(0,0,0,.25)
+    }
+    .nav-divider{width:48px; height:1px; background:#143053; margin:6px 0 2px; border-radius:1px}
+
+    .icon-link{
+      width:48px; height:48px; border-radius:14px; display:grid; place-items:center;
+      color:var(--ink); text-decoration:none; border:1px solid transparent; position:relative;
+      transition:transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      opacity:.9;
+    }
+    .icon-link:hover{ background:#0b203e; border-color:#183a67; transform:translateY(-1px); opacity:1 }
+    .icon-link.active{
+      background:linear-gradient(180deg,#0b2546,#0d284d);
+      border-color:#214c7e; box-shadow: inset 0 0 0 1px #235084;
+    }
+    .icon{ width:22px; height:22px; display:block }
+
+    /* tooltip on hover (no JS) */
+    .icon-link[data-tip]:hover::after{
+      content: attr(data-tip);
+      position:absolute; left:58px; top:50%; transform:translateY(-50%);
+      background:#0b203e; color:var(--ink); border:1px solid #183a67;
+      padding:4px 8px; border-radius:8px; white-space:nowrap; font-size:.85rem; pointer-events:none;
+      box-shadow:var(--shadow);
+    }
+.month-end {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #06101ee6;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.biomarker-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.biomarker-table th {
+  background: #0a1c31;
+  color: #fff;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #132c4f;
+}
+
+.biomarker-table td {
+  padding: 10px;
+  border-bottom: 1px solid #132c4f;
+  color: #ddd;
+}
+
+.biomarker-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.doctor-note, .member-note {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border-left: 4px solid #4facfe;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  font-style: italic;
+}
+
+    /* mobile: hide strip and remove padding */
+    @media (max-width:740px){
+      body{ padding-left: 0 }
+      .side-nav{ transform: translateX(-120%); left:8px }
+      .side-nav:hover{ transform: translateX(0) } /* peek out when hovered */
+    }
+    /* ==== /Left icon navbar ==== */
 
     /* Main timeline container */
     .timeline-component {
@@ -33,7 +139,7 @@
 
     /* Heading styles */
     .timeline-main_heading-wrapper {
-      color: #fff;
+      color: var(--ink);
       text-align: center;
       max-width: 640px;
       margin-left: auto;
@@ -50,14 +156,14 @@
 
     .timeline-main_heading-wrapper p {
       margin: 0 auto 24px;
-      opacity: 0.8;
+      color: var(--muted);
     }
 
     /* Individual timeline entry container (date, circle, content) */
     .timeline-item {
       z-index: 2;
-      grid-column-gap: 8px; /* Appears to be a typo for column-gap */
-      grid-row-gap: 8px; /* Appears to be a typo for row-gap */
+      column-gap: 8px;
+      row-gap: 8px;
       grid-template-rows: auto;
       grid-template-columns: 1fr 40px 1fr; /* tuned for middle rail */
       grid-auto-columns: 1fr;
@@ -69,57 +175,66 @@
 
     /* Left-aligned date text */
     .timeline_date-text {
-      color: #fff;
+      color: var(--ink);
       letter-spacing: -0.03em;
-      font-size: 32px; /* 48px looked oversized on narrow screens */
+      font-size: 32px;
       font-weight: 600;
       line-height: 1.2;
       position: sticky;
       top: 50%;
       align-self: start;
     }
+    .timeline_date-text small{
+      display:block;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: .2px;
+      margin-top: 4px;
+    }
 
     /* Rail column: circle + vertical progress line */
-    .timeline-rail {
-      position: relative;
-    }
+    .timeline-rail { position: relative; }
 
     /* The circular markers on the vertical line */
     .timeline_circle {
-      background-color: #fff;
+      background-color: var(--accent);
       border-radius: 100%;
       width: 15px;
       height: 15px;
       position: sticky;
       top: 50%;
       margin: 0 auto;
-      box-shadow: 0 0 8px #0a0a0a;
+      box-shadow: 0 0 0 3px #103153, 0 4px 12px rgba(0,0,0,.35);
     }
 
     /* The vertical progress line */
     .timeline-progress {
       z-index: -1;
-      background: linear-gradient(to bottom, #ff6a00, #ff6a00, #ff6a00, #e9ed97);
+      background: linear-gradient(to bottom, var(--accent), var(--accent) 45%, var(--good));
       width: 3px;
       height: 100%;
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
       top: 0;
+      box-shadow: 0 0 0 1px rgba(35,80,132,.35);
     }
 
     /* Content box styling */
     .timeline_content {
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid #183a67;
       border-radius: 12px;
       padding: 20px;
-      background: rgba(255,255,255,0.04);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      background: #0b203e;
+      box-shadow: var(--shadow);
+      color: var(--ink);
     }
 
+    .timeline_content h3 { margin-top: 0; margin-bottom: 6px; }
+
     .timeline_link {
-      opacity: 0.6;
-      color: #fff;
+      opacity: 0.85;
+      color: var(--ink);
       letter-spacing: 0.8px;
       text-transform: uppercase;
       border-radius: 8px;
@@ -128,20 +243,25 @@
       font-weight: 700;
       line-height: 1.3;
       text-decoration: none;
-      transition: opacity 0.3s;
+      transition: opacity 0.2s, background 0.2s, border-color 0.2s;
       display: inline-flex;
       padding: 6px 10px;
-      border: 1px dashed rgba(255,255,255,0.2);
+      border: 1px dashed #214c7e;
+      background: #0b2546;
       margin-top: 10px;
     }
-
-    .timeline_link:hover { opacity: 1; }
+    .timeline_link:hover {
+      opacity: 1;
+      border-color: #235084;
+      background: linear-gradient(180deg,#0b2546,#0d284d);
+    }
 
     /* Styles for a larger paragraph text */
     .paragraph-large {
       letter-spacing: -0.02em;
       font-size: 18px;
       margin: 8px 0 0;
+      color: var(--ink);
     }
 
     /* Simple responsive tweak */
@@ -158,133 +278,1865 @@
       <p>Week-by-week plan, starting Week 1 on <strong>Feb 14</strong>.</p>
     </header>
 
+    <!-- Left icon navbar (added) -->
+    <nav class="side-nav" aria-label="Section navigation">
+      <div class="brand-dot" aria-hidden="true"></div>
+      <div class="nav-divider"></div>
+
+      <!-- Profile -->
+      <a href="/profile"
+         class="icon-link {% if request.path == '/profile' %}active{% endif %}"
+         data-tip="Profile" aria-label="Profile">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+
+      <!-- Chats -->
+      <a href="/Chats"
+         class="icon-link {% if request.path == '/chats' %}active{% endif %}"
+         data-tip="Chats" aria-label="Chats">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+        </svg>
+      </a>
+
+      <!-- Visuals & Stats -->
+      <a href="/Stats"
+         class="icon-link {% if request.path == '/stats' %}active{% endif %}"
+         data-tip="Visuals & Stats" aria-label="Visuals and Stats">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"/>
+          <rect x="7" y="10" width="3" height="7" rx="1"/>
+          <rect x="12" y="6" width="3" height="11" rx="1"/>
+          <rect x="17" y="12" width="3" height="5" rx="1"/>
+        </svg>
+      </a>
+
+      <!-- Reports -->
+      <a href="/Reports"
+         class="icon-link {% if request.path == '/reports' %}active{% endif %}"
+         data-tip="Reports" aria-label="Reports">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+        </svg>
+      </a>
+
+      <!-- Timeline (NEW) -->
+      <a href="/Timeline"
+         class="icon-link {% if request.path == '/timeline' %}active{% endif %}"
+         data-tip="Timeline" aria-label="Timeline">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="7" cy="7" r="2"/>
+          <circle cx="17" cy="12" r="2"/>
+          <circle cx="7" cy="17" r="2"/>
+          <path d="M7 9v6"/>
+          <path d="M9 7h8"/>
+          <path d="M17 14v3"/>
+        </svg>
+      </a>
+    </nav>
+
     <!-- Week 1 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 1<br/><small>Feb 14 – Feb 20</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>Onboarding & Initial Assessments</h3>
-        <p class="paragraph-large">
-          Rajesh shared chronic concerns (BP, thyroid, arthritis, migraines) and travel challenges. The team set a baseline via full diagnostics and launched quick wins: breakfast fix (Carla), HRV-focused box breathing + electrolytes (Advik), and a mobility routine (Rachel). Dr. Warren clarified the diagnostic rationale. Test kit dispatched; structured plan initiated.
-        </p>
-        <a class="timeline_link" href="#">View Week 1 Notes</a>
-      </div>
-    </article>
+<article class="timeline-item">
+  <!-- Left Date/Label -->
+  <div class="timeline_date-text">
+    <strong>Week 1</strong><br/>
+    <small>Feb 14 – Feb 20</small>
+  </div>
 
-    <!-- Week 2 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 2<br/><small>Feb 21 – Feb 27</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>Diagnostics & Baseline Review</h3>
-        <p class="paragraph-large">
-          Complete test kit and compile baseline. Align targets for BP, thyroid markers, inflammation, and migraine triggers. Finalize initial nutrition, mobility, and recovery protocols.
-        </p>
-        <a class="timeline_link" href="#">View Week 2 Plan</a>
-      </div>
-    </article>
+  <!-- Timeline Rail (progress + dot) -->
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
 
-    <!-- Week 3 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 3<br/><small>Feb 28 – Mar 6</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>Performance Check & Habit Consolidation</h3>
-        <p class="paragraph-large">
-          Verify breakfast adherence, HRV response to breathing + hydration, and joint comfort from mobility drills. Calibrate travel-friendly routines and reinforce migraine hygiene (sleep timing, hydration, light exposure).
-        </p>
-        <a class="timeline_link" href="#">View Week 3 Check-in</a>
-      </div>
-    </article>
+  <!-- Main Content -->
+  <div class="timeline_content">
+    <h3>Episode 1: Initial Health Inquiry & Onboarding <span class="subtitle">(Day 1 – Day 7)</span></h3>
 
-    <!-- Week 4 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 4<br/><small>Mar 7 – Mar 13</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>Strength & Mobility Progression</h3>
-        <p class="paragraph-large">
-          Add low-impact strength work (2–3 sessions) layered onto daily mobility. Track pain, ROM, and functional markers. Introduce protein target and travel snack kit.
-        </p>
-        <a class="timeline_link" href="#">View Week 4 Workouts</a>
-      </div>
-    </article>
+    <div class="timeline-section">
+      <h4>🎯 Primary Goal / Trigger</h4>
+      <p>Rajesh (member) initiates contact to discuss his chronic health concerns (high BP, thyroid issues, migraines, and arthritis) and challenges from frequent travel.  
+      The team’s goal is to establish a comprehensive baseline.</p>
+    </div>
 
-    <!-- Week 5 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 5<br/><small>Mar 14 – Mar 20</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>BP & Thyroid Tuning</h3>
-        <p class="paragraph-large">
-          Review BP trends and thyroid panel changes; adjust salt, electrolytes, steps, and meal timing. Evaluate migraine triggers with a simple log.
-        </p>
-        <a class="timeline_link" href="#">View Week 5 Targets</a>
-      </div>
-    </article>
+    <div class="timeline-section">
+      <h4>👥 Triggered By</h4>
+      <p>Member (<strong>Rajesh</strong>) and the <strong>ELYX team</strong> (Ruby, Dr. Warren, Carla, Advik, Rachel).</p>
+    </div>
 
-    <!-- Week 6 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 6<br/><small>Mar 21 – Mar 27</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>Travel-Proofing Routines</h3>
-        <p class="paragraph-large">
-          Create airport/hotel playbooks: 10‑minute mobility, meal templates, hydration cadence, and light/jet lag strategy. Validate with wearable metrics.
-        </p>
-        <a class="timeline_link" href="#">View Week 6 Playbooks</a>
-      </div>
-    </article>
+    <div class="timeline-section">
+      <h4>⚠️ Friction Points</h4>
+      <p>None. Rajesh briefly questioned the need for a full diagnostic panel, which Dr. Warren addressed immediately with clear justification.</p>
+    </div>
 
-    <!-- Week 7 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 7<br/><small>Mar 28 – Apr 3</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
-      </div>
-      <div class="timeline_content">
-        <h3>Recovery & Sleep Depth</h3>
-        <p class="paragraph-large">
-          Emphasize sleep consistency, pre‑bed wind‑down, and magnesium/electrolyte timing. Monitor HRV and morning readiness; adjust evening carbs and caffeine cut‑off.
-        </p>
-        <a class="timeline_link" href="#">View Week 7 Protocol</a>
-      </div>
-    </article>
+    <div class="timeline-section">
+      <h4>✅ Final Outcome</h4>
+      <ul>
+        <li><strong>Dr. Warren</strong> justified the diagnostic panel to establish a precise baseline.</li>
+        <li><strong>Carla</strong> suggested a simple breakfast fix (yogurt + nuts) to stabilize cortisol.</li>
+        <li><strong>Advik</strong> introduced a quick HRV hack (box breathing + electrolytes).</li>
+        <li><strong>Rachel</strong> recommended a foundational mobility routine for arthritis.</li>
+      </ul>
+      <p>The week concluded with test kit delivery and a clear plan to review results and propose a long-term strategy.</p>
+    </div>
 
-    <!-- Week 8 -->
-    <article class="timeline-item">
-      <div class="timeline_date-text">Week 8<br/><small>Apr 4 – Apr 10</small></div>
-      <div class="timeline-rail">
-        <div class="timeline-progress" aria-hidden="true"></div>
-        <div class="timeline_circle" aria-hidden="true"></div>
+    <a class="timeline_link" href="#">📄 View Week 1 Notes</a>
+  </div>
+</article>
+
+<!-- Week 2 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 2<br/><small>Feb 21 – Feb 27</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 2: Proactive Problem-Solving & Logistics (Day 8 - Day 14)</h3>
+    
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>Rajesh's recurring knee pain from travel. The team's goal was to provide a targeted, practical solution while continuing to manage the overall onboarding process.</p>
       </div>
-      <div class="timeline_content">
-        <h3>Milestone Review & Next Block</h3>
-        <p class="paragraph-large">
-          Review progress vs. baseline across BP, thyroid markers, pain/mobility, migraines, and travel resilience. Lock in what works and set goals for the next 4–8 weeks.
+      
+      <div class="summary-block">
+        <h4>👥 Triggered By</h4>
+        <p>Member (Rajesh) and the ELYX team (Rachel, Advik, Carla, Ruby, Dr. Warren).</p>
+      </div>
+      
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>None. The communication was direct and the solutions were tailored to Rajesh's lifestyle (e.g., short, easy drills for travel). The interdisciplinary response eliminated the need for Rajesh to coordinate with multiple experts himself.</p>
+      </div>
+      
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p>Targeted Intervention & Seamless Logistics. Rachel provided a clear, actionable plan to address Rajesh's arthritis pain, supported by Advik’s data-driven insights and Carla’s nutritional advice on inflammation. Ruby handled the logistics of his physical exam with reminders and transport, while Dr. Warren delivered a crucial medical instruction. The team’s coordinated effort demonstrated ELYX’s ability to manage both strategic interventions and day-to-day coordination, making the process effortless and personalized for Rajesh.</p>
+      </div>
+    </div>
+
+    <a class="timeline_link" href="#">View Week 2 Plan</a>
+  </div>
+</article>
+
+<!-- Week 3 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 3<br/><small>Feb 28 – Mar 5</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 3: Diagnostic Results & Personalized Roadmap</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🟢 All Okay / Positive Trends</h4>
+        <p><strong>Glucose & HbA1c:</strong> Both are within the healthy range, showing no immediate pre-diabetes risk.</p>
+        <p><strong>Total Cholesterol:</strong> Levels are healthy, a positive sign for long-term cardiovascular health.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🟡 Need Follow-Up</h4>
+        <p><strong>Vitamin D:</strong> Level is 22 ng/mL (optimal 30–60). Supplement recommended to address fatigue and bone health.</p>
+        <p><strong>TSH:</strong> At 5.5 mIU/L (normal 0.4–4.5). Medication is helping but thyroid still elevated, needs monitoring.</p>
+        <p><strong>Cortisol:</strong> High-normal morning level indicates chronic stress, tied to BP and migraines.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🔴 Major Issues</h4>
+        <p><strong>Blood Pressure:</strong> Average 145/95 mmHg (Stage 2 Hypertension). Immediate targeted interventions required.</p>
+        <p><strong>C-Reactive Protein (CRP):</strong> >3.0 mg/L, indicating systemic inflammation — likely driving arthritis and migraines.</p>
+        <p><em>Dr. Warren:</em> “These results give us a clear roadmap. The team will build Rajesh’s personalized plan focused on lowering CRP and BP as top priorities.”</p>
+      </div>
+    </div>
+
+    <a class="timeline_link" href="#">View Week 3 Report</a>
+  </div>
+</article>
+
+<!-- Week 4 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 4<br/><small>Mar 6 – Mar 12</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 4: Month-End Review & Forward Strategy</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🟢 Wins</h4>
+        <p><strong>HRV & Sleep:</strong> Both showing steady upward trends, validating lifestyle changes.</p>
+        <p><strong>Engagement:</strong> Rajesh consistently followed drills, supplements, and nutrition advice.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🟡 Ongoing Work</h4>
+        <p><strong>TSH:</strong> Slight improvement, but thyroid still above optimal. Continuous monitoring required.</p>
+        <p><strong>Cortisol:</strong> Still high-normal, signaling stress management is a key target.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🔴 Priority Focus</h4>
+        <p><strong>Blood Pressure:</strong> Still Stage 2 hypertension — needs intensive intervention.</p>
+        <p><strong>CRP:</strong> Elevated systemic inflammation remains the root driver of arthritis & migraines.</p>
+      </div>
+    </div>
+
+    <a class="timeline_link" href="#">View Full Month-End Report</a>
+  </div>
+</article>
+
+
+<!-- Month-End Stats Table -->
+<section class="month-end">
+  <h3>📊 Before ELYX vs. After 3 Weeks: A Biomarker Snapshot</h3>
+  <table class="biomarker-table">
+    <thead>
+      <tr>
+        <th>Biomarker</th>
+        <th>Before ELYX (Baseline)</th>
+        <th>After 3 Weeks (Current)</th>
+        <th>Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blood Pressure</td>
+        <td>148/96 mmHg (Hypertension)</td>
+        <td>145/95 mmHg (Still Hypertensive)</td>
+        <td>Still a major issue. Needs targeted lifestyle intervention.</td>
+      </tr>
+      <tr>
+        <td>Thyroid (TSH)</td>
+        <td>5.8 mIU/L (High)</td>
+        <td>5.5 mIU/L (Still High)</td>
+        <td>Medication working, but still elevated. Monitoring needed.</td>
+      </tr>
+      <tr>
+        <td>Cortisol (Morning)</td>
+        <td>High end of normal</td>
+        <td>High end of normal</td>
+        <td>Chronic stress pattern. Needs stress-reduction focus.</td>
+      </tr>
+      <tr>
+        <td>C-Reactive Protein (CRP)</td>
+        <td>Not tested</td>
+        <td>>3.0 mg/L (High)</td>
+        <td>High systemic inflammation, likely driving pain & migraines.</td>
+      </tr>
+      <tr>
+        <td>Vitamin D</td>
+        <td>Not tested</td>
+        <td>22 ng/mL (Deficient)</td>
+        <td>Supplement needed to improve energy & bone health.</td>
+      </tr>
+      <tr>
+        <td>Heart Rate Variability (HRV)</td>
+        <td>32 ms (Low)</td>
+        <td>38 ms (Slightly Improved)</td>
+        <td>Positive trend. Nervous system recovery beginning.</td>
+      </tr>
+      <tr>
+        <td>Sleep Efficiency</td>
+        <td>~65% (Poor)</td>
+        <td>~70% (Slightly Improved)</td>
+        <td>Improved rest, supporting recovery & blood pressure.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <blockquote class="doctor-note">
+    <strong>Dr. Warren:</strong> “The improvements in HRV and sleep show that Rajesh’s body is responding well. 
+    Our main targets ahead remain lowering blood pressure and reducing CRP-driven inflammation.”
+  </blockquote>
+
+  <blockquote class="member-note">
+    <strong>Rajesh:</strong> “This makes so much more sense than numbers alone. 
+    Small steps are working — I’m ready to tackle the big numbers now.”
+  </blockquote>
+</section>
+
+<!-- Week 5 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 5<br/><small>Day 31 – Day 35</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 5: Month 2 Kickoff — The Push for Consistency</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🟢 Wins</h4>
+        <p><strong>Fresh Start:</strong> Rajesh committed to a new 10-minute evening walk habit to manage high cortisol.</p>
+        <p><strong>Nutrition Progress:</strong> Oats twice this week, showing steady improvement and openness to healthier swaps.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🟡 Ongoing Work</h4>
+        <p><strong>Breakfast Challenge:</strong> Time pressure still leading to biscuit mornings. Carla suggested ready-to-go alternatives (bars, smoothies) for rushed days.</p>
+        <p><strong>Sleep Consistency:</strong> Holding at ~5.8 hrs nightly. Needs a stronger push toward 7–8 hrs, especially during travel.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🔴 Priority Focus</h4>
+        <p><strong>Travel Stress:</strong> HRV dropped to 28ms and recovery score fell to 47% ahead of travel, reflecting pre-trip anxiety.</p>
+        <p><strong>Intervention Needed:</strong> Pre-travel sleep and hydration emphasized to buffer against cortisol spikes.</p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh has embraced Month 2 with realistic goals. The new walk habit and partial breakfast swap mark positive momentum. 
+      Travel stress is the key challenge, but proactive support (Travel Mode activation, hydration, sleep focus) sets him up for resilience.  
+    </blockquote>
+  </div>
+</article>
+     
+<!-- Week 6 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 6<br/><small>Day 36 – Day 42</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 6: Proactive Travel Management & Coordinated Recovery</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>Rajesh’s <strong>business trip to Dubai</strong> was the primary trigger. The ELYX team’s goal was to prevent a health setback by guiding him through stressors and routine disruptions.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>👤 Triggered By</h4>
+        <p><strong>Rajesh himself</strong>, who expressed concerns about his upcoming travel schedule and the challenges it might bring.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>Old unhealthy habits could resurface due to <strong>jet lag, packed schedule, and limited access</strong> to his normal lifestyle routine.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p><strong>Coordinated intervention & seamless recovery.</strong> Rajesh received real-time guidance, empathetic support, and a clear roadmap to stay consistent.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">✈️ During Travel (Day 36–40)</h4>
+    <ul class="travel-list">
+      <li><strong>🍲 Carla (Nutritionist):</strong> Guided Rajesh with <em>low-sodium, anti-inflammatory food choices</em> to manage inflammation while enjoying local cuisine.</li>
+      <li><strong>🧘 Rachel (Movement Coach):</strong> Introduced a <em>10-minute in-room stretch routine</em> to reduce stiffness and arthritis flare-ups.</li>
+      <li><strong>📊 Advik (Performance Scientist):</strong> Shared <em>wearable data insights</em>, showing how even small actions helped buffer stress and stabilize recovery.</li>
+    </ul>
+
+    <h4 class="travel-phase">🏡 Post-Travel (Day 42)</h4>
+    <ul class="travel-list">
+      <li><strong>💬 Ruby (Concierge):</strong> Reassured Rajesh that his “slump” feelings were <em>normal post-travel recovery patterns</em>.</li>
+      <li><strong>🥒 Carla (Nutritionist):</strong> Suggested <em>high-water content foods</em> (cucumber, watermelon) to reduce bloating.</li>
+      <li><strong>🚶 Rachel (Movement Coach):</strong> Advised a <em>gentle walk</em> instead of resuming intense routines immediately.</li>
+      <li><strong>🧘 Advik (Performance Scientist):</strong> Provided a <em>targeted meditation</em> to help his nervous system reset.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh successfully navigated his travel without major setbacks. 
+      The <em>real-time interventions</em> and <em>coordinated recovery</em> helped normalize his experience, 
+      proving the value of proactive and empathetic care.
+    </blockquote>
+  </div>
+</article>
+
+  <!-- Week 7 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 7 & 8<br/><small>Day 45 – Day 60</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 7: Stress Management & Pattern Interruption</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>Rajesh’s <strong>stress-induced slip-up</strong> triggered a team intervention. The goal was to transform this setback into a <strong>learning experience</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>👥 Triggered By</h4>
+        <p><strong>Rajesh</strong> (through his admission of stress-eating) and the <strong>ELYX team</strong> (via proactive check-ins).</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>Rajesh’s <strong>temporary relapse into stress-eating</strong>, a recurring pattern linked to work pressure and fatigue.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p>The team introduced a <strong>Mindful Pattern Interruption strategy</strong> — helping Rajesh recognize stress triggers and swap stress-snacking with <em>carrying almonds</em> as a healthier coping mechanism.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🧘 The Intervention</h4>
+    <ul class="travel-list">
+      <li><strong>💬 Ruby (Concierge):</strong> Checked in with empathy and validated Rajesh’s feelings, reframing the relapse as part of the journey.</li>
+      <li><strong>🍏 Carla (Nutritionist):</strong> Suggested carrying <em>a small pack of almonds</em> to replace stress snacking, offering a simple, actionable solution.</li>
+      <li><strong>📊 Advik (Performance Scientist):</strong> Connected Rajesh’s <em>wearable stress data</em> with his reported cravings, showing him the clear link between stress and eating patterns.</li>
+      <li><strong>🧘 Rachel (Movement Coach):</strong> Encouraged Rajesh to use <em>short evening walks</em> as a healthy “pattern break” after stressful calls.</li>
+    </ul>
+
+    <h4 class="travel-phase">🌱 Outcome & Small Win</h4>
+    <ul class="travel-list">
+      <li>Rajesh chose to <strong>walk instead of snack</strong> after a stressful day — a powerful small win that reinforced resilience.</li>
+      <li>This episode highlighted that ELYX is not about perfection, but about <strong>building sustainable, lifelong resilience</strong> through small, repeatable choices.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> By reframing the relapse as an opportunity to learn, Rajesh built a deeper awareness of his stress patterns. 
+      The <em>pattern interruption strategy</em> became a key tool in his health journey.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Month-End Stats Table -->
+<section class="month-end">
+  <h2>📊 Before ELYX vs. After 3 Weeks: A Biomarker Snapshot</h2>
+
+  <table class="table" aria-describedby="biomarker-notes">
+    <thead>
+      <tr>
+        <th>Biomarker</th>
+        <th>Before ELYX (Baseline)</th>
+        <th>After 3 Weeks (Current)</th>
+        <th>Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blood Pressure</td>
+        <td>148/96 mmHg (Hypertension)</td>
+        <td>145/95 mmHg (Still Hypertensive)</td>
+        <td>Still a major issue. Needs targeted lifestyle intervention.</td>
+      </tr>
+      <tr>
+        <td>Thyroid (TSH)</td>
+        <td>5.8 mIU/L (High)</td>
+        <td>5.5 mIU/L (Still High)</td>
+        <td>Medication working, but still elevated. Monitoring needed.</td>
+      </tr>
+      <tr>
+        <td>Cortisol (Morning)</td>
+        <td>High end of normal</td>
+        <td>High end of normal</td>
+        <td>Chronic stress pattern. Needs stress-reduction focus.</td>
+      </tr>
+      <tr>
+        <td>C-Reactive Protein (CRP)</td>
+        <td>Not tested</td>
+        <td>&gt;3.0 mg/L (High)</td>
+        <td>High systemic inflammation, likely driving pain &amp; migraines.</td>
+      </tr>
+      <tr>
+        <td>Vitamin D</td>
+        <td>Not tested</td>
+        <td>22 ng/mL (Deficient)</td>
+        <td>Supplement needed to improve energy &amp; bone health.</td>
+      </tr>
+      <tr>
+        <td>Heart Rate Variability (HRV)</td>
+        <td>32 ms (Low)</td>
+        <td>38 ms (Slightly Improved)</td>
+        <td>Positive trend. Nervous system recovery beginning.</td>
+      </tr>
+      <tr>
+        <td>Sleep Efficiency</td>
+        <td>~65% (Poor)</td>
+        <td>~70% (Slightly Improved)</td>
+        <td>Improved rest, supporting recovery &amp; blood pressure.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="biomarker-notes" class="small" style="margin-top:10px">
+    <blockquote>
+      <strong>Dr. Warren:</strong> “The improvements in HRV and sleep show that Rajesh’s body is responding well.
+      Our main targets ahead remain lowering blood pressure and reducing CRP-driven inflammation.”
+    </blockquote>
+    <blockquote>
+      <strong>Rajesh:</strong> “This makes so much more sense than numbers alone. Small steps are working — I’m ready to tackle the big numbers now.”
+    </blockquote>
+  </div>
+</section>
+
+<!-- Week 9 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 9 & 10<br/><small>Day 61 – Day 75</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 8: The Health Crisis & Coordinated Turnaround</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>A <strong>critical reversal in Rajesh’s health metrics</strong> with new severe symptoms (high fasting glucose, anxiety spikes).  
+        The ELYX team’s goal: <strong>immediate, multi-front intervention</strong> to stabilize his condition.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>👥 Triggered By</h4>
+        <p><strong>Rajesh</strong>, who reported <em>extreme fatigue</em>, supported by data from his <strong>wearable</strong> and <strong>blood tests</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>High-stress job, frequent travel, poor dietary choices, and rising <strong>emotional toll</strong> — anxiety and irritability spilling into his personal life.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p><strong>Holistic Crisis Intervention &amp; Stabilization.</strong>  
+        The ELYX team launched a coordinated emergency response, proving resilience and adaptability.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🩺 The Coordinated Intervention</h4>
+    <ul class="travel-list">
+      <li><strong>Dr. Warren:</strong> Identified high blood glucose as the urgent risk and directed the clinical response.</li>
+      <li><strong>🍏 Carla (Nutritionist):</strong> Enforced an immediate <em>refined carb cut</em> to stabilize glucose and energy levels.</li>
+      <li><strong>📊 Advik (Performance Scientist) & Rachel (Movement Coach):</strong> Introduced <em>stretching, recovery routines, and no coffee</em> to reduce stress load.</li>
+      <li><strong>💬 Neel & Ruby (Coaching & Concierge):</strong> Provided emotional support, reframed setbacks as <em>data points</em>, and introduced <em>journaling</em> to manage anxiety.</li>
+    </ul>
+
+    <h4 class="travel-phase">🌱 Stabilization & Turnaround</h4>
+    <ul class="travel-list">
+      <li>The multi-disciplinary crisis response <strong>stabilized Rajesh’s health</strong> both physically and emotionally.</li>
+      <li>This moment reinforced the <strong>ELYX team’s ability</strong> to act quickly, provide clear guidance, and support long-term resilience.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> The crisis showcased the power of a coordinated approach — blending medical, nutritional, physical, and emotional strategies to <em>stabilize Rajesh</em> and rebuild confidence.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 11-12 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 11–12<br/><small>Day 76 – Day 90</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 9: The Reality Check & The Reset</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>Deliver a <strong>comprehensive quarterly health report</strong> contrasting short-term wins with long-term trends, triggering a <strong>strategic reset</strong> of Rajesh’s health plan.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>👥 Triggered By</h4>
+        <p>The <strong>ELYX team</strong> — led by <strong>Dr. Warren</strong> — through the <em>quarterly diagnostic panel</em>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>The gap between Rajesh’s <em>subjective feeling of improvement</em> and the <strong>objective data</strong> (rising HbA1c).  
+        The team faced the challenge of delivering a difficult message while keeping Rajesh engaged.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p><strong>Strategic Pivot & Renewed Commitment.</strong>  
+        The ELYX team delivered a tough but constructive <em>reality check</em>, preserving trust and motivating Rajesh to commit to a stricter, more focused path forward.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">📊 The Two-Part Journey</h4>
+    <ul class="travel-list">
+      <li><strong>Days 76–89:</strong> Rajesh demonstrated <em>consistent daily actions</em> and micro-improvements, reinforcing trust in the process and showing visible progress in lifestyle choices.</li>
+      <li><strong>Day 90:</strong> The quarterly health report revealed <em>rising HbA1c</em>, prompting a <strong>strategic reset</strong> of the program.</li>
+    </ul>
+
+    <h4 class="travel-phase">🛠️ The Reset Plan</h4>
+    <ul class="travel-list">
+      <li><strong>🍏 Carla (Nutritionist):</strong> Implemented a stricter <em>low-glycemic nutrition plan</em> to directly address rising blood sugar.</li>
+      <li><strong>🏋️ Rachel (Fitness Coach):</strong> Introduced <em>progressive movement routines</em> to boost metabolism and recovery.</li>
+      <li><strong>💬 Neel (Motivation Coach):</strong> Reframed the “reality check” as a <strong>milestone, not a failure</strong>, helping Rajesh internalize the long-term perspective.</li>
+    </ul>
+
+    <h4 class="travel-phase">🌱 Outcome</h4>
+    <ul class="travel-list">
+      <li>Rajesh ended the quarter with a <strong>renewed commitment</strong>, proving the team’s data-backed, unified approach could both challenge and inspire him.</li>
+      <li>This reset became a turning point, ensuring Rajesh embraced a <strong>stricter, more resilient plan</strong> while staying motivated.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Delivering hard truths with empathy was key.  
+      The episode reinforced that <em>objective data + compassionate delivery</em> creates trust, motivating clients to embrace necessary pivots.
+    </blockquote>
+  </div>
+</article>
+
+  <!-- Month 3 Summary Table -->
+<div class="month-end">
+  <h3>📊 Month 3 Health Checkpoint</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Test / Biomarker</th>
+        <th>Month 1 (Baseline)</th>
+        <th>Month 3 (Crisis)</th>
+        <th>Month 3 (Stabilized)</th>
+        <th>Key Insights & Interventions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Fasting Glucose</td>
+        <td>-</td>
+        <td><strong>162 mg/dL</strong> (High)</td>
+        <td><strong>124 mg/dL</strong> (Still Elevated)</td>
+        <td>High – Caused by late-night, high-carb meals. <br/>🟢 <em>Intervention:</em> Immediate removal of refined carbs, focused on millets & vegetables.</td>
+      </tr>
+      <tr>
+        <td>Blood Pressure</td>
+        <td><strong>148/96 mmHg</strong> (Hypertension)</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Remained consistently high due to stress and diet. ⚠️ The crisis worsened this.</td>
+      </tr>
+      <tr>
+        <td>C-Reactive Protein (CRP)</td>
+        <td><strong>>3.0 mg/L</strong> (High Inflammation)</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Root cause of arthritis and migraines. 🌿 Lifestyle changes were aimed at reducing this.</td>
+      </tr>
+      <tr>
+        <td>Heart Rate Variability (HRV)</td>
+        <td><strong>32 ms</strong> (Low)</td>
+        <td><strong>22 ms</strong> (Critical Low)</td>
+        <td><strong>31 ms</strong> (Slightly Improved)</td>
+        <td>🔻 Crisis – Caused by late meals, stress, and poor sleep.<br/>🔺 Turnaround – Responded to stretching, early meals, and meditation.</td>
+      </tr>
+      <tr>
+        <td>Resting Heart Rate (RHR)</td>
+        <td><strong>78 bpm</strong> (High)</td>
+        <td><strong>92 bpm</strong> (High)</td>
+        <td><strong>85 bpm</strong> (Slightly Down)</td>
+        <td>📈 RHR spikes during stress episodes. Stabilization shows his nervous system is calming.</td>
+      </tr>
+      <tr>
+        <td>Sleep Efficiency</td>
+        <td><strong>65%</strong> (Poor)</td>
+        <td><strong>35%</strong> (Critical Low)</td>
+        <td><strong>70%</strong> (Improved)</td>
+        <td>😴 Crisis – Worsened with stress & high glucose.<br/>🌙 Turnaround – Improved with stretching & mindful wind-downs.</td>
+      </tr>
+      <tr>
+        <td>Irritability / Mood</td>
+        <td>Normal</td>
+        <td><strong>High</strong></td>
+        <td><strong>Improved</strong></td>
+        <td>🧠 New Symptom – A result of fatigue & poor recovery. <br/>💬 Intervention – Journaling + psychological support from Neel & Ruby.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Week 13 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 13<br/><small>Day 91 – Day 97</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 10: The Reality Check & The Reset</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh began the week <strong>feeling a bit defeated</strong> after the quarterly report, but quickly shifted into a <strong>highly motivated and engaged state</strong>, actively seeking guidance and celebrating small wins.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To <strong>establish a new baseline of disciplined habits</strong> following the disappointing quarterly report. The team’s aim was to <strong>maintain motivation</strong> and connect every action with a <strong>clear, data-backed outcome</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ Fixed meal timings to stabilize glucose levels.<br/>
+           ✔️ Introduction of <strong>resistance band training</strong> for strength and balance.<br/>
+           ✔️ Improved <strong>sleep hygiene</strong> — including keeping the phone out of the bedroom.<br/>
+           Each action was <em>directly linked to improvements</em> in blood sugar and overall recovery.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌱 Outcome & Small Wins</h4>
+    <ul class="travel-list">
+      <li>Rajesh experienced <strong>renewed confidence</strong> as he saw his daily habits producing measurable health benefits.</li>
+      <li>He began <strong>celebrating small wins</strong>, reinforcing consistency and resilience after the reset.</li>
+      <li>The ELYX team succeeded in <strong>turning disappointment into determination</strong>, ensuring Rajesh stayed aligned with the stricter plan.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 13 was pivotal — instead of letting Rajesh spiral after the reality check, the team used it as fuel to <em>rebuild discipline</em> and <em>restore confidence</em>.  
+      This reset marked the start of a stronger, more committed phase in his health journey.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 14 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 14<br/><small>Day 98 – Day 104</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 11: The Feedback Loop & Family Boost</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh felt <strong>encouraged and energized</strong>. He was experiencing <strong>tangible results</strong> and receiving <strong>positive feedback from his family</strong>, which solidified his buy-in to the process.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To demonstrate that Rajesh’s <strong>new, stricter habits</strong> were already producing <strong>real-world benefits</strong> — improvements that went <em>beyond just numbers</em>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ <strong>On-the-fly travel tips</strong> to help Rajesh stay disciplined even while moving.<br/>
+           ✔️ <strong>Behavioral nudges</strong> like post-lunch walks and quick office squats.<br/>
+           ✔️ <strong>Family involvement</strong> — integrating them into his health journey.<br/>
+           Together, these created a <em>positive feedback loop</em> from his body, wearable data, and loved ones.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌱 Outcome & Small Wins</h4>
+    <ul class="travel-list">
+      <li>Rajesh’s <strong>energy and mood lifted</strong>, fueling consistency in his habits.</li>
+      <li>Family appreciation became a <strong>new source of motivation</strong>, making the journey more sustainable.</li>
+      <li>He realized that <strong>discipline brings immediate quality-of-life improvements</strong>, not just better biomarker numbers.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 14 showcased the power of <em>external validation and family involvement</em>.  
+      The ELYX team saw how <strong>holistic support systems</strong> — data, body, and relationships — came together to strengthen Rajesh’s commitment.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 15 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 15<br/><small>Day 105 – Day 111</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 12: Discipline Over Motivation</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh’s mindset shifted from <strong>motivated</strong> to <strong>disciplined</strong>.  
+        He began actively <strong>problem-solving</strong> and finding ways to stick to his plan, even in the face of unexpected challenges.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To <strong>test and strengthen Rajesh’s discipline</strong>.  
+        The ELYX team’s goal was to show that <em>success doesn’t depend on perfect conditions</em> but on his ability to <strong>adapt consistently</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ <strong>Quick, adaptable indoor workout plans</strong> to ensure no excuses during travel, rain, or fatigue.<br/>
+           ✔️ <strong>Celebrating discipline</strong> — the simple act of not skipping workouts became a win.<br/>
+           ✔️ Continuous <strong>nudges and reinforcement</strong> from the team that consistency matters more than intensity.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌱 Outcome & Small Wins</h4>
+    <ul class="travel-list">
+      <li>Rajesh proved to himself that he could <strong>stay on track under imperfect conditions</strong>.</li>
+      <li>The focus on discipline over motivation built a <strong>deeper resilience</strong> in his routine.</li>
+      <li>This marked the transition from <strong>depending on external push</strong> to <strong>internal accountability</strong>.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 15 was a turning point where <em>discipline became Rajesh’s anchor</em>.  
+      The team emphasized that <strong>consistency beats perfection</strong>, and Rajesh embodied this principle by adapting instead of skipping.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 16 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 16<br/><small>Day 112 – Day 118</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 13: The Sustainable Shift</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh feels <strong>confident and optimistic</strong>.  
+        He is now seeing and feeling <strong>tangible, long-term progress</strong>, shifting his mindset from short-term fixes to a <strong>sustainable lifestyle transformation</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To <strong>consolidate the past four weeks’ progress</strong> and establish <strong>clear, measurable goals</strong> for the next phase of his journey.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ <strong>Comprehensive end-of-month review</strong> that connects Rajesh’s <em>feelings</em>, <em>data</em>, and <em>long-term goals</em>.<br/>
+           ✔️ New <strong>targets</strong> for strength training and lowering HbA1c.<br/>
+           ✔️ <strong>Fresh challenges</strong> introduced to sustain motivation and forward momentum.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌱 Outcome & Future Outlook</h4>
+    <ul class="travel-list">
+      <li>Rajesh now views his journey as a <strong>long-term lifestyle change</strong>, not a temporary fix.</li>
+      <li>The <strong>review process deepened his trust</strong> in the program by showing progress in both numbers and lived experience.</li>
+      <li>Clear, measurable goals for the next phase keep him <strong>engaged and future-focused</strong>.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 16 marked the start of Rajesh’s <em>transformation into long-term resilience</em>.  
+      The team’s review and new goal-setting gave him a <strong>clear roadmap</strong> for sustainable health.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Month 5 Biomarker Table -->
+<div class="month-end">
+  <h3>📊 Month 4 Biomarker Progress (Day 91 – Day 120)</h3>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Start of Month<br/>(Day 91)</th>
+        <th>End of Month<br/>(Day 120)</th>
+        <th>Insight</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blood Pressure</td>
+        <td>138/88 mmHg</td>
+        <td>134/88 mmHg</td>
+        <td>Showed a small but steady decline with new routines.</td>
+      </tr>
+      <tr>
+        <td>Fasting Glucose</td>
+        <td>138 mg/dL</td>
+        <td>108 mg/dL</td>
+        <td>Significant drop, reversing the high trend from the previous month.</td>
+      </tr>
+      <tr>
+        <td>HRV</td>
+        <td>34 ms</td>
+        <td>42 ms</td>
+        <td>A major recovery, showing his body’s ability to bounce back from stress.</td>
+      </tr>
+      <tr>
+        <td>Sleep Duration</td>
+        <td>6.2 hrs</td>
+        <td>7.2 hrs</td>
+        <td>A huge leap, indicating new sleep hygiene habits were working well.</td>
+      </tr>
+      <tr>
+        <td>Workout Adherence</td>
+        <td>50%</td>
+        <td>85%</td>
+        <td>Rajesh’s commitment to the new plan was a key factor in his recovery.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Week 17 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 17<br/><small>Day 119 – Day 125</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 14: The New Baseline</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh begins the week with a <strong>blend of optimism and reality</strong> —  
+        encouraged by recent tests yet aware of challenges (BP and HRV).  
+        He steps up as a <strong>proactive participant</strong>, asking questions and taking ownership of his journey.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To <strong>establish a new health baseline</strong> using the quarterly diagnostic test results,  
+        while <strong>adjusting the plan</strong> to address persistent concerns.  
+        The team’s mission: celebrate wins while strategically tackling problem areas.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ Test results used as a <strong>pivot point</strong> for focused improvements.<br/>
+           ✔️ Targeted intervention for <strong>late-night snacking</strong>.<br/>
+           ✔️ Introduction of a dedicated <strong>“recovery block”</strong> to improve HRV.<br/>
+           ✔️ Flexible workout scheduling around Rajesh’s <strong>travel commitments</strong>, reinforcing personalization.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌱 Outcome & Future Outlook</h4>
+    <ul class="travel-list">
+      <li>Rajesh is <strong>more engaged and accountable</strong>, using test data as a guide.</li>
+      <li>Late-night snacking reduction and recovery block practice set the stage for <strong>better HRV management</strong>.</li>
+      <li>The team demonstrated <strong>adaptability</strong>, strengthening Rajesh’s trust in the process.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 17 was about building a <em>data-backed reset</em>.  
+      By celebrating wins and tackling late-night habits, the team deepened Rajesh’s <strong>commitment and precision</strong> in the program.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 18 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 18<br/><small>Day 126 – Day 132</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 15: The Setback & The Support</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh faces his <strong>first major frustration and health setback</strong>.  
+        Instead of hiding it, he reports openly to the team, showing a <strong>new level of trust and transparency</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To <strong>address Rajesh’s frustrations directly</strong> and provide <strong>adaptable solutions</strong>.  
+        The team reinforces the idea that <strong>setbacks are learning opportunities</strong>, not failures.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ Carla quickly adapted Rajesh’s nutrition plan to beat <strong>“salad fatigue”</strong>, preventing a potential relapse.<br/>
+           ✔️ Dr. Warren provided a <strong>precise, non-judgmental analysis</strong> of his BP spike, helping Rajesh understand <strong>triggers and corrective steps</strong>.<br/>
+           ✔️ The team reinforced flexibility and resilience as core elements of the program.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌱 Outcome & Future Outlook</h4>
+    <ul class="travel-list">
+      <li>Rajesh learned that <strong>setbacks are temporary</strong> and can be managed with quick interventions.</li>
+      <li>Trust in the team deepened as he felt <strong>heard and supported</strong> during his struggle.</li>
+      <li>Rajesh is now more confident in the <strong>program’s adaptability</strong> to his real-life challenges.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 18 showed that progress isn’t always linear.  
+      By reframing setbacks as <em>data points</em>, the team kept Rajesh on track and reinforced his <strong>resilience</strong>.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 19 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 19<br/><small>Day 133 – Day 139</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 16: The Travel Test & Seamless Support</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧍 Persona State</h4>
+        <p>Rajesh becomes <strong>highly dependent on the ELYX team</strong> during his travel.  
+        He is <strong>amazed at the seamless integration and proactiveness</strong> of the service, and feels <strong>in control and resilient</strong> despite disruptions.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To provide a <strong>frictionless travel experience</strong> that lets Rajesh maintain his health goals without worrying about the logistics.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Key Interventions</h4>
+        <p>✔️ The team <strong>proactively sent a tailored plan</strong> to his hotel before arrival.<br/>
+           ✔️ <strong>Carla and Rachel’s coordinated advice</strong> addressed the unique food and fitness challenges of traveling to Hong Kong.<br/>
+           ✔️ <strong>Short, frequent check-ins</strong> gave Rajesh daily support, reinforcing his connection with the team.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌍 Outcome & Future Outlook</h4>
+    <ul class="travel-list">
+      <li>Rajesh experienced <strong>zero friction</strong> in maintaining his health goals during travel.</li>
+      <li>He felt <strong>deep trust</strong> in the team’s ability to anticipate challenges.</li>
+      <li>Travel shifted from being a setback trigger to becoming a <strong>test of resilience</strong> that he could handle with ease.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 19 proved that health coaching must <em>move at the speed of life</em>.  
+      By anticipating needs, the ELYX team turned Rajesh’s travel into a showcase of <strong>precision support</strong>.
+    </blockquote>
+  </div>
+</article>
+
+<!-- week 20 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 20<br/><small>Day 124 – Day 150</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 9: Consistency, Resilience, and Long-Term Value</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>To convert the <strong>previous month’s hard-won progress</strong> into a <strong>sustainable, long-term habit system</strong>, validating the value of the ELYX program.  
+        Triggered by the <strong>ELYX team’s quarterly diagnostic test</strong> and Rajesh’s proactive engagement throughout the month.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>✔️ Persistent blood pressure fluctuations.<br/>
+           ✔️ A temporary dip in HRV during travel.<br/>
+           ✔️ Resurfacing of old habits like late-night snacking.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p><strong>Measurable Improvement & Renewed Commitment.</strong>  
+        Month 5 proved that ELYX’s approach <strong>works even under pressure</strong>. The team provided a holistic system addressing all challenges, reinforcing Rajesh’s belief in the program.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">📊 Key Breakthroughs</h4>
+    <ul class="travel-list">
+      <li><strong>Data Validation:</strong> Quarterly tests showed improved HbA1c & fasting glucose. Wearable data confirmed a <strong>steady HRV rise</strong>.</li>
+      <li><strong>Behavioral Adjustments:</strong> Carla’s alternative to late-night snacking curbed cravings; Rachel’s correction of Rajesh’s squat form prevented injury.</li>
+      <li><strong>Proactive Support:</strong> The Hong Kong trip was <strong>seamlessly managed</strong>, with consistent check-ins that made Rajesh feel supported at every step.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> The Month 5 review confirmed that Rajesh is no longer just <em>participating</em> in the program—he is <em>living</em> it.  
+      Despite persistent BP challenges, the journey is now defined by <strong>resilience, consistency, and measurable transformation</strong>.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Month 6 Biomarker Table -->
+<div class="month-end">
+  <h3>📊 Month 5 Biomarker Progress (Day 121 – Day 150)</h3>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Start of Month<br/>(Day 121)</th>
+        <th>End of Month<br/>(Day 150)</th>
+        <th>Insight</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blood Pressure</td>
+        <td>134/88 mmHg</td>
+        <td>134/88 mmHg</td>
+        <td>Remained a stubborn area, but showed no major spikes with better management.</td>
+      </tr>
+      <tr>
+        <td>HbA1c</td>
+        <td>6.5%</td>
+        <td>6.2%</td>
+        <td>Major win. Dropped significantly, proving long-term blood sugar control.</td>
+      </tr>
+      <tr>
+        <td>HRV</td>
+        <td>42 ms</td>
+        <td>45 ms</td>
+        <td>Continued its positive trend, reaching a new high and showing great recovery.</td>
+      </tr>
+      <tr>
+        <td>Sleep Duration</td>
+        <td>7.2 hrs</td>
+        <td>7.5 hrs</td>
+        <td>Maintained a healthy average, despite a dip during travel.</td>
+      </tr>
+      <tr>
+        <td>Workout Adherence</td>
+        <td>85%</td>
+        <td>75%</td>
+        <td>A slight dip due to travel, but still a strong level of consistency.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Week 21 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 21<br/><small>Day 141 – Day 147</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 21: Targeting Blood Pressure with Focused Experiments</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧑 Persona State</h4>
+        <p>Rajesh starts the month with a <strong>clear, ambitious goal</strong>. He is highly proactive and even a bit challenging, but quickly buys into the team’s recommendations. He is willing to try <strong>new experiments</strong> to get results.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To directly <strong>target BP management</strong> with specific, measurable interventions.  
+        The team introduces a <strong>multi-pronged approach</strong> combining nutrition, stress management, and exercise.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🛠️ Key Interventions</h4>
+        <p>✔️ Launch of BP-focused lifestyle plan.<br/>
+           ✔️ Introduction of a safer exercise: <strong>step-ups</strong>.<br/>
+           ✔️ Trial of <strong>intermittent fasting</strong>.  
+           Early data already showed a <strong>slight positive trend</strong>, validating the interventions.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">📊 Key Breakthroughs</h4>
+    <ul class="travel-list">
+      <li><strong>Experimentation Mindset:</strong> Rajesh actively tested new routines, signaling his <strong>discipline and buy-in</strong>.</li>
+      <li><strong>Personalization:</strong> The team designed <strong>safe, adaptable workouts</strong> suited for his condition.</li>
+      <li><strong>Early Wins:</strong> Data at week’s end already indicated <strong>improved BP stability</strong>.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh has shifted from simply following instructions to actively <em>co-creating his plan</em>.  
+      This week set the tone for a more <strong>collaborative, data-driven approach</strong> to BP management.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 22 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 22<br/><small>Day 148 – Day 154</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 22: Real-Time Wins and Stress Mastery</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧑 Persona State</h4>
+        <p>Rajesh remains <strong>highly dependent</strong> on the ELYX team.  
+        When faced with a <strong>major BP spike</strong>, instead of panicking, he immediately turned to Dr. Warren.  
+        He felt <strong>empowered</strong> when a simple breathing exercise brought his BP down in real time.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To help Rajesh <strong>manage acute stressors</strong> and demonstrate the <strong>immediate power</strong> of ELYX interventions in real-world scenarios.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🛠️ Key Interventions</h4>
+        <p>✔️ Real-time <strong>breathing exercise</strong> that lowered BP instantly.<br/>
+           ✔️ A fully <strong>coordinated travel plan</strong> covering every friction point in advance.<br/>
+           ✔️ Continuous support that proved ELYX’s value <strong>beyond daily chats</strong>.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">📊 Key Breakthroughs</h4>
+    <ul class="travel-list">
+      <li><strong>Immediate Relief:</strong> Breathing practice became a <strong>tangible tool</strong> Rajesh could trust during BP spikes.</li>
+      <li><strong>Proactive Travel Support:</strong> The team anticipated challenges, ensuring <strong>zero disruptions</strong> to his health plan.</li>
+      <li><strong>Trust Reinforced:</strong> Rajesh’s instinct to turn first to the team showed his <strong>deep reliance</strong> on ELYX.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> This week proved that <em>micro-interventions</em> can have <strong>macro impact</strong>.  
+      Rajesh now has evidence that ELYX tools work <strong>in the moment</strong>, giving him confidence to face future stressors head-on.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 23 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 23<br/><small>Day 155 – Day 161</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 23: Resilience and Real-Time Course Correction</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧑 Persona State</h4>
+        <p>Rajesh faced a <strong>minor setback</strong> but processed it without guilt.  
+        With the team’s support, he is becoming <strong>more resilient</strong> and learning to course-correct in real time, recognizing that <strong>perfection is not the goal</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To track Rajesh’s progress during a <strong>high-stress travel period</strong> while reinforcing the <strong>mental resilience</strong> component of his journey.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🛠️ Key Interventions</h4>
+        <p>✔️ Immediate, <strong>non-judgmental response</strong> to his dietary slip-up.<br/>
+           ✔️ Neel’s impactful message reframed guilt as unnecessary, keeping Rajesh’s momentum strong.<br/>
+           ✔️ Continued monitoring of progress despite travel stressors.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">📊 Key Breakthroughs</h4>
+    <ul class="travel-list">
+      <li><strong>Mindset Growth:</strong> Rajesh learned that <strong>setbacks are part of progress</strong>, not failure.</li>
+      <li><strong>Real-Time Adaptation:</strong> Immediate corrections helped him <strong>bounce back quickly</strong>.</li>
+      <li><strong>Emotional Resilience:</strong> The removal of guilt allowed Rajesh to focus on the <strong>bigger picture</strong> of consistency.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 23 showed that Rajesh’s progress is no longer just physical—it is deeply <strong>psychological</strong>.  
+      His ability to recover from setbacks without guilt marks a turning point in his <strong>long-term sustainability</strong>.
+    </blockquote>
+  </div>
+</article>
+
+
+<!-- Episode 10 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 24 (Month 6 end)<br/><small>Day 174 – Day 180</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Episode 10: The BP Blitz & Sustainable Health</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🧑 Stateful Persona Analysis</h4>
+        <p><strong>Before State:</strong> Rajesh entered Month 6 with determination to tackle his most persistent issue—fluctuating blood pressure.  
+        He was <strong>willing to try challenging interventions</strong>, yet continued to lean on the team for guidance and validation.</p>
+        <p><strong>After State:</strong> By the end of the month, Rajesh had not only gained <strong>control over his BP</strong> but also internalized key principles of health management.  
+        He became <strong>resilient, self-aware of triggers, and deeply trusting</strong> of both the process and the team. With a newfound sense of <strong>liberation</strong>, Rajesh saw a clear path to potentially <strong>reducing or eliminating medication</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>The goal was to <strong>stabilize chronic blood pressure</strong> while building a <strong>sustainable health system</strong> capable of withstanding Rajesh’s demanding lifestyle.  
+        This focus was <strong>triggered by Rajesh himself</strong>, proactively requesting a BP-centered plan.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>✔️ Persistent BP fluctuations.<br/>
+           ✔️ Minor dietary relapses during travel.<br/>
+           ✔️ Occasional sleep disturbances.<br/>
+           ✔️ The biggest challenge: proving that <strong>lifestyle changes alone</strong> could control BP.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p><strong>Objective Success & Transformative Realization.</strong>  
+        Month 6 was a <strong>breakthrough</strong>, validating the <strong>ELYX approach</strong> through measurable results and lifestyle mastery. Rajesh ended the month feeling <strong>in control of his body and life</strong>, confident in maintaining long-term health.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">📊 Key Breakthroughs</h4>
+    <ul class="travel-list">
+      <li><strong>Nutrition:</strong> Carla’s use of <strong>intermittent fasting & dietary swaps</strong> stabilized BP and controlled sugar spikes.</li>
+      <li><strong>Recovery:</strong> Advik’s <strong>real-time feedback</strong> empowered Rajesh to use breathing and sleep hygiene for direct BP impact.</li>
+      <li><strong>Fitness:</strong> Rachel’s endurance training gave Rajesh <strong>visible physical progress</strong> and stamina.</li>
+      <li><strong>Medical Insight:</strong> Dr. Warren’s milestone message: Rajesh might <strong>avoid BP medication</strong> with continued progress.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Month 6 was not just about stabilizing Rajesh’s blood pressure—it was about <strong>proving that sustainable, medication-free health is possible</strong>.  
+      Rajesh now carries both the <strong>tools and confidence</strong> to live a healthier future.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Month 6 Metrics -->
+<article class="month-end">
+  <h3>Month 6: The BP Blitz & New Experiments 🎯</h3>
+  <p>The primary goal this month was to <strong>get Rajesh's blood pressure under control</strong>.  
+     New experiments like <strong>intermittent fasting</strong> and <strong>targeted stress management</strong> were introduced.</p>
+
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Start of Month (Day 151)</th>
+        <th>End of Month (Day 180)</th>
+        <th>Insight</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blood Pressure</td>
+        <td>134/88 mmHg</td>
+        <td>130/85 mmHg</td>
+        <td><strong>Significant improvement.</strong> The interventions worked, bringing his average BP down.</td>
+      </tr>
+      <tr>
+        <td>HRV</td>
+        <td>45 ms</td>
+        <td>41 ms</td>
+        <td>A slight dip due to travel and fasting experiments, but still within a healthy range.</td>
+      </tr>
+      <tr>
+        <td>Fasting Glucose</td>
+        <td>104 mg/dL</td>
+        <td>102 mg/dL</td>
+        <td>Stable — fasting did not negatively impact his blood sugar.</td>
+      </tr>
+      <tr>
+        <td>Workout Adherence</td>
+        <td>75%</td>
+        <td>85%</td>
+        <td>Consistency improved even with new and challenging workouts.</td>
+      </tr>
+      <tr>
+        <td>Nutrition Adherence</td>
+        <td>80%</td>
+        <td>90%</td>
+        <td>Better discipline with <strong>late-night cravings</strong> management strategies.</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+
+<!-- Week 25 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 25 <br/><small>Day 181 – Day 187</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 25: Ambition, BP Focus & Sleep Experiments</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To address Rajesh’s <strong>ambitious goal of reducing average BP</strong> while experimenting with solutions for his <strong>persistent sleep issues</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh is <strong>highly proactive and ambitious</strong>. He is setting his own goals and shows a <strong>deep trust</strong> in the team’s ability to deliver <strong>data-backed solutions</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ <strong>Multi-pronged BP strategy</strong> with dietary adjustments and added cardio.<br/>
+          ✔️ <strong>New sleep experiment</strong> using tart cherry juice.<br/>
+          ✔️ A <strong>real-time stress-management hack</strong> lowered BP instantly, boosting Rajesh’s trust in the process.
         </p>
-        <a class="timeline_link" href="#">View Milestone Summary</a>
       </div>
-    </article>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh’s ambition is now matched by his <em>confidence in ELYX</em>.  
+      He is no longer just following guidance — he is <strong>driving his own health journey</strong> with the team’s expertise as backup.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 26 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 26 <br/><small>Day 188 – Day 195</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 26: Curiosity, Knowledge & Empowerment</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To equip Rajesh with the <strong>tools and scientific knowledge</strong> he needs to make informed decisions independently, especially while traveling.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh has transitioned into an <strong>active participant</strong>, asking deeper “<em>why</em>” questions behind interventions.  
+        This shows his <strong>growing curiosity and engagement</strong> in the process.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ Delivered <strong>proactive travel-specific guidance</strong> to help Rajesh manage his routines on the go.<br/>
+          ✔️ Answered his <strong>deeper scientific questions</strong>, reinforcing his understanding.<br/>
+          ✔️ Empowered him to become a <strong>knowledgeable partner</strong> in his own health journey.
+        </p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh’s growing curiosity signals a <strong>shift toward true empowerment</strong>.  
+      He is no longer just applying ELYX strategies — he is beginning to <em>understand and own</em> them.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 27 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 27<br/><small>Day 196 – Day 203</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 27: New Challenges & Behavioral Experiments</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To provide Rajesh with <strong>new, sustainable challenges</strong> that fuel continued progress while addressing emerging issues like sleep disruption.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh is feeling <strong>highly motivated</strong> and is shifting from simply maintaining progress to <strong>actively improving</strong>.  
+        He also demonstrates <strong>self-awareness</strong> by recognizing and reporting a new sleep-related pattern of feeling "wired."</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ Introduced <strong>swimming</strong> as a new exercise challenge for cardiovascular health.<br/>
+          ✔️ Launched a <strong>digital detox experiment</strong> to address his sleep issues.<br/>
+          ✔️ Conducted a <strong>mid-month review</strong> that reinforced progress and motivation toward his BP goals.
+        </p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh’s <strong>drive for new challenges</strong> and ability to recognize his own patterns marks a turning point.  
+      He is now shaping his journey, not just following it.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 28 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 28<br/><small>Day 204 – Day 210</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 28: The Next-Level Transformation & Self-Empowerment</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>Rajesh proactively set an <strong>ambitious BP goal</strong>.  
+        The ELYX team’s mission was to meet this challenge with a <strong>targeted, multi-faceted plan</strong> that aligned with his long-term vision of health.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh has transformed into a <strong>curious, empowered partner</strong> in his journey.  
+        He is no longer only receiving advice but <strong>driving the dialogue</strong>, asking deeper questions, and actively applying science-backed strategies.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ A <strong>comprehensive BP plan</strong> that directly targeted his ambitious goal.<br/>
+          ✔️ Introduced <strong>behavioral strategies</strong> to handle stress spikes and social-event challenges.<br/>
+          ✔️ Reinforced learning through <strong>scientific explanations</strong>, empowering Rajesh with deeper understanding.<br/>
+          ✔️ Celebrated his <strong>BP milestone: 126/82</strong>, a breakthrough achievement proving lifestyle mastery.
+        </p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> This week marked a <strong>transformative victory</strong>.  
+      Rajesh not only hit his BP goal but also proved he could <em>self-regulate, adapt, and thrive</em> under real-world challenges.  
+      His journey has evolved from external guidance to <strong>self-empowerment</strong>.
+    </blockquote>
+  </div>
+</article>
+
+
+<!-- Month 7 Metrics -->
+<table class="month-end">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Start of Month (Day 181)</th>
+      <th>End of Month (Day 210)</th>
+      <th>Insight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Blood Pressure</td>
+      <td>130/85 mmHg</td>
+      <td>126/82 mmHg</td>
+      <td>🎯 Goal achieved! His BP dropped to a healthy, safe range.</td>
+    </tr>
+    <tr>
+      <td>Sleep Duration</td>
+      <td>7.5 hrs</td>
+      <td>7.7 hrs</td>
+      <td>😴 Continued to show improvement, with an average of 7.7 hours.</td>
+    </tr>
+    <tr>
+      <td>HRV</td>
+      <td>41 ms</td>
+      <td>45 ms</td>
+      <td>📈 Rebounded from the previous month and reached a new, high-performance average.</td>
+    </tr>
+    <tr>
+      <td>Workout Adherence</td>
+      <td>85%</td>
+      <td>86%</td>
+      <td>💪 Maintained excellent consistency, even with the addition of new exercises like swimming.</td>
+    </tr>
+    <tr>
+      <td>Stress Resilience</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>⚡ A major win. Rajesh was able to manage acute stress spikes without his health metrics collapsing.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Week 29 -->
+<article class="timeline-item">
+<div class="timeline_date-text">
+    Week 29<br/><small>Day 211 – Day 217</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 29: Confidence, Celebration & Sustained Progress</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To validate the <strong>long-term effectiveness</strong> of the ELYX program by showing consistent, positive trends across all health markers.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh is in a state of <strong>high motivation and quiet confidence</strong>.  
+        His focus has shifted from struggling to meet goals to <em>celebrating visible, sustained progress</em>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ The team shifted from <strong>corrective</strong> to <strong>supportive</strong> guidance.<br/>
+          ✔️ Wins were <strong>celebrated and reinforced</strong>, boosting Rajesh’s confidence.<br/>
+          ✔️ Positive reinforcement fueled Rajesh’s <strong>internal motivation</strong>, sustaining his progress.
+        </p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh is moving beyond fixing problems—he is now <strong>living the success</strong> of his transformation.  
+      The focus is on <em>celebrating progress and sustaining momentum</em>.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 30 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 30<br/><small>Day 218 – Day 225</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 30: Habits Become Effortless</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To show Rajesh that his <strong>new habits are becoming automated and effortless</strong>.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh is fully in his <strong>"new normal"</strong>. The habits are no longer a struggle and his confidence is at an all-time high, fueled by both objective data and subjective well-being.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ Continuous positive reinforcement from the team.<br/>
+          ✔️ Validation of progress using objective data.<br/>
+          ✔️ Celebrating consolidation of hard work to reinforce sustained motivation.
+        </p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Rajesh is no longer struggling with daily habits—they have become <strong>automatic and integrated</strong> into his life.  
+      This week reinforces the importance of <em>habit consolidation and long-term sustainability</em>.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 31 -->
+<article class="timeline-item">
+  <div class="timeline_date-text">
+    Week 31<br/><small>Day 216 – Day 223</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 31: Peak Performance & Celebration</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal</h4>
+        <p>To celebrate the culmination of Rajesh’s hard work and show that his transformation is now complete.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Persona State</h4>
+        <p>Rajesh is at <strong>peak performance</strong>. He is setting personal bests in all health markers and feels immense pride and accomplishment.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Key Interventions</h4>
+        <p>
+          ✔️ Purely celebratory and supportive guidance from the team.<br/>
+          ✔️ Providing data and positive reinforcement to confirm Rajesh’s achievements.<br/>
+          ✔️ Reinforcing the sense of completion and empowerment.
+        </p>
+      </div>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Week 31 marks the <strong>culmination of Rajesh’s transformation</strong>.  
+      The focus is on celebrating success, acknowledging progress, and reinforcing a lifelong commitment to health.
+    </blockquote>
+  </div>
+</article>
+
+<!-- Week 32 -->
+<article class="timeline-item">
+ <div class="timeline_date-text">
+    Week 32<br/><small>Day 234 – Day 240</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Week 32: The New Baseline & Lifelong Transformation</h3>
+
+    <div class="summary-blocks">
+      <div class="summary-block">
+        <h4>🎯 Primary Goal / Trigger</h4>
+        <p>To <strong>demonstrate and celebrate the culmination</strong> of 8 months of hard work and solidify Rajesh's transformation into a <strong>self-sufficient, healthy individual</strong>.  
+        Triggered by <strong>both Rajesh and the team</strong>, combining objective data and subjective feelings of success.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>⚡ Friction Points</h4>
+        <p>None. The system has become <strong>effortless</strong> for Rajesh, showing complete integration of habits and lifestyle changes.</p>
+      </div>
+
+      <div class="summary-block">
+        <h4>✅ Final Outcome</h4>
+        <p><strong>Textbook-Perfect Result & Lifelong Partnership.</strong>  
+        Rajesh’s health markers are in the <strong>optimal range</strong>. He has internalized the habits needed for long-term health, gained a new sense of discipline, and transformed into a resilient individual.</p>
+      </div>
+    </div>
+
+    <h4 class="travel-phase">🌟 Key Achievements</h4>
+    <ul class="travel-list">
+      <li>All chronic conditions are <strong>well within healthy ranges</strong>.</li>
+      <li>Perceived energy, sleep quality, and mood have <strong>drastically improved</strong>.</li>
+      <li>Rajesh now demonstrates <strong>autonomy, confidence, and resilience</strong> in managing his health.</li>
+      <li>The program has established a <strong>lifelong partnership</strong> with Rajesh, setting a foundation for sustainable health.</li>
+    </ul>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> The journey from a struggling, overworked executive to a <strong>resilient, empowered, and healthy individual</strong> is complete.  
+      Week 32 celebrates <em>habit integration, peak performance, and sustained transformation</em>.
+    </blockquote>
+  </div>
+</article>
+    
+<!-- Month-End: Month 8 -->
+<article class="timeline-item month-end">
+  <div class="timeline_date-text">
+    Month 8<br/><small>Day 211 – Day 240</small>
+  </div>
+  <div class="timeline-rail">
+    <div class="timeline-progress" aria-hidden="true"></div>
+    <div class="timeline_circle" aria-hidden="true"></div>
+  </div>
+  <div class="timeline_content">
+    <h3>Month 8: The Final Transformation 🚀</h3>
+
+    <div class="summary-blocks">
+      <table class="month-end-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Start of Month (Day 211)</th>
+            <th>End of Month (Day 240)</th>
+            <th>Insight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Blood Pressure</td>
+            <td>124/76 mmHg</td>
+            <td>121/74 mmHg</td>
+            <td>Optimal Reading. A textbook-perfect result showing complete reversal of hypertension through lifestyle.</td>
+          </tr>
+          <tr>
+            <td>Sleep Duration</td>
+            <td>7h 20m avg</td>
+            <td>7h 45m avg</td>
+            <td>Sustained consistency. He is now getting a full night's rest, a major milestone.</td>
+          </tr>
+          <tr>
+            <td>Weight Loss</td>
+            <td>Stable</td>
+            <td>~4 kg this month</td>
+            <td>Tangible progress. Visible changes give him confidence and external validation.</td>
+          </tr>
+          <tr>
+            <td>Workout Adherence</td>
+            <td>92%</td>
+            <td>100%</td>
+            <td>Effortless discipline. Exercise is now an ingrained daily habit.</td>
+          </tr>
+          <tr>
+            <td>Perceived Energy</td>
+            <td>High</td>
+            <td>Consistently High</td>
+            <td>Total transformation. He feels stronger and more energetic, with no signs of his old fatigue.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote class="doctor-note">
+      <strong>Team Reflection:</strong> Month 8 marks the culmination of an 8-month journey.  
+      Rajesh has fully internalized his healthy habits, achieving both <strong>objective success and subjective empowerment</strong>.  
+      The program has delivered <strong>lifelong transformation</strong> and a foundation for continued health and resilience.
+    </blockquote>
+  </div>
+</article>
+
 
   </section>
 </body>
