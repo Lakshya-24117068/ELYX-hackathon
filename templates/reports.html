@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rajesh — Integrated Health Reports (Initial + Q1 + Q2 + Q3)</title>
+  <style>
+    :root{
+      --bg1:#0e2a47; --bg2:#1b4b7a; --card:#0b1220; --ink:#eaf2ff; --muted:#a9c3e6;
+      --accent:#7bd3ff; --good:#39d98a; --bad:#ff6b6b; --chip:#0e2b4d;
+      --shadow:0 10px 30px rgba(0,0,0,.25); --radius:18px;
+    }
+    html,body{height:100%}
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% -10%, #2b5ea3 0%, transparent 50%),
+                  radial-gradient(800px 600px at 120% 30%, #1b9ad6 0%, transparent 50%),
+                  linear-gradient(160deg,var(--bg1),var(--bg2));
+      scroll-behavior: smooth;
+    }
+        /* ==== Left icon navbar (added) ==== */
+    .side-nav{
+      position:fixed; left:12px; top:18px; bottom:18px; width:var(--sideW);
+      background:#06101ee6; border:1px solid #0a1c31; border-radius:18px;
+      backdrop-filter: blur(8px);
+      display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 6px;
+      box-shadow:var(--shadow); z-index:1000;
+    }
+    .side-nav .brand-dot{
+      width:38px; height:38px; border-radius:10px; margin:6px 0 4px;
+      background: conic-gradient(from 210deg, #8ae 0 25%, #4fd 25% 50%, #58f 50% 75%, #9ef 75% 100%);
+      box-shadow:0 6px 14px rgba(0,0,0,.25)
+    }
+    .nav-divider{width:48px; height:1px; background:#143053; margin:6px 0 2px; border-radius:1px}
+
+    .icon-link{
+      width:48px; height:48px; border-radius:14px; display:grid; place-items:center;
+      color:var(--ink); text-decoration:none; border:1px solid transparent; position:relative;
+      transition:transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      opacity:.9;
+    }
+    .icon-link:hover{ background:#0b203e; border-color:#183a67; transform:translateY(-1px); opacity:1 }
+    .icon-link.active{
+      background:linear-gradient(180deg,#0b2546,#0d284d);
+      border-color:#214c7e; box-shadow: inset 0 0 0 1px #235084;
+    }
+    .icon{ width:22px; height:22px; display:block }
+
+    /* tooltip on hover (no JS) */
+    .icon-link[data-tip]:hover::after{
+      content: attr(data-tip);
+      position:absolute; left:58px; top:50%; transform:translateY(-50%);
+      background:#0b203e; color:var(--ink); border:1px solid #183a67;
+      padding:4px 8px; border-radius:8px; white-space:nowrap; font-size:.85rem; pointer-events:none;
+      box-shadow:var(--shadow);
+    }
+
+    /* mobile: hide strip and remove padding */
+    @media (max-width:740px){
+      body{ padding-left: 0 }
+      .side-nav{ transform: translateX(-120%); left:8px }
+      .side-nav:hover{ transform: translateX(0) } /* peek out when hovered */
+    }
+    /* ==== /Left icon navbar ==== */
+
+    /* Global containers */
+    .wrap{max-width:1100px; margin:auto; padding:28px 18px 80px}
+    .grid{display:grid; gap:18px; margin-top:18px}
+    @media(min-width:920px){ .grid{grid-template-columns: 2fr 1fr} }
+    .card{
+      background: linear-gradient(180deg, #0b1426 0%, #0a152b 100%);
+      border:1px solid #132a4b; border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:20px
+    }
+    .section-title{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+    .small{color:var(--muted); font-size:.95rem}
+    .foot{margin-top:22px; color:#b9d4f3; font-size:.9rem}
+    .badge{font-size:.82rem; padding:2px 8px; border-radius:999px; border:1px solid #214c7e; background:#0b2546; color:var(--muted)}
+    .pill{padding:6px 10px; border-radius:999px; background:var(--chip); color:var(--ink); border:1px solid #234a7a}
+    .btn{
+      cursor:pointer; border:none; color:#032; font-weight:700; background:linear-gradient(135deg,#8be9ff,#77ffc9);
+      padding:8px 12px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25)
+    }
+    a.btn-link{color:#061a2a; text-decoration:none}
+
+    /* Sticky navbar (anchors to 4 reports) */
+    .navbar {
+  position: fixed;   /* changed sticky -> fixed */
+  top: 0;
+  left: 0;
+  width: 100%;       /* full width */
+  z-index: 1000;     /* higher so it stays above */
+  background: #06101ee6;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #0a1c31;
+}
+
+body {
+  padding-top: 70px; /* adjust based on navbar height */
+}
+
+    .navbar .inner{
+      max-width:1100px; margin:auto; padding:10px 16px; display:flex; align-items:center; gap:12px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; margin-right:auto}
+    .brand .logo{
+      width:28px; height:28px; border-radius:8px;
+      background: conic-gradient(from 210deg, #8ae 0 25%, #4fd 25% 50%, #58f 50% 75%, #9ef 75% 100%);
+      box-shadow:0 6px 14px rgba(0,0,0,.25)
+    }
+    .navlinks{display:flex; gap:8px; flex-wrap:wrap}
+    .navlinks a{
+      text-decoration:none; color:var(--ink); font-weight:600; font-size:.95rem;
+      padding:8px 12px; border-radius:999px; border:1px solid #0a1c31; background:#0a1a30;
+    }
+    .navlinks a.active{outline:2px solid #7bd3ff; background:#0f2a4f}
+
+    /* Section header with avatar */
+    .header{display:grid; grid-template-columns: auto 1fr auto; gap:16px; align-items:center}
+    .avatar{
+      width:74px; height:74px; border-radius:20px;
+      background:linear-gradient(135deg,#74c0ff,#a5d8ff);
+      display:grid; place-items:center; color:#053; font-weight:800; font-size:26px
+    }
+
+    /* Tables & lists */
+    .table{width:100%; border-collapse:collapse; overflow:hidden; border-radius:12px; border:1px solid #183a67}
+    .table th,.table td{padding:10px 12px; text-align:left; border-bottom:1px solid #183a67; vertical-align:top}
+    .table th{background:#0d284d; color:#cfe6ff; font-weight:600}
+    .list{display:grid; gap:10px}
+    .li{background:#0b203e; border:1px solid #183a67; padding:12px; border-radius:12px}
+    .li b{color:#cde7ff}
+
+    /* Status & trend styles */
+    .status{font-weight:700}
+    .ok{color:var(--good)} .flag{color:#ffd166} .risk{color:var(--bad)}
+    .trend{font-weight:700}
+    .trend.good{color:var(--good)} .trend.bad{color:var(--bad)}
+    .chip{font-size:.78rem; padding:2px 8px; border-radius:999px; background:#0b2546; border:1px solid #214c7e; color:#cfe6ff}
+    .legend{display:flex; flex-wrap:wrap; gap:8px}
+
+    /* KPIs */
+    .kpis{display:grid; grid-template-columns: repeat(4,minmax(110px,1fr)); gap:10px}
+    .kpi{background:#0c1b31; border:1px solid #17345b; border-radius:14px; padding:12px}
+    .kpi .v{font-size:1.15rem; font-weight:700}
+
+    /* Accordion (Initial report panels) */
+    details.panel {border:1px solid #183a67; border-radius:12px; background:#0b203e; padding:10px 12px}
+    details.panel + details.panel{margin-top:10px}
+    details.panel[open]{background:#0c2446}
+    details.panel summary{cursor:pointer; list-style:none; display:flex; align-items:center; gap:10px}
+    details.panel summary::-webkit-details-marker{display:none}
+
+    .print-hint{font-size:.85rem; color:#a9c3e6}
+    @media print{
+      body{background:#fff; color:#000}
+      .navbar, .btn, .print-hint{display:none !important}
+      .card{box-shadow:none; background:#fff; color:#000; border-color:#ddd}
+      .table th{background:#f2f4f7; color:#000}
+      .pill{border-color:#ddd; background:#f7f9fb; color:#000}
+      a{color:#000}
+    }
+  </style>
+</head>
+<body>
+     <!-- Left icon navbar (added) -->
+  <nav class="side-nav" aria-label="Section navigation">
+    <div class="brand-dot" aria-hidden="true"></div>
+    <div class="nav-divider"></div>
+
+    <!-- Profile -->
+    <a href="/profile"
+       class="icon-link {% if request.path == '/profile' %}active{% endif %}"
+       data-tip="Profile" aria-label="Profile">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </a>
+
+    <!-- Chats -->
+    <a href="/chats"
+       class="icon-link {% if request.path == '/chats' %}active{% endif %}"
+       data-tip="Chats" aria-label="Chats">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+      </svg>
+    </a>
+
+    <!-- Visuals & Stats -->
+    <a href="/stats"
+       class="icon-link {% if request.path == '/stats' %}active{% endif %}"
+       data-tip="Visuals & Stats" aria-label="Visuals and Stats">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3v18h18"/>
+        <rect x="7" y="10" width="3" height="7" rx="1"/>
+        <rect x="12" y="6" width="3" height="11" rx="1"/>
+        <rect x="17" y="12" width="3" height="5" rx="1"/>
+      </svg>
+    </a>
+
+    <!-- Reports -->
+    <a href="/reports"
+       class="icon-link {% if request.path == '/reports' %}active{% endif %}"
+       data-tip="Reports" aria-label="Reports">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 2v6h6"/>
+      </svg>
+    </a>
+  </nav>
+  <!-- /Left icon navbar -->
+  <!-- Sticky top navbar -->
+  <nav class="navbar">
+    <div class="inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-weight:700; letter-spacing:.3px">ELYX Persona</div>
+          <div class="small">Rajesh — Health & Diagnostics</div>
+        </div>
+      </div>
+      <div class="navlinks" id="navlinks">
+        <a href="#initial" class="active">Initial Test</a>
+        <a href="#q1">First Quarter Report</a>
+        <a href="#q2">Second Report</a>
+        <a href="#q3">Third Quarter Report</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <!-- ========= INITIAL REPORT (as per your existing code) ========= -->
+    <section id="initial" class="card" style="grid-column:1/-1">
+      <div class="header">
+        <div class="avatar" title="Rajesh">R</div>
+        <div>
+          <h1 style="margin:.1rem 0 .25rem;font-size:1.7rem">Rajesh Sharma, 42 — Senior Project Manager</h1>
+          <div class="small">Company: <b>Globex Solutions Pvt. Ltd.</b> • Location: Bengaluru, India • Travels: 6–8 international trips/year</div>
+        </div>
+        <span class="badge">Persona ID: <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ELYX-RAJ-042</span></span>
+      </div>
+
+      <p class="small" style="margin-top:12px">
+        Comprehensive diagnostics plan aligned to ELYX protocol. Includes rationale (“why ordered”), recommended frequency, and status.
+        <span class="print-hint">Tip: Use the “Print / Save PDF” button to export.</span>
+      </p>
+      <div class="section-title" style="margin-top:10px">
+        <div class="legend">
+          <span class="chip"><span class="status ok">●</span> Within range</span>
+          <span class="chip"><span class="status flag">●</span> Monitor / follow-up</span>
+          <span class="chip"><span class="status risk">●</span> Action needed</span>
+        </div>
+        <button class="btn" id="initial-print">🖨️ Print / Save PDF</button>
+      </div>
+
+      <!-- Overview Schedule -->
+      <section class="card" style="margin-top:12px">
+        <div class="section-title">
+          <h2>Screening & Test Cadence — Overview</h2>
+          <span class="badge">Snapshot</span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Key Tests</th>
+              <th>Typical Frequency</th>
+              <th>Why for Rajesh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>General Health</b></td>
+              <td>Clinical History, Physical Exam, Vitals, FBC, CMP (LFT/RFT), Micronutrients, ESR/CRP, Thyroid panel, Cortisol, OGTT+Insulin, Lipids (ApoB, Lp(a), PLAC)</td>
+              <td>Baseline; then every 3 months for progress</td>
+              <td>Hypertension, thyroid disorder, travel stress, metabolic risk from irregular meals</td>
+            </tr>
+            <tr>
+              <td><b>Cancer (Male)</b></td>
+              <td>FIT (Stool), Colonoscopy (if indicated), Full-body/Targeted MRI (KIV)</td>
+              <td>FIT annually; Colonoscopy 5–10 yrs if indicated</td>
+              <td>Age 42—initiate FIT; MRI considered if symptoms/family history</td>
+            </tr>
+            <tr>
+              <td><b>Cardiovascular</b></td>
+              <td>ECG, Coronary Calcium (±CT Angio / Cleerly), Echo (KIV), Carotid CIMT</td>
+              <td>Baseline; repeat per findings (1–5 yrs)</td>
+              <td>Hypertension + travel → atherosclerotic risk profiling</td>
+            </tr>
+            <tr>
+              <td><b>Fitness & Metabolic</b></td>
+              <td>VO₂max, Grip Strength, FMS, Indirect Calorimetry/DLW, Spirometry</td>
+              <td>Baseline; VO₂/Grip quarterly; others 6–12 mo</td>
+              <td>Program adherence, aerobic capacity, joint-friendly training</td>
+            </tr>
+            <tr>
+              <td><b>Genetics</b></td>
+              <td>Hereditary Panel (FHx-guided), Pharmacogenomics</td>
+              <td>Once (lifetime)</td>
+              <td>Drug response (anti-HTN, migraine meds), familial risk</td>
+            </tr>
+            <tr>
+              <td><b>Body Composition</b></td>
+              <td>DEXA (bone, fat, lean mass)</td>
+              <td>12–24 months</td>
+              <td>Arthritis loading, sarcopenia prevention</td>
+            </tr>
+            <tr>
+              <td><b>Hormones</b></td>
+              <td>TSH, T3, T4; Sex hormones (testosterone, estradiol as indicated)</td>
+              <td>Thyroid: q3–6 mo; Sex hormones PRN</td>
+              <td>Known thyroid disorder; fatigue/migraine correlation</td>
+            </tr>
+            <tr>
+              <td><b>Nutrition</b></td>
+              <td>Micronutrients (incl. Omega-3), Food Allergy (if symptoms), Gut Microbiome</td>
+              <td>Micronutrients q6–12 mo; others PRN</td>
+              <td>Travel diet variability; inflammation and energy</td>
+            </tr>
+            <tr>
+              <td><b>Brain Health</b></td>
+              <td>Cognitive tests, Mental health review, Brain MRI (stroke screen if indicated)</td>
+              <td>Baseline; PRN for symptoms</td>
+              <td>Migraines + high-stress schedule</td>
+            </tr>
+            <tr>
+              <td><b>Skin</b></td>
+              <td>VISIA analysis</td>
+              <td>12–24 months</td>
+              <td>Sun/flight exposure; aging markers</td>
+            </tr>
+            <tr>
+              <td><b>Extended Care</b></td>
+              <td>Specialist consults; Personalized lifestyle plan</td>
+              <td>As needed</td>
+              <td>Integrate cardiology/endocrine inputs with ELYX plan</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="foot small">Frequencies are typical and personalized by Dr. Warren per findings and risk.</div>
+      </section>
+
+      <!-- Detailed Test Panel (accordion) -->
+      <section class="card" style="margin-top:12px">
+        <div class="section-title">
+          <h2>Detailed Test Panel — Results & Rationale</h2>
+          <div>
+            <button class="btn" id="initial-expand">Expand all</button>
+            <button class="btn" id="initial-collapse">Collapse all</button>
+          </div>
+        </div>
+
+        <!-- 1. General Health Assessment -->
+        <details class="panel" open>
+          <summary><b>1) General Health Assessment</b> <span class="chip">q3 months</span></summary>
+          <div class="small" style="margin:10px 0">Clinical history, exam, vitals and broad labs to establish baselines and track quarterly change.</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Why ordered (Rajesh)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Clinical History & Physical Exam</td>
+                <td>Symptoms, meds, risks; physician exam</td>
+                <td>Baseline → q3 mo</td>
+                <td class="status ok">Complete</td>
+                <td>Hypertension, migraines, arthritis; travel strain</td>
+              </tr>
+              <tr>
+                <td>Vitals (BP, HR, BMI, waist)</td>
+                <td>Risk stratification & trend</td>
+                <td>Each visit / home BP weekly</td>
+                <td class="status flag">Monitor</td>
+                <td>BP control and weight management goals</td>
+              </tr>
+              <tr>
+                <td>OGTT + Paired Insulin</td>
+                <td>Glycemic & insulin dynamics</td>
+                <td>Baseline → 6–12 mo</td>
+                <td class="status flag">Monitor</td>
+                <td>Irregular meals, late nights → metabolic risk</td>
+              </tr>
+              <tr>
+                <td>Lipid Profile + Advanced (ApoB, Lp(a), PLAC)</td>
+                <td>Atherogenic lipoproteins & vascular inflammation</td>
+                <td>Baseline → 6–12 mo</td>
+                <td class="status flag">Monitor</td>
+                <td>Hypertension; cardiovascular risk clarification</td>
+              </tr>
+              <tr>
+                <td>Full Blood Count (FBC)</td>
+                <td>Anemia, infection, platelets</td>
+                <td>Baseline → 6–12 mo</td>
+                <td class="status ok">Within range</td>
+                <td>Fatigue differentials</td>
+              </tr>
+              <tr>
+                <td>Liver & Kidney Function (CMP)</td>
+                <td>Medication safety; metabolic status</td>
+                <td>Baseline → 6–12 mo</td>
+                <td class="status ok">Within range</td>
+                <td>NSAID/triptan use, antihypertensives</td>
+              </tr>
+              <tr>
+                <td>Micronutrients (incl. Omega-3)</td>
+                <td>Deficiency & inflammation modulation</td>
+                <td>6–12 mo</td>
+                <td class="status flag">Monitor</td>
+                <td>Travel diet variability; migraine triggers</td>
+              </tr>
+              <tr>
+                <td>ESR, CRP</td>
+                <td>Systemic inflammation</td>
+                <td>Baseline → PRN</td>
+                <td class="status ok">Within range</td>
+                <td>Arthritis activity & CV risk</td>
+              </tr>
+              <tr>
+                <td>Biological age (TruAge / epigenetic)</td>
+                <td>Trajectory & motivation</td>
+                <td>12–24 mo</td>
+                <td class="status ok">Complete</td>
+                <td>Behavior change anchor</td>
+              </tr>
+              <tr>
+                <td>TSH, T3, T4; AM Cortisol</td>
+                <td>Thyroid control; stress axis</td>
+                <td>TSH q3–6 mo; Cortisol PRN</td>
+                <td class="status flag">Titrate</td>
+                <td>Known thyroid disorder; fatigue/sleep links</td>
+              </tr>
+              <tr>
+                <td>Sex hormones (age-adjusted)</td>
+                <td>Fatigue, recovery, migraine context</td>
+                <td>PRN</td>
+                <td class="status ok">Within range</td>
+                <td>Rule out contributing factors</td>
+              </tr>
+              <tr>
+                <td>Heavy metals (Lead, Mercury)</td>
+                <td>Toxic exposures</td>
+                <td>Baseline if risk</td>
+                <td class="status ok">Within range</td>
+                <td>Frequent travel & seafood intake</td>
+              </tr>
+              <tr>
+                <td>ApoE genotype</td>
+                <td>Lipid response; neuro risk</td>
+                <td>Once</td>
+                <td class="status ok">Complete</td>
+                <td>Personalize lipid targets, future brain health</td>
+              </tr>
+              <tr>
+                <td>Urinalysis</td>
+                <td>Renal/UT health</td>
+                <td>Baseline → PRN</td>
+                <td class="status ok">Within range</td>
+                <td>Medication safety monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+
+        <!-- 2. Cancer Screening -->
+        <details class="panel">
+          <summary><b>2) Cancer Screening</b> <span class="chip">Age- & risk-based</span></summary>
+          <table class="table">
+            <thead>
+              <tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>FIT (Stool test)</td>
+                <td>Occult blood → colorectal risk</td>
+                <td>Annually</td>
+                <td class="status ok">Scheduled</td>
+                <td>Initiate at 42</td>
+              </tr>
+              <tr>
+                <td>Colonoscopy</td>
+                <td>Direct visualization & polypectomy</td>
+                <td>Every 5–10 yrs (if indicated)</td>
+                <td class="status ok">Not indicated</td>
+                <td>Do if FIT positive or symptoms</td>
+              </tr>
+              <tr>
+                <td>Full-body / Targeted MRI (KIV / Lucence)</td>
+                <td>Risk-adapted early detection</td>
+                <td>PRN</td>
+                <td class="status ok">KIV</td>
+                <td>Consider if red flags/family history</td>
+              </tr>
+              <tr>
+                <td>Cervical screening</td>
+                <td>N/A (female-only)</td>
+                <td>—</td>
+                <td class="status ok">N/A</td>
+                <td>Rajesh is male</td>
+              </tr>
+              <tr>
+                <td>Breast screening</td>
+                <td>N/A (female-only)</td>
+                <td>—</td>
+                <td class="status ok">N/A</td>
+                <td>Rajesh is male</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+
+        <!-- 3. Advanced Cardiovascular -->
+        <details class="panel">
+          <summary><b>3) Advanced Cardiovascular Assessment</b> <span class="chip">Baseline → risk-driven</span></summary>
+          <table class="table">
+            <thead>
+              <tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Why ordered</th></tr>
+            </thead>
+          <tbody>
+            <tr>
+              <td>ECG</td>
+              <td>Rhythm & ischemia signs</td>
+              <td>Baseline → PRN</td>
+              <td class="status ok">Complete</td>
+              <td>Hypertension; chest workload during sprints</td>
+            </tr>
+            <tr>
+              <td>Coronary Calcium (± CT Angio / Cleerly)</td>
+              <td>Subclinical atherosclerosis</td>
+              <td>Baseline; repeat 3–5 yrs</td>
+              <td class="status flag">Plan</td>
+              <td>Risk clarification; guide lipid/ApoB targets</td>
+            </tr>
+            <tr>
+              <td>Echocardiogram (KIV)</td>
+              <td>Structure & function</td>
+              <td>PRN (murmur/symptoms)</td>
+              <td class="status ok">KIV</td>
+              <td>No current red flags</td>
+            </tr>
+            <tr>
+              <td>Carotid CIMT</td>
+              <td>Carotid wall thickening</td>
+              <td>Baseline; repeat 3–5 yrs</td>
+              <td class="status ok">Complete</td>
+              <td>Atherosclerosis risk trend tracking</td>
+            </tr>
+          </tbody>
+          </table>
+        </details>
+
+        <!-- 4. Overall health & fitness -->
+        <details class="panel">
+          <summary><b>4) Overall Health & Fitness</b> <span class="chip">Performance tracking</span></summary>
+          <table class="table">
+            <thead>
+              <tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Why ordered</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>VO₂ Max Test (PAR-Q prior)</td>
+                <td>Aerobic capacity</td>
+                <td>Quarterly</td>
+                <td class="status flag">Monitor</td>
+                <td>Guide cardio zones; travel-safe conditioning</td>
+              </tr>
+              <tr>
+                <td>Grip Strength</td>
+                <td>Longevity & strength proxy</td>
+                <td>Quarterly</td>
+                <td class="status ok">Within range</td>
+                <td>Track training response</td>
+              </tr>
+              <tr>
+                <td>FMS</td>
+                <td>Movement patterns & mobility</td>
+                <td>Baseline → 6–12 mo</td>
+                <td class="status flag">Program</td>
+                <td>Arthritis-friendly programming</td>
+              </tr>
+              <tr>
+                <td>Indirect Calorimetry / DLW</td>
+                <td>Energy expenditure</td>
+                <td>6–12 mo</td>
+                <td class="status ok">Planned</td>
+                <td>Dial-in nutrition during travel</td>
+              </tr>
+              <tr>
+                <td>Spirometry</td>
+                <td>Lung function</td>
+                <td>Baseline → PRN</td>
+                <td class="status ok">Complete</td>
+                <td>Cardio capacity context</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+
+        <!-- 5–11 as in your initial plan -->
+        <details class="panel"><summary><b>5) Genetic Testing</b> <span class="chip">Once</span></summary>
+          <table class="table">
+            <thead><tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Hereditary Risk Panel</td><td>FHx-driven risk</td><td>Once</td><td class="status ok">Complete</td><td>Adjust screening thresholds if positive</td></tr>
+              <tr><td>Pharmacogenomics</td><td>Drug response prediction</td><td>Once</td><td class="status ok">Complete</td><td>Inform anti-HTN, triptan choices</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="panel"><summary><b>6) Body Composition</b> <span class="chip">12–24 mo</span></summary>
+          <table class="table">
+            <thead><tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>DEXA</td><td>Bone density; fat & lean mass</td><td>12–24 months</td><td class="status ok">Scheduled</td><td>Track lean mass with joint-friendly training</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="panel"><summary><b>7) Hormone Profiling</b> <span class="chip">q3–6 mo (thyroid)</span></summary>
+          <table class="table">
+            <thead><tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>TSH, T3, T4</td><td>Thyroid control</td><td>Every 3–6 months</td><td class="status flag">Titrate</td><td>Dose timing adherence + labs guide adjustment</td></tr>
+              <tr><td>Sex Hormones</td><td>Recovery, energy, mood</td><td>PRN</td><td class="status ok">Within range</td><td>Recheck if fatigue/migraine pattern shifts</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="panel"><summary><b>8) Nutritional Assessment</b> <span class="chip">6–12 mo</span></summary>
+          <table class="table">
+            <thead><tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Micronutrients incl. Omega-3</td><td>Deficits & inflammation</td><td>6–12 mo</td><td class="status flag">Optimize</td><td>Travel diet variability</td></tr>
+              <tr><td>Food Allergy / Sensitivity</td><td>Symptom correlation</td><td>PRN</td><td class="status ok">Not indicated</td><td>Use if GI or migraine triggers suspected</td></tr>
+              <tr><td>Gut Microbiome</td><td>Dysbiosis, fiber adequacy</td><td>6–12 mo (optional)</td><td class="status ok">Planned</td><td>Support BP & energy via diet</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="panel"><summary><b>9) Brain Health Assessment</b> <span class="chip">Baseline → PRN</span></summary>
+          <table class="table">
+            <thead><tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Cognitive Function Tests</td><td>Attention, memory, exec function</td><td>Baseline → 12 mo</td><td class="status ok">Complete</td><td>Measure stress impact; track gains</td></tr>
+              <tr><td>Mental Health Review</td><td>Mood, stress, burnout</td><td>Quarterly</td><td class="status flag">Ongoing</td><td>High workload; sleep constraints</td></tr>
+              <tr><td>Brain MRI (stroke screen)</td><td>Structural evaluation</td><td>PRN</td><td class="status ok">Not indicated</td><td>No neuro deficits; migraines stable</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="panel"><summary><b>10) Skin Analysis</b> <span class="chip">12–24 mo</span></summary>
+          <table class="table">
+            <thead><tr><th>Test</th><th>Purpose</th><th>Frequency</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>VISIA</td><td>UV damage, texture, spots</td><td>12–24 months</td><td class="status ok">Planned</td><td>Frequent flights; dry cabin air</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="panel"><summary><b>11) Extended Care</b> <span class="chip">Multidisciplinary</span></summary>
+          <table class="table">
+            <thead><tr><th>Item</th><th>Purpose</th><th>Cadence</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Specialist Consults (Cardio, Endo, Neuro, Rheum)</td><td>Subspecialty input</td><td>As needed</td><td class="status ok">Panel set</td><td>Coordinate around travel windows</td></tr>
+              <tr><td>Personalized Lifestyle Recommendations</td><td>Nutrition, exercise, stress management</td><td>Quarterly review</td><td class="status flag">Iterate</td><td>50% adherence → adapt plan to logistics</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <div class="foot small">
+          Note: Initial plan and statuses populate prior to quarterly results below. Values shown later reflect Month 3, 6 and 8 outcomes and align with Rajesh’s travel/stress context.
+        </div>
+      </section>
+    </section>
+
+    <!-- ========= Q1 (Month 3) REPORT ========= -->
+    <section id="q1" class="card" style="grid-column:1/-1">
+      <div class="section-title">
+        <h2>First Quarter Report — Month 3</h2>
+        <span class="badge">Context: Adhering to micro-breaks, breakfast fallback; 1 international trip</span>
+      </div>
+
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><div class="small">Resting BP</div><div class="v trend good">134/86</div><div class="small">Improving</div></div>
+        <div class="kpi"><div class="small">Migraine Days/mo</div><div class="v trend good">4–5</div><div class="small">Fewer triggers</div></div>
+        <div class="kpi"><div class="small">Sleep (avg)</div><div class="v trend good">6h 25m</div><div class="small">More consistent</div></div>
+        <div class="kpi"><div class="small">Steps/day</div><div class="v trend good">5,800</div><div class="small">Up from baseline</div></div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th><th>Specific Markers</th><th>Month 3 Result</th><th>Reference</th><th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Thyroid -->
+          <tr>
+            <td><b>Thyroid</b></td>
+            <td>TSH / Free T4 / Free T3</td>
+            <td>TSH 3.2 mIU/L • FT4 1.0 ng/dL • FT3 3.0 pg/mL</td>
+            <td>TSH 0.4–4.0 • FT4 0.9–1.7 • FT3 2.3–4.2</td>
+            <td class="status ok">Dose timing improved; trending toward optimal.</td>
+          </tr>
+          <!-- Metabolic -->
+          <tr>
+            <td><b>Metabolism</b></td>
+            <td>OGTT (Fasting/2-hr) + Insulin; HbA1c</td>
+            <td>Glucose 98 / 132 mg/dL • Insulin 11 / 52 µIU/mL • A1c 5.6%</td>
+            <td>FPG &lt;100 • 2-hr &lt;140 • A1c &lt;5.7%</td>
+            <td class="status ok">Improved from impaired tolerance; continue meal structure.</td>
+          </tr>
+          <!-- Lipids -->
+          <tr>
+            <td><b>Cardiovascular</b></td>
+            <td>Total / LDL / HDL / TG; ApoB / ApoA1; Lp(a); PLAC</td>
+            <td>TC 192 • LDL 120 • HDL 46 • TG 150 mg/dL; ApoB 95; ApoA1 145; Lp(a) 48; Lp-PLA₂ 185</td>
+            <td>LDL &lt;100 (goal) • ApoB &lt;90 (goal)</td>
+            <td class="status flag">Heading the right way; Lp(a) genetically high → keep ApoB lowering.</td>
+          </tr>
+          <!-- Inflammation -->
+          <tr>
+            <td><b>Inflammation</b></td>
+            <td>hs-CRP</td>
+            <td>2.4 mg/L</td>
+            <td>&lt;1.0 optimal</td>
+            <td class="status flag">Improved; continue omega-3, sleep regularity.</td>
+          </tr>
+          <!-- Stress -->
+          <tr>
+            <td><b>Stress</b></td>
+            <td>AM Cortisol</td>
+            <td>17 µg/dL</td>
+            <td>~6–18 µg/dL (AM)</td>
+            <td class="status flag">Upper-normal; late calls still present.</td>
+          </tr>
+          <!-- Micronutrients -->
+          <tr>
+            <td><b>Micronutrients</b></td>
+            <td>Vit D / B12 / RBC Mg / Omega-3 Index</td>
+            <td>25-OH D 32 ng/mL • B12 410 pg/mL • Mg 4.8 mg/dL • Ω-3 5.2%</td>
+            <td>D 30–50 • B12 300–900 • Mg 4.2–6.8 • Ω-3 8%+</td>
+            <td class="status flag">D & Ω-3 rising; target Ω-3 ≥8% by Month 8–9.</td>
+          </tr>
+          <!-- Safety labs -->
+          <tr>
+            <td><b>Safety</b></td>
+            <td>FBC; CMP (LFT/RFT)</td>
+            <td>Within range (Hb 14.6, WBC 6.1, Plt 252; ALT 32, AST 26; Cr 0.97, eGFR 98)</td>
+            <td>Lab refs</td>
+            <td class="status ok">OK for current meds.</td>
+          </tr>
+          <!-- Neuro & Fitness -->
+          <tr>
+            <td><b>Brain & Fitness</b></td>
+            <td>MoCA; PHQ-9; VO₂max; Grip; FMS; Spirometry</td>
+            <td>MoCA 28/30 • PHQ-9 = 4 • VO₂ 36 ml/kg/min • Grip 40 kg • FMS 13/21 • FEV₁ 98%</td>
+            <td>—</td>
+            <td class="status ok">Endurance and mobility trending up.</td>
+          </tr>
+          <!-- Cancer screening -->
+          <tr>
+            <td><b>Cancer</b></td>
+            <td>FIT</td>
+            <td>Kit delivered — awaiting sample</td>
+            <td>Annual</td>
+            <td class="status ok">To be completed this month.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="foot small">Notes: One short-haul trip; better hydration + micro-breaks reduced headaches; breakfast fallback adopted most days.</div>
+    </section>
+
+    <!-- ========= Q2 (Month 6) REPORT ========= -->
+    <section id="q2" class="card" style="grid-column:1/-1">
+      <div class="section-title">
+        <h2>Second Report — Month 6</h2>
+        <span class="badge">Context: Go-live sprint + red-eye week (temporary stressor)</span>
+      </div>
+
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><div class="small">Resting BP</div><div class="v trend flag">132/84</div><div class="small">Stable (minor variability)</div></div>
+        <div class="kpi"><div class="small">Migraine Days/mo</div><div class="v trend flag">3–4</div><div class="small">Slight spike during sprint</div></div>
+        <div class="kpi"><div class="small">Sleep (avg)</div><div class="v trend flag">6h 05m</div><div class="small">Late calls week</div></div>
+        <div class="kpi"><div class="small">Steps/day</div><div class="v trend good">6,600</div><div class="small">Layover walks help</div></div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th><th>Specific Markers</th><th>Month 6 Result</th><th>Reference</th><th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Thyroid</b></td>
+            <td>TSH / Free T4 / Free T3</td>
+            <td>TSH 2.8 mIU/L • FT4 1.1 ng/dL • FT3 3.1 pg/mL</td>
+            <td>TSH 0.4–4.0 • FT4 0.9–1.7 • FT3 2.3–4.2</td>
+            <td class="status ok">Within target; maintain dose & timing.</td>
+          </tr>
+          <tr>
+            <td><b>Metabolism</b></td>
+            <td>OGTT + Insulin; HbA1c</td>
+            <td>Glucose 96 / 128 mg/dL • Insulin 10 / 48 µIU/mL • A1c 5.5%</td>
+            <td>FPG &lt;100 • 2-hr &lt;140 • A1c &lt;5.7%</td>
+            <td class="status ok">Further improvement; continue evening snacking guardrail.</td>
+          </tr>
+          <tr>
+            <td><b>Cardiovascular</b></td>
+            <td>Total / LDL / HDL / TG; ApoB / ApoA1; Lp(a); PLAC</td>
+            <td>TC 185 • LDL 110 • HDL 49 • TG 138 mg/dL; ApoB 88; ApoA1 150; Lp(a) 48; Lp-PLA₂ 170</td>
+            <td>LDL &lt;100 • ApoB &lt;90</td>
+            <td class="status flag">Near lipid goals; consider intensifying omega-3 + fiber; Lp(a) unchanged (genetic).</td>
+          </tr>
+          <tr>
+            <td><b>Inflammation</b></td>
+            <td>hs-CRP</td>
+            <td>3.2 mg/L</td>
+            <td>&lt;1.0 optimal</td>
+            <td class="status flag">Transient rise with go-live stress + sleep debt; reassess next check.</td>
+          </tr>
+          <tr>
+            <td><b>Stress</b></td>
+            <td>AM Cortisol</td>
+            <td>18.5 µg/dL</td>
+            <td>~6–18 (AM)</td>
+            <td class="status flag">Slightly high consistent with week-long red-eye period.</td>
+          </tr>
+          <tr>
+            <td><b>Micronutrients</b></td>
+            <td>Vit D / B12 / RBC Mg / Omega-3 Index</td>
+            <td>25-OH D 36 ng/mL • B12 460 pg/mL • Mg 4.9 mg/dL • Ω-3 6.0%</td>
+            <td>D 30–50 • B12 300–900 • Mg 4.2–6.8 • Ω-3 8%+</td>
+            <td class="status flag">Trending up; increase fatty fish 3x/week or add EPA/DHA 1–2 g/day.</td>
+          </tr>
+          <tr>
+            <td><b>Safety</b></td>
+            <td>FBC; CMP</td>
+            <td>Within range (Hb 14.7, WBC 6.3, Plt 248; ALT 30, AST 25; Cr 0.99, eGFR 96)</td>
+            <td>Lab refs</td>
+            <td class="status ok">No medication concerns.</td>
+          </tr>
+          <tr>
+            <td><b>Brain & Fitness</b></td>
+            <td>MoCA; PHQ-9; VO₂max; Grip; FMS; Spirometry; RMR</td>
+            <td>MoCA 28/30 • PHQ-9 = 5 • VO₂ 38 • Grip 42 kg • FMS 14/21 • FEV₁ 98% • RMR 1690 kcal/d</td>
+            <td>—</td>
+            <td class="status ok">Aerobic capacity advancing; mobility improving.</td>
+          </tr>
+          <tr>
+            <td><b>Cancer</b></td>
+            <td>FIT • CAC / CIMT</td>
+            <td>FIT negative • CIMT normal; CAC score 12 (low)</td>
+            <td>Annual FIT; CAC 3–5 yrs</td>
+            <td class="status ok">Low atherosclerotic burden; continue lipid lowering.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="foot small">Notes: Data reflect a high-stress sprint; numbers rebounded with return to routine.</div>
+    </section>
+
+    <!-- ========= Q3 (Month 8) REPORT ========= -->
+    <section id="q3" class="card" style="grid-column:1/-1">
+      <div class="section-title">
+        <h2>Third Quarter Report — Month 8</h2>
+        <span class="badge">Context: Travel-mode automation + consistent deep-work blocks</span>
+      </div>
+
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><div class="small">Resting BP</div><div class="v trend good">128/82</div><div class="small">Within target</div></div>
+        <div class="kpi"><div class="small">Migraine Days/mo</div><div class="v trend good">2–3</div><div class="small">Sustained reduction</div></div>
+        <div class="kpi"><div class="small">Sleep (avg)</div><div class="v trend good">7h 05m</div><div class="small">Consistent</div></div>
+        <div class="kpi"><div class="small">Steps/day</div><div class="v trend good">7,200</div><div class="small">Habit formed</div></div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th><th>Specific Markers</th><th>Month 8 Result</th><th>Reference</th><th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Thyroid</b></td>
+            <td>TSH / Free T4 / Free T3</td>
+            <td>TSH 2.4 mIU/L • FT4 1.2 ng/dL • FT3 3.2 pg/mL</td>
+            <td>TSH 0.4–4.0 • FT4 0.9–1.7 • FT3 2.3–4.2</td>
+            <td class="status ok">Stable euthyroid on current regimen.</td>
+          </tr>
+          <tr>
+            <td><b>Metabolism</b></td>
+            <td>OGTT + Insulin; HbA1c</td>
+            <td>Glucose 93 / 120 mg/dL • Insulin 9 / 42 µIU/mL • A1c 5.3%</td>
+            <td>FPG &lt;100 • 2-hr &lt;140 • A1c &lt;5.7%</td>
+            <td class="status ok">Excellent control with structured meals & activity.</td>
+          </tr>
+          <tr>
+            <td><b>Cardiovascular</b></td>
+            <td>Total / LDL / HDL / TG; ApoB / ApoA1; Lp(a); PLAC</td>
+            <td>TC 176 • LDL 98 • HDL 52 • TG 128 mg/dL; ApoB 80; ApoA1 155; Lp(a) 48; Lp-PLA₂ 160</td>
+            <td>LDL &lt;100 • ApoB &lt;90</td>
+            <td class="status ok">Targets met (ApoB 80). Lp(a) unchanged → maintain aggressive ApoB strategy.</td>
+          </tr>
+          <tr>
+            <td><b>Inflammation</b></td>
+            <td>hs-CRP</td>
+            <td>1.6 mg/L</td>
+            <td>&lt;1.0 optimal</td>
+            <td class="status flag">Near-optimal; trend favorable with sleep & omega-3.</td>
+          </tr>
+          <tr>
+            <td><b>Stress</b></td>
+            <td>AM Cortisol</td>
+            <td>15 µg/dL</td>
+            <td>~6–18 (AM)</td>
+            <td class="status ok">Normalized as late meetings reduced.</td>
+          </tr>
+          <tr>
+            <td><b>Micronutrients</b></td>
+            <td>Vit D / B12 / RBC Mg / Omega-3 Index</td>
+            <td>25-OH D 42 ng/mL • B12 510 pg/mL • Mg 5.1 mg/dL • Ω-3 7.4%</td>
+            <td>D 30–50 • B12 300–900 • Mg 4.2–6.8 • Ω-3 8%+</td>
+            <td class="status flag">Approaching Ω-3 goal; maintain intake. Others optimal.</td>
+          </tr>
+          <tr>
+            <td><b>Safety</b></td>
+            <td>FBC; CMP</td>
+            <td>Within range (Hb 14.8, WBC 6.0, Plt 246; ALT 28, AST 24; Cr 0.95, eGFR 100)</td>
+            <td>Lab refs</td>
+            <td class="status ok">No concerns.</td>
+          </tr>
+          <tr>
+            <td><b>Brain & Fitness</b></td>
+            <td>MoCA; PHQ-9; VO₂max; Grip; FMS; Spirometry</td>
+            <td>MoCA 29/30 • PHQ-9 = 3 • VO₂ 41 • Grip 44 kg • FMS 15/21 • FEV₁ 98%</td>
+            <td>—</td>
+            <td class="status ok">Calmer leadership & higher work capacity noted.</td>
+          </tr>
+          <tr>
+            <td><b>Other</b></td>
+            <td>Genetics; Heavy Metals; Urinalysis</td>
+            <td>ApoE e3/e3 • Pb 1.2 µg/dL • Hg 4.1 µg/L • UA normal</td>
+            <td>—</td>
+            <td class="status ok">No action needed.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="foot small">
+        Summary: ELYX “travel mode”, micro-breaks and meal structure drove sustained improvements in BP, migraines, sleep and lipids. Next check: Month 12 with DEXA + optional microbiome.
+      </div>
+    </section>
+
+    <!-- ========= CROSS-SECTIONAL TREND SUMMARY ========= -->
+    <section class="card" style="grid-column:1/-1">
+      <div class="section-title">
+        <h2>Key Marker Trends — Initial → M3 → M6 → M8</h2>
+        <span class="badge">At-a-glance</span>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Marker</th><th>Initial</th><th>Month 3</th><th>Month 6</th><th>Month 8</th><th>Goal / Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><b>BP (resting)</b></td><td class="risk">148/96</td><td>134/86</td><td>132/84</td><td class="ok">128/82</td><td>&lt;130/80</td></tr>
+          <tr><td><b>Migraine days/mo</b></td><td class="risk">7–8</td><td>4–5</td><td>3–4</td><td class="ok">2–3</td><td>&nbsp;</td></tr>
+          <tr><td><b>TSH (mIU/L)</b></td><td class="risk">~6.2*</td><td>3.2</td><td>2.8</td><td class="ok">2.4</td><td>Symptom-guided target 1–3</td></tr>
+          <tr><td><b>LDL (mg/dL)</b></td><td class="risk">138</td><td>120</td><td>110</td><td class="ok">98</td><td>&lt;100 (ApoB &lt;90)</td></tr>
+          <tr><td><b>ApoB (mg/dL)</b></td><td class="risk">110</td><td>95</td><td>88</td><td class="ok">80</td><td>&lt;90</td></tr>
+          <tr><td><b>hs-CRP (mg/L)</b></td><td class="risk">3.8</td><td>2.4</td><td class="flag">3.2</td><td>1.6</td><td>&lt;1.0 optimal</td></tr>
+          <tr><td><b>HbA1c (%)</b></td><td class="flag">5.8</td><td>5.6</td><td>5.5</td><td class="ok">5.3</td><td>&lt;5.7</td></tr>
+          <tr><td><b>Omega-3 Index (%)</b></td><td class="risk">4.0</td><td>5.2</td><td>6.0</td><td class="flag">7.4</td><td>≥8% target</td></tr>
+          <tr><td><b>Vitamin D (ng/mL)</b></td><td class="risk">22</td><td>32</td><td>36</td><td class="ok">42</td><td>30–50</td></tr>
+        </tbody>
+      </table>
+      <div class="foot small">*Initial TSH approximated from presenting symptoms and prior records; labs since then confirm euthyroid trajectory.</div>
+    </section>
+
+  </div><!-- /wrap -->
+
+  <script>
+    // Print (initial section)
+    document.getElementById('initial-print').addEventListener('click', ()=>window.print());
+
+    // Accordion controls (initial section only)
+    const panelList = () => Array.from(document.querySelectorAll('#initial details.panel'));
+    document.getElementById('initial-expand').addEventListener('click', ()=>panelList().forEach(p=>p.open=true));
+    document.getElementById('initial-collapse').addEventListener('click', ()=>panelList().forEach(p=>p.open=false));
+
+    // Simple scroll-spy for navbar active state
+    const links = Array.from(document.querySelectorAll('#navlinks a'));
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    const onScroll = () => {
+      const top = window.scrollY + 120; // offset to account for sticky nav
+      let current = sections[0].id;
+      sections.forEach(sec => {
+        if (sec.offsetTop <= top) current = sec.id;
+      });
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+    };
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll(); // init
+
+  </script>
+</body>
+</html>

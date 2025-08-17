@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELYX Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0a2a43, #153b5c, #1f4d77);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typing {
+      font-size: 48px;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #fff;
+      width: 0;
+      animation: typing 4s steps(30, end) forwards, blink 0.7s step-end infinite;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink { from, to { border-color: transparent } 50% { border-color: #fff } }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px 30px;
+      border-bottom: 1px solid #0a1c31;
+      backdrop-filter: blur(8px);
+    }
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+    }
+    .navbar .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .navbar .nav-links li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .navbar .nav-links li a:hover { color: #4ea8ff; }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+    }
+    .left-section {
+      flex: 1;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .left-section h1 { font-size: 48px; margin-bottom: 20px; color: #fff; }
+    .left-section p { font-size: 18px; line-height: 1.6; color: #e0e0e0; }
+
+    .right-section { flex: 2; position: relative; overflow: hidden; }
+    .right-section img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-top-left-radius: 60px;
+      border-bottom-left-radius: 400px;
+      box-shadow: -8px 0 20px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">ELYX Dashboard</div>
+    <ul class="nav-links">
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/Chats">Chats</a></li>
+      <li><a href="/Stats">Visuals & Stats</a></li>
+      <li><a href="/Reports">Reports</a></li>
+      <li><a href="/timeline">timeline</a></li>
+    </ul>
+  </nav>
+
+  <!-- Split Content -->
+  <div class="main-container">
+    <div class="left-section">
+      <h1 class="typing">Welcome to the ELYX Family</h1>
+      <p>
+        Together we aim to revolutionize healthcare with technology, 
+        innovation, and collaboration. This dashboard will guide you 
+        through your profile, chats, important visual stats, and reports.  
+      </p>
+    </div>
+    <div class="right-section">
+      <img src="https://imageio.forbes.com/specials-images/imageserve/651bbeb1c78cc403f92a6abd/The-10-Biggest-Trends-Revolutionizing-Healthcare-In-2024/0x0.jpg?crop=2500,1405,x0,y0,safe&height=399&width=711&fit=bounds"
+           alt="Healthcare Trends 2024">
+    </div>
+  </div>
+</body>
+</html>

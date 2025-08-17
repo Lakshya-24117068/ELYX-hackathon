@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rajesh — Health & Work Persona</title>
+  <style>
+    :root{
+      --bg1:#0e2a47; --bg2:#1b4b7a; --card:#0b1220; --ink:#eaf2ff; --muted:#a9c3e6;
+      --accent:#7bd3ff; --good:#39d98a; --bad:#ff6b6b; --chip:#0e2b4d;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --radius:18px;
+      --sideW:72px;
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% -10%, #2b5ea3 0%, transparent 50%),
+                  radial-gradient(800px 600px at 120% 30%, #1b9ad6 0%, transparent 50%),
+                  linear-gradient(160deg,var(--bg1),var(--bg2));
+      /* space for the left icon strip */
+      padding-left: calc(var(--sideW) + 16px);
+    }
+
+    /* ==== Left icon navbar (added) ==== */
+    .side-nav{
+      position:fixed; left:12px; top:18px; bottom:18px; width:var(--sideW);
+      background:#06101ee6; border:1px solid #0a1c31; border-radius:18px;
+      backdrop-filter: blur(8px);
+      display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 6px;
+      box-shadow:var(--shadow); z-index:1000;
+    }
+    .side-nav .brand-dot{
+      width:38px; height:38px; border-radius:10px; margin:6px 0 4px;
+      background: conic-gradient(from 210deg, #8ae 0 25%, #4fd 25% 50%, #58f 50% 75%, #9ef 75% 100%);
+      box-shadow:0 6px 14px rgba(0,0,0,.25)
+    }
+    .nav-divider{width:48px; height:1px; background:#143053; margin:6px 0 2px; border-radius:1px}
+
+    .icon-link{
+      width:48px; height:48px; border-radius:14px; display:grid; place-items:center;
+      color:var(--ink); text-decoration:none; border:1px solid transparent; position:relative;
+      transition:transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      opacity:.9;
+    }
+    .icon-link:hover{ background:#0b203e; border-color:#183a67; transform:translateY(-1px); opacity:1 }
+    .icon-link.active{
+      background:linear-gradient(180deg,#0b2546,#0d284d);
+      border-color:#214c7e; box-shadow: inset 0 0 0 1px #235084;
+    }
+    .icon{ width:22px; height:22px; display:block }
+
+    /* tooltip on hover (no JS) */
+    .icon-link[data-tip]:hover::after{
+      content: attr(data-tip);
+      position:absolute; left:58px; top:50%; transform:translateY(-50%);
+      background:#0b203e; color:var(--ink); border:1px solid #183a67;
+      padding:4px 8px; border-radius:8px; white-space:nowrap; font-size:.85rem; pointer-events:none;
+      box-shadow:var(--shadow);
+    }
+
+    /* mobile: hide strip and remove padding */
+    @media (max-width:740px){
+      body{ padding-left: 0 }
+      .side-nav{ transform: translateX(-120%); left:8px }
+      .side-nav:hover{ transform: translateX(0) } /* peek out when hovered */
+    }
+    /* ==== /Left icon navbar ==== */
+
+    .wrap{max-width:1100px; margin:auto; padding:28px 18px 80px}
+    .nav{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      background:#06101eaa; backdrop-filter: blur(6px);
+      border:1px solid #0a1c31; border-radius:14px; padding:10px 14px; box-shadow:var(--shadow)
+    }
+    .brand{display:flex; align-items:center; gap:10px}
+    .brand .logo{
+      width:36px; height:36px; border-radius:10px;
+      background: conic-gradient(from 210deg, #8ae 0 25%, #4fd 25% 50%, #58f 50% 75%, #9ef 75% 100%);
+      box-shadow:0 6px 14px rgba(0,0,0,.25)
+    }
+    .brand .t1{font-weight:700; letter-spacing:.3px}
+    .pill{padding:6px 10px; border-radius:999px; background:var(--chip); color:var(--ink); border:1px solid #234a7a}
+    .grid{display:grid; gap:18px; margin-top:18px}
+    @media(min-width:920px){ .grid{grid-template-columns: 2fr 1fr} }
+    .card{
+      background: linear-gradient(180deg, #0b1426 0%, #0a152b 100%);
+      border:1px solid #132a4b; border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:20px
+    }
+    .card h2{margin:.2rem 0 1rem; font-size:1.25rem}
+    .header{
+      display:grid; grid-template-columns: auto 1fr auto; gap:16px; align-items:center
+    }
+    .avatar{
+      width:74px; height:74px; border-radius:20px;
+      background:linear-gradient(135deg,#74c0ff,#a5d8ff);
+      display:grid; place-items:center; color:#053; font-weight:800; font-size:26px
+    }
+    .chips{display:flex; flex-wrap:wrap; gap:8px}
+    .kpis{display:grid; grid-template-columns: repeat(4,minmax(110px,1fr)); gap:10px}
+    .kpi{background:#0c1b31; border:1px solid #17345b; border-radius:14px; padding:12px}
+    .kpi .v{font-size:1.15rem; font-weight:700}
+    .badge{font-size:.82rem; padding:2px 8px; border-radius:999px; border:1px solid #214c7e; background:#0b2546; color:var(--muted)}
+    .split{display:grid; gap:12px}
+    @media(min-width:680px){ .split{grid-template-columns: 1fr 1fr} }
+    .list{display:grid; gap:10px}
+    .li{background:#0b203e; border:1px solid #183a67; padding:12px; border-radius:12px}
+    .li b{color:#cde7ff}
+    .table{width:100%; border-collapse:collapse; overflow:hidden; border-radius:12px; border:1px solid #183a67}
+    .table th,.table td{padding:10px 12px; text-align:left; border-bottom:1px solid #183a67}
+    .table th{background:#0d284d; color:#cfe6ff; font-weight:600}
+    .trend{font-weight:700}
+    .trend.good{color:var(--good)} .trend.bad{color:var(--bad)}
+    .section-title{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+    .btn{
+      cursor:pointer; border:none; color:#032; font-weight:700; background:linear-gradient(135deg,#8be9ff,#77ffc9);
+      padding:8px 12px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25)
+    }
+    a.btn-link{color:#061a2a; text-decoration:none}
+    .foot{margin-top:22px; color:#b9d4f3; font-size:.9rem}
+    .small{color:var(--muted); font-size:.95rem}
+    .timeline{position:relative; padding-left:18px}
+    .timeline:before{content:""; position:absolute; left:8px; top:2px; bottom:2px; width:2px; background:#235084}
+    .tick{position:relative; margin:10px 0 10px 0}
+    .tick:before{content:""; position:absolute; left:-11px; top:6px; width:10px; height:10px; border-radius:50%; background:#8be9ff; box-shadow:0 0 0 3px #103153}
+    .muted{color:#a3c1e6}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  </style>
+</head>
+<body>
+
+  <!-- Left icon navbar (added) -->
+  <nav class="side-nav" aria-label="Section navigation">
+    <div class="brand-dot" aria-hidden="true"></div>
+    <div class="nav-divider"></div>
+
+    <!-- Profile -->
+    <a href="/profile"
+       class="icon-link {% if request.path == '/profile' %}active{% endif %}"
+       data-tip="Profile" aria-label="Profile">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </a>
+
+    <!-- Chats -->
+    <a href="/Chats"
+       class="icon-link {% if request.path == '/chats' %}active{% endif %}"
+       data-tip="Chats" aria-label="Chats">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+      </svg>
+    </a>
+
+    <!-- Visuals & Stats -->
+    <a href="/Stats"
+       class="icon-link {% if request.path == '/stats' %}active{% endif %}"
+       data-tip="Visuals & Stats" aria-label="Visuals and Stats">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3v18h18"/>
+        <rect x="7" y="10" width="3" height="7" rx="1"/>
+        <rect x="12" y="6" width="3" height="11" rx="1"/>
+        <rect x="17" y="12" width="3" height="5" rx="1"/>
+      </svg>
+    </a>
+
+    <!-- Reports -->
+    <a href="/Reports"
+       class="icon-link {% if request.path == '/reports' %}active{% endif %}"
+       data-tip="Reports" aria-label="Reports">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 2v6h6"/>
+      </svg>
+    </a>
+  </nav>
+  <!-- /Left icon navbar -->
+
+  <div class="wrap">
+    <!-- Top bar -->
+    <div class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="t1">ELYX Persona</div>
+          <div class="small">Demo profile for hackathon pitch</div>
+        </div>
+      </div>
+      <div class="chips">
+        <span class="pill">High BP</span>
+        <span class="pill">Thyroid Disorder</span>
+        <span class="pill">Arthritis</span>
+        <span class="pill">Migraine</span>
+      </div>
+    </div>
+
+    <!-- Hero / Summary -->
+    <div class="grid">
+      <section class="card" style="grid-column: 1 / -1">
+        <div class="header">
+          <div class="avatar" title="Rajesh">R</div>
+          <div>
+            <h1 style="margin:.1rem 0 .25rem;font-size:1.7rem">Rajesh Sharma, 42 — Senior Project Manager</h1>
+            <div class="muted">Company: <b>Globex Solutions Pvt. Ltd.</b> • Team size: 12 • Location: Bengaluru, India • Travels: 6–8 international trips/year</div>
+          </div>
+          <span class="badge">Persona ID: <span class="mono">ELYX-RAJ-042</span></span>
+        </div>
+        <p class="small" style="margin-top:12px">
+          Rajesh thrived through his 20s–30s as a high-performing consultant who loved red-eye flights, late-night code reviews, and client dinners.
+          Hitting his early 40s, constant travel plus stress began to show: <b>hypertension</b>, a <b>thyroid disorder</b>, recurring <b>migraines</b>, and <b>arthritis flare-ups</b>.
+          These issues now limit concentration during meetings and reduce his ability to keep up with his young team.
+        </p>
+      </section>
+
+      <!-- Left column -->
+      <section class="card">
+        <div class="section-title">
+          <h2>Storyline (Early → Now)</h2>
+        </div>
+        <div class="timeline">
+          <div class="tick">
+            <b>Age 25–32:</b> Rapid growth as consultant; caffeine-heavy, erratic meals; weekly domestic travel.
+          </div>
+          <div class="tick">
+            <b>Age 33–38:</b> Promoted to Project Manager; quarterly international travel; starts skipping workouts; first migraine episodes.
+          </div>
+          <div class="tick">
+            <b>Age 39–41:</b> Hypertension diagnosed; thyroid medication started; arthritis pain after long flights.
+          </div>
+          <div class="tick">
+            <b>Now (42):</b> Performance dips on high-stress sprints; seeks structured help to regain consistency.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <h2>Role & Responsibilities</h2>
+          <span class="badge">Globex • Digital Transformation</span>
+        </div>
+        <div class="list">
+          <div class="li"><b>Delivery:</b> Owns timelines & scope for 3 concurrent client programs (FinTech & Retail).</div>
+          <div class="li"><b>People:</b> Leads 12 engineers/analysts; conducts 1:1s; hires & reviews.</div>
+          <div class="li"><b>Travel:</b> <b>6–8</b> international trips/year for steering committees & go-lives.</div>
+          <div class="li"><b>Meetings:</b> 5–7 hrs/day across time zones; frequent late evenings.</div>
+        </div>
+      </section>
+
+      <!-- Daily routine and stressors -->
+      <section class="card">
+        <div class="section-title">
+          <h2>Typical Weekday Routine</h2>
+          <span class="badge">Before ELYX</span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr><th>Time</th><th>Activity</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>06:30</td><td>Wakes up</td><td class="small">Skips stretching; checks emails immediately</td></tr>
+            <tr><td>07:30</td><td>Commute & coffee</td><td class="small">Breakfast often skipped; strong coffee</td></tr>
+            <tr><td>09:30–13:00</td><td>Back-to-back meetings</td><td class="small">Migraine triggers: bright screens, no breaks</td></tr>
+            <tr><td>13:15</td><td>Quick lunch</td><td class="small">High-sodium takeout; eaten at desk</td></tr>
+            <tr><td>14:00–18:00</td><td>Client work / Reviews</td><td class="small">Pain in wrists/knees from arthritis; low water intake</td></tr>
+            <tr><td>20:00–23:00</td><td>US calls</td><td class="small">Late meals; stress snacking (chips, sweets)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <h2>Stressful Situations He Faces</h2>
+        </div>
+        <div class="list">
+          <div class="li"><b>Go-Live Week:</b> 14-hour days, shift rotations, last-minute scope changes → spikes BP & migraines.</div>
+          <div class="li"><b>Airport & Red-Eyes:</b> Dehydration, salty food, poor sleep → arthritis flares after long sits.</div>
+          <div class="li"><b>Board Reviews:</b> Slides due + rehearsals + cross-time-zone calls → meal skipping & extra caffeine.</div>
+          <div class="li"><b>People Ops:</b> Difficult performance conversations → stress eating at night.</div>
+        </div>
+      </section>
+
+      <!-- Eating and health -->
+      <section class="card">
+        <div class="section-title">
+          <h2>Health Snapshot</h2>
+          <button class="btn" id="toggle">Toggle: Before ↔ After ELYX</button>
+        </div>
+        <div class="kpis" id="kpis">
+          <div class="kpi"><div class="small">Resting BP</div><div class="v trend bad">148/96</div><div class="small">Uncontrolled</div></div>
+          <div class="kpi"><div class="small">Migraine Days/mo</div><div class="v trend bad">7–8</div><div class="small">Screen + stress</div></div>
+          <div class="kpi"><div class="small">Sleep (avg)</div><div class="v trend bad">5h 35m</div><div class="small">Fragmented</div></div>
+          <div class="kpi"><div class="small">Steps/day</div><div class="v trend bad">3,100</div><div class="small">Sedentary</div></div>
+        </div>
+        <div class="split" style="margin-top:12px">
+          <div class="li"><b>Medications:</b> Thyroid replacement (AM), antihypertensive; occasional NSAIDs for arthritis; triptan for migraines.</div>
+          <div class="li"><b>Bad Eating Habits (stress-linked):</b> Skips breakfast, frequent salty takeout, sugary chai late night, chips/chocolate during crunch.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>How ELYX Helped (Interventions → Outcomes)</h2>
+        <div class="list">
+          <div class="li">
+            <b>Micro-break scheduler:</b> 5-minute protected breaks every 50 minutes with blue-light & hydration nudges →
+            fewer migraine triggers during long meetings.
+          </div>
+          <div class="li">
+            <b>Travel Mode:</b> Auto plan for flights: aisle-seat stretches, low-sodium meal picks, step goals at layovers →
+            reduced arthritis stiffness post-flight.
+          </div>
+          <div class="li">
+            <b>Meal Planner:</b> Breakfast fallback (yogurt + nuts), 2 low-sodium lunch options near office, 20:30 no-food guardrail →
+            improved BP & less reflux.
+          </div>
+          <div class="li">
+            <b>Focus Windows:</b> 2 × 90-min deep-work blocks/day with calendar protection →
+            evening calls shorten; sleep earlier.
+          </div>
+          <div class="li">
+            <b>Biomarker tracking:</b> Weekly BP trend with alerts to see doctor if averages rise; thyroid med timing reminders.
+          </div>
+        </div>
+        <div class="kpis" id="kpisAfter" style="margin-top:12px; display:none">
+          <div class="kpi"><div class="small">Resting BP</div><div class="v trend good">128/82</div><div class="small">Within target range</div></div>
+          <div class="kpi"><div class="small">Migraine Days/mo</div><div class="v trend good">2–3</div><div class="small">Fewer triggers</div></div>
+          <div class="kpi"><div class="small">Sleep (avg)</div><div class="v trend good">7h 05m</div><div class="small">More consistent</div></div>
+          <div class="kpi"><div class="small">Steps/day</div><div class="v trend good">7,200</div><div class="small">Travel-safe movement</div></div>
+        </div>
+        <div class="foot small">Note: Metrics shown are illustrative for demo purposes.</div>
+      </section>
+
+      <!-- Add-on narrative -->
+      <section class="card" style="grid-column: 1 / -1">
+        <h2>One-Minute Narrative for Demo</h2>
+        <p class="small">
+          “Rajesh, a 42-year-old Senior PM at Globex, built his career on hustle and flights. In the last two years
+          he’s struggled with high BP, migraines, and arthritis—especially during go-lives and red-eye travel. ELYX
+          reorganized his day with micro-breaks, travel mode, and meal nudges, then protected two deep-work blocks.
+          Within eight weeks, his migraine days dropped from 8 to ~3/month, BP stabilized near 128/82, and he sleeps
+          ~7 hours. The team sees calmer leadership; Rajesh gets his evenings back.”
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Simple toggle for Before/After KPIs
+    const btn = document.getElementById('toggle');
+    const before = document.getElementById('kpis');
+    const after = document.getElementById('kpisAfter');
+    let showAfter = false;
+    if (btn) {
+      btn.addEventListener('click', ()=>{
+        showAfter = !showAfter;
+        before.style.display = showAfter ? 'none' : 'grid';
+        after.style.display = showAfter ? 'grid' : 'none';
+        btn.textContent = showAfter ? 'Toggle: After ↔ Before ELYX' : 'Toggle: Before ↔ After ELYX';
+      });
+    }
+
+    // Optional: client-side active state if not using Flask templating
+    (function(){
+      const path = location.pathname.toLowerCase();
+      document.querySelectorAll('.side-nav .icon-link').forEach(a=>{
+        if (a.getAttribute('href').toLowerCase() === path) a.classList.add('active');
+      });
+    })();
+  </script>
+</body>
+</html>
