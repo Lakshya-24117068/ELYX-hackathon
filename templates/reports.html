@@ -22,7 +22,7 @@
     }
         /* ==== Left icon navbar (added) ==== */
     .side-nav{
-      position:fixed; left:12px; top:18px; bottom:18px; width:var(--sideW);
+      position:fixed; left:12px; top:80px; bottom:18px; width:var(--sideW);
       background:#06101ee6; border:1px solid #0a1c31; border-radius:18px;
       backdrop-filter: blur(8px);
       display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 6px;
@@ -166,52 +166,66 @@ body {
 </head>
 <body>
      <!-- Left icon navbar (added) -->
-  <nav class="side-nav" aria-label="Section navigation">
-    <div class="brand-dot" aria-hidden="true"></div>
-    <div class="nav-divider"></div>
+<nav class="side-nav" aria-label="Section navigation">
+  <div class="brand-dot" aria-hidden="true"></div>
+  <div class="nav-divider"></div>
 
-    <!-- Profile -->
-    <a href="/profile"
-       class="icon-link {% if request.path == '/profile' %}active{% endif %}"
-       data-tip="Profile" aria-label="Profile">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    </a>
+  <!-- Profile -->
+  <a href="/profile"
+     class="icon-link {% if request.path == '/profile' %}active{% endif %}"
+     data-tip="Profile" aria-label="Profile">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  </a>
 
-    <!-- Chats -->
-    <a href="/chats"
-       class="icon-link {% if request.path == '/chats' %}active{% endif %}"
-       data-tip="Chats" aria-label="Chats">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
-      </svg>
-    </a>
+  <!-- Chats -->
+  <a href="/Chats"
+     class="icon-link {% if request.path == '/chats' %}active{% endif %}"
+     data-tip="Chats" aria-label="Chats">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+    </svg>
+  </a>
 
-    <!-- Visuals & Stats -->
-    <a href="/stats"
-       class="icon-link {% if request.path == '/stats' %}active{% endif %}"
-       data-tip="Visuals & Stats" aria-label="Visuals and Stats">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 3v18h18"/>
-        <rect x="7" y="10" width="3" height="7" rx="1"/>
-        <rect x="12" y="6" width="3" height="11" rx="1"/>
-        <rect x="17" y="12" width="3" height="5" rx="1"/>
-      </svg>
-    </a>
+  <!-- Visuals & Stats -->
+  <a href="/Stats"
+     class="icon-link {% if request.path == '/stats' %}active{% endif %}"
+     data-tip="Visuals & Stats" aria-label="Visuals and Stats">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 3v18h18"/>
+      <rect x="7" y="10" width="3" height="7" rx="1"/>
+      <rect x="12" y="6" width="3" height="11" rx="1"/>
+      <rect x="17" y="12" width="3" height="5" rx="1"/>
+    </svg>
+  </a>
 
-    <!-- Reports -->
-    <a href="/reports"
-       class="icon-link {% if request.path == '/reports' %}active{% endif %}"
-       data-tip="Reports" aria-label="Reports">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8z"/>
-        <path d="M14 2v6h6"/>
-      </svg>
-    </a>
-  </nav>
-  <!-- /Left icon navbar -->
+  <!-- Reports -->
+  <a href="/Reports"
+     class="icon-link {% if request.path == '/reports' %}active{% endif %}"
+     data-tip="Reports" aria-label="Reports">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8z"/>
+      <path d="M14 2v6h6"/>
+    </svg>
+  </a>
+
+  <!-- Timeline (NEW) -->
+  <a href="/timeline"
+     class="icon-link {% if request.path == '/timeline' %}active{% endif %}"
+     data-tip="Timeline" aria-label="Timeline">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="7" cy="7" r="2"/>
+      <circle cx="17" cy="12" r="2"/>
+      <circle cx="7" cy="17" r="2"/>
+      <path d="M7 9v6"/>
+      <path d="M9 7h8"/>
+      <path d="M17 14v3"/>
+    </svg>
+  </a>
+</nav>
+
   <!-- Sticky top navbar -->
   <nav class="navbar">
     <div class="inner">
