@@ -1,158 +1,467 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elyx Hackathon</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    /* Navbar */
-    .navbar {
-      background: rgba(0, 0, 0, 0.9); /* black tint */
-      padding: 12px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 1.4rem;
-      color: #ffffff !important;
-      letter-spacing: 0.5px;
-    }
-    .nav-link {
-      color: #ffffff !important;
-      margin-left: 15px;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-    .nav-link:hover {
-      color: #ffdd57 !important; /* yellow accent on hover */
-      text-decoration: underline;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elyx Health | Live 100 Healthy Years</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Droid+Serif:wght@400;700&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
-    /* Hero Section */
-    .hero {
-      background: linear-gradient(135deg, #004aad, #0077ff); /* smooth blue gradient */
-      color: white;
-      padding: 120px 20px;
-      text-align: center;
-      min-height: 100vh; /* make it fill screen */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: bold;
-    }
-    .hero h4 {
-      font-size: 1.6rem;
-      margin-top: 15px;
-      font-weight: 500;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      margin-top: 20px;
-      max-width: 850px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.7;
-      color: #f1f1f1;
-    }
-    .event-date {
-      font-size: 1.5rem;
-      margin-top: 30px;
-      font-weight: 600;
-      color: #ffdd57;
-    }
-    .btn-custom {
-      margin: 15px;
-      padding: 12px 28px;
-      font-size: 1.1rem;
-      border-radius: 30px;
-      transition: 0.3s;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, #004aad, #0077ff);
-      border: none;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(90deg, #00337a, #005fcc);
-    }
-    .btn-outline-light {
-      border: 2px solid #fff;
-    }
-    .btn-outline-light:hover {
-      background: white;
-      color: #004aad !important;
-    }
+    <style>
+        :root {
+            --color-bg: #0a192f; /* Dark Navy Blue */
+            --color-surface: #172a45; /* Lighter Navy for cards/surfaces */
+            --color-accent: #33A3FF; /* Bright Blue for accents */
+            --color-text-primary: #ccd6f6; /* Light Blue-Grey for text */
+            --color-text-secondary: #a8b2d1; /* Slate Grey for secondary text */
+            --color-white: #FFFFFF;
+            --font-serif: 'Droid Serif', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
 
-    /* Footer */
-    footer {
-      background: rgba(0,0,0,0.9);
-      color: #ccc;
-      padding: 25px 0;
-      text-align: center;
-      margin-top: 50px;
-    }
-    footer a {
-      color: #ffdd57;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Utility Classes */
+        .section-space {
+            padding: 7rem 0;
+        }
+        @media (max-width: 991px) {
+            .section-space {
+                padding: 4rem 0;
+            }
+        }
+        
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            color: var(--color-white);
+        }
+        h1 { font-size: 6rem; line-height: 1; letter-spacing: -0.03em; }
+        h2 { font-size: 4.5rem; line-height: 1; letter-spacing: -0.02em; }
+        p { color: var(--color-text-primary); }
+        
+        strong em, strong em * {
+            text-decoration-line: line-through;
+            text-decoration-thickness: 3px;
+            font-style: normal;
+            text-decoration-color: var(--color-accent);
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+        }
+
+        /* Top Banner */
+        .top-banner {
+            background-color: var(--color-surface);
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+        .top-banner a {
+            color: var(--color-accent);
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--color-bg);
+            padding: 1rem 0;
+            border-bottom: 1px solid #172a45;
+        }
+        .navbar-brand {
+            font-family: var(--font-serif);
+            color: var(--color-white) !important;
+        }
+        .nav-link {
+            color: var(--color-text-primary) !important;
+            margin: 0 0.75rem;
+            font-weight: 400;
+            font-size: 1.1rem;
+        }
+         .nav-link:hover {
+            color: var(--color-accent) !important;
+        }
+        .navbar-toggler {
+             border: none;
+        }
+        .navbar-toggler:focus {
+             box-shadow: none;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(204, 214, 246, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+
+        /* Buttons */
+        .btn-custom {
+            border-radius: 50px;
+            font-weight: 600;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .btn-filled {
+            background-color: var(--color-accent);
+            color: var(--color-bg);
+            border-color: var(--color-accent);
+        }
+        .btn-filled:hover {
+            background-color: #57b1ff;
+            border-color: #57b1ff;
+            color: var(--color-bg);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+        .btn-outline:hover {
+            background-color: rgba(51, 163, 255, 0.1);
+            color: var(--color-accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+        }
+        .hero .sub-heading {
+            font-size: 2rem;
+            font-weight: 200;
+            color: var(--color-text-primary);
+            max-width: 780px;
+            margin: 1.5rem auto 0;
+            line-height: 1.3;
+        }
+        @media (max-width: 768px) {
+            .hero .sub-heading {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Labs Section */
+        .labs-section .icon-wrapper {
+            display: inline-block;
+            border: 1px solid var(--color-surface);
+            border-radius: 50%;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .labs-section svg {
+             width: 40px;
+             height: 40px;
+             color: var(--color-accent);
+        }
+        .labs-section h2 strong {
+            color: var(--color-accent);
+        }
+        .labs-section .test-list {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+        }
+        .labs-section .test-list span {
+            color: var(--color-text-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Pricing Section */
+        .pricing-card {
+            background: var(--color-surface);
+            border: 1px solid #2a3f5a;
+            box-shadow: 0px 15px 34px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+        .pricing-card h3 {
+            color: var(--color-white);
+        }
+        .pricing-card .price {
+            font-family: var(--font-serif);
+            font-size: 5rem;
+            line-height: 1;
+            color: var(--color-white);
+        }
+        .pricing-card .price-term {
+            align-self: flex-end;
+            padding-bottom: 0.5rem;
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+        }
+        .features-list .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .feature-item svg {
+            color: var(--color-accent);
+            width: 24px;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        .feature-item h5 {
+            font-family: var(--font-sans);
+            font-weight: 500;
+            font-size: 1.25rem;
+            color: var(--color-white);
+        }
+         .feature-item p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+         }
+
+        /* CTA Banner */
+        .cta-banner {
+            background-color: var(--color-surface);
+        }
+        .cta-banner h2 {
+            font-family: var(--font-serif);
+            font-weight: 300;
+            font-size: 4rem;
+            color: var(--color-white);
+        }
+        .cta-banner p {
+            color: var(--color-white);
+            font-size: 1.1rem;
+        }
+        .btn-filled-white {
+            background-color: var(--color-white);
+            color: var(--color-surface);
+            font-weight: 700;
+        }
+         .btn-outline-white {
+            border-color: var(--color-white);
+            color: var(--color-white);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #020c1b; /* Even darker blue */
+            color: var(--color-text-secondary);
+            padding: 4rem 0 2rem;
+            font-size: 0.9rem;
+        }
+        .footer .logo {
+            color: var(--color-white);
+        }
+        .footer-links a {
+            color: var(--color-text-primary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 400;
+        }
+        .footer-links a:hover {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+        .social-links a {
+            color: var(--color-text-secondary);
+            margin-right: 0.75rem;
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--color-accent);
+        }
+        .social-links svg {
+            width: 24px;
+            height: 24px;
+        }
+        .footer .legal-text {
+            font-size: 0.7rem;
+            color: #6a799a;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .footer .bottom-links a {
+            color: var(--color-text-secondary);
+            text-decoration: underline;
+            font-size: 0.85rem;
+        }
+         .footer .bottom-links a:hover {
+            color: var(--color-accent);
+        }
+
+    </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="#">Elyx HealthCare</a>
-      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Hackathon</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-        </ul>
-      </div>
+    <div class="top-banner">
+        Elyx has been awarded one of Time’s 100 Most Influential Companies of 2024. <a href="#">Learn more</a>.
     </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <h1>ELYX HACKATHON</h1>
-      <h4>Pioneering Healthcare & AI Innovation</h4>
-      <p>
-        Join us for the Elyx Hackathon, a 3-day innovation sprint at the intersection of Healthcare and Artificial Intelligence. 
-        Collaborate, code, and create breakthrough solutions that revolutionize patient care, predictive analytics, 
-        and digital health platforms. From AI-driven diagnostics to futuristic health applications, 
-        let’s shape the future of healthcare together.
-      </p>
-      <div class="event-date">📅 15–17 August</div>
-      <div class="mt-4">
-        <a href="{{ url_for('register') }}" class="btn btn-primary btn-custom">Register Now</a>
-        <a href="#" class="btn btn-outline-light btn-custom">Login</a>
-      </div>
-    </div>
-  </section>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fs-4 fw-bold" href="#">Elyx Health</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">How it works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">What’s included</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Nearby Centres</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('login') }}" class="btn btn-outline btn-custom me-2">Login</a>
+                    <a href="#" class="btn btn-filled btn-custom">Join</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        <header class="hero">
+            <div class="container">
+                <h1>It’s time you own<br/><strong>your health</strong></h1>
+                <p class="sub-heading">
+                    Every year. Starting with 160+ lab tests and insights from top doctors. All for just $299.
+                </p>
+                <div class="mt-4">
+                    <a href="#" class="btn btn-filled btn-custom">Start testing</a>
+                </div>
+            </div>
+        </header>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Elyx HealthCare. All Rights Reserved.</p>
-    <div>
-      <a href="#">Privacy Policy</a> | 
-      <a href="#">Terms</a> | 
-      <a href="#">Contact</a>
-    </div>
-  </footer>
+        <section class="labs-section section-space text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <h2 class="mb-5"><strong>160+</strong> lab tests</h2>
+                        <p class="test-list">
+                            <span>All-in-one for everyone.</span> Access to: <span>HEART</span> Apolipoprotein B (ApoB), Cholesterol / HDL Ratio, HDL Cholesterol, HDL Large, LDL Cholesterol, LDL Medium, LDL Particle Number, LDL Pattern, LDL Peak Size, LDL Small, Lipoprotein (a), Lipoprotein Fractionation, Non-HDL Cholesterol, Total Cholesterol, Triglycerides, <span>THYROID</span> Iodine, Selenium, Thyroglobulin Antibodies (TgAb), Thyroid Peroxidase Antibodies (TPO), Thyroid-Stimulating Hormone (TSH), Thyroxine (T4) Free, Triiodothyronine (T3) Free, <span>CANCER</span> Galleri Multi-Cancer Detection Test, <span>AUTOIMMUNITY</span> Antinuclear Antibodies (ANA) Pattern, Antinuclear Antibodies (ANA) Screen, Antinuclear Antibodies (ANA) Titer, Celiac Disease (Comprehensive Panel), Rheumatoid Factor, <span>IMMUNE REGULATION</span> High-Sensitivity C-Reactive Protein (hsCRP), White Blood Cell Count (WBC), Neutrophils, Lymphocytes, Monocytes, Eosinophils, Basophils, <span>FEMALE HEALTH</span> Anti-Mullerian Hormone, Estradiol (E2), Follicle Stimulating Hormone (FSH), Luteinizing Hormone (LH), Prolactin, <span>MALE HEALTH</span> DHEA-Sulfate, Estradiol (E2), Follicle Stimulating Hormone (FSH), Luteinizing Hormone (LH), Prostate Specific Antigen (PSA), Testosterone, <span>STRESS &amp; AGING</span> Cortisol, DHEA Sulfate, Biological Age, <span>METABOLIC</span> Adiponectin, Glucose, Hemoglobin A1c (HbA1c), Insulin, Leptin, Uric Acid, <span>NUTRIENTS</span> Arachidonic Acid/EPA Ratio, Copper, Ferritin, Homocysteine, Iron, Iron % Saturation, Iron Binding Capacity (TIBC), Magnesium, Methylmalonic Acid (MMA), Omega 3 Total, Omega 3: EPA+DPA+DHA, Omega 6 Total, Omega 6: Arachidonic Acid, Omega 6: Linoleic Acid, Omega 6/Omega 3 Ratio, Selenium, Vitamin D, Zinc, <span>LIVER</span> Alanine Transaminase (ALT), Albumin, Alkaline Phosphatase (ALP), Aspartate Transaminase (AST), Gamma-glutamyl Transferase (GGT), Total Bilirubin, Total Protein, <span>KIDNEYS</span> Albumin (Microalbumin) - Urine, Blood Urea Nitrogen (BUN), BUN / Creatinine Ratio, Calcium, Carbon Dioxide, Chloride, Creatinine, Estimated Glomerular Filtration Rate (eGFR), Globulin, Potassium, Sodium, <span>PANCREAS</span> Amylase, Lipase, <span>HEAVY METALS</span> Aluminum, Arsenic, Lead, Mercury, <span>ELECTROLYTES</span> Calcium, Magnesium, RBC, Sodium, <span>BLOOD</span> ABO Group and Rhesus (Rh) Factor, Hematocrit, Hemoglobin, Mean Corpuscular Hemoglobin (MCH), Mean Corpuscular Hemoglobin Concentration (MCHC), Mean Corpuscular Volume (MCV), Mean Platelet Volume (MPV), Platelet Count, Red Blood Cell (RBC) Count, Red Cell Distribution Width (RDW), <span>URINE</span> Albumin - Urine (Microalbumin), Appearance, Bacteria, Bilirubin, Clarity, Color, Glucose, Hyaline Casts, Ketones, Leukocytes, Nitrite, Occult Blood, pH, Protein, Red Blood Cell, Specific Gravity, Squamous Epithelial Cells, White Blood Cell (WBC), Yeast, <span>LYME</span> Lyme Disease Antibodies, <span>ALZHEIMER'S RISK</span> Apolipoprotein E (ApoE) Genotype, <span>ALLERGIES</span> Food Allergy Profile (IgE), Indoor &amp; Outdoor Allergy Profile (IgE), <span>SEXUAL HEALTH</span> Chlamydia, Gonorrhea, Herpes Simplex Virus 1 &amp; 2, HIV, Syphilis (RPR), <span>BIOLOGICAL AGE</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <section class="section-space">
+            <div class="container">
+                <h2 class="text-center mb-5">What could cost you <strong><em>$2,000</em> is $299</strong></h2>
+                <div class="row align-items-center justify-content-center g-5">
+                    <div class="col-lg-5">
+                        <div class="pricing-card h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="fw-normal">Elyx Membership</h3>
+                                <p class="fs-5" style="color: var(--color-text-secondary);">It's time you own your health.</p>
+                            </div>
+                            <div class="my-5">
+                                <div class="d-flex align-items-center">
+                                    <div class="price">$25</div>
+                                    <div class="price-term">/month</div>
+                                </div>
+                                <p style="color: var(--color-text-secondary);">Charged annually at $299</p>
+                            </div>
+                            <a href="#" class="btn btn-filled btn-custom">Start testing</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="features-list d-flex flex-column gap-4">
+                            <div class="feature-item">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>
+                                <div>
+                                    <h5>160+ lab tests yearly</h5>
+                                    <p>The full cost of testing is included. With advanced tests typically not covered by insurance. 5x more tests than an avg physical.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>
+                                <div>
+                                    <h5>Doctor Insights / Clinician’s Summary</h5>
+                                    <p>Get insights from top doctors and 1000s of hours of research based on your results.</p>
+                                </div>
+                            </div>
+                             <div class="feature-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>
+                                <div>
+                                    <h5>Track results over time</h5>
+                                    <p>Results charted over time in one secure place for easy access. Share with doctors anytime.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-banner section-space">
+            <div class="container text-center">
+                <h2>Life is short?</h2>
+                <p class="mt-3 mb-4">We disagree.</p>
+                <div>
+                     <a href="#" class="btn btn-filled-white btn-custom">Start testing</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-12">
+                     <a class="logo navbar-brand fs-4 fw-bold" href="#">Elyx Health</a>
+                </div>
+                <div class="col-6 col-lg-2 footer-links">
+                    <a href="#">How it works</a>
+                    <a href="#">What’s included</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">About us</a>
+                    <a href="#">Long Live Journal</a>
+                </div>
+                <div class="col-6 col-lg-2 footer-links">
+                     <a href="#">Testimonials</a>
+                     <a href="#">Share your story</a>
+                     <a href="#">List of tests</a>
+                     <a href="#">Help</a>
+                     <a href="#">Pricing</a>
+                </div>
+                <div class="col-6 col-lg-2 footer-links">
+                    <a href="#">Gift Elyx</a>
+                    <a href="#">For Employers</a>
+                    <a href="#">For Practitioners</a>
+                    <a href="#">For Creators</a>
+                </div>
+                 <div class="col-6 col-lg-3 footer-links ms-lg-auto">
+                    <a href="#">Member login</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact us</a>
+                    <a href="#">Partnerships</a>
+                </div>
+            </div>
+            <hr class="my-5" style="border-color: rgba(255,255,255,0.1);">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="social-links mb-3 mb-md-0">
+                    <a href="#" target="_blank"><svg viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.5 12.3038C22.5 6.74719 18.0229 2.24268 12.5 2.24268C6.97715 2.24268 2.5 6.74719 2.5 12.3038C2.5 17.3255 6.15684 21.4879 10.9375 22.2427V15.2121H8.39844V12.3038H10.9375V10.0872C10.9375 7.56564 12.4305 6.1728 14.7146 6.1728C15.8088 6.1728 16.9531 6.36931 16.9531 6.36931V8.84529H15.6922C14.45 8.84529 14.0625 9.6209 14.0625 10.4166V12.3038H16.8359L16.3926 15.2121H14.0625V22.2427C18.8432 21.4879 22.5 17.3257 22.5 12.3038Z" fill="currentColor"/></svg></a>
+                    <a href="#" target="_blank"><svg viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 3.24268H8.5C5.73858 3.24268 3.5 5.48126 3.5 8.24268V16.2427C3.5 19.0041 5.73858 21.2427 8.5 21.2427H16.5C19.2614 21.2427 21.5 19.0041 21.5 16.2427V8.24268C21.5 5.48126 19.2614 3.24268 16.5 3.24268ZM19.75 16.2427C19.7445 18.0353 18.2926 19.4872 16.5 19.4927H8.5C6.70735 19.4872 5.25549 18.0353 5.25 16.2427V8.24268C5.25549 6.45003 6.70735 4.99817 8.5 4.99268H16.5C18.2926 4.99817 19.7445 6.45003 19.75 8.24268V16.2427ZM17.25 8.49268C17.8023 8.49268 18.25 8.04496 18.25 7.49268C18.25 6.9404 17.8023 6.49268 17.25 6.49268C16.6977 6.49268 16.25 6.9404 16.25 7.49268C16.25 8.04496 16.6977 8.49268 17.25 8.49268ZM12.5 7.74268C10.0147 7.74268 8 9.7574 8 12.2427C8 14.728 10.0147 16.7427 12.5 16.7427C14.9853 16.7427 17 14.728 17 12.2427C17.0027 11.0484 16.5294 9.90225 15.6849 9.05776C14.8404 8.21327 13.6943 7.74002 12.5 7.74268ZM9.75 12.2427C9.75 13.7615 10.9812 14.9927 12.5 14.9927C14.0188 14.9927 15.25 13.7615 15.25 12.2427C15.25 10.7239 14.0188 9.49268 12.5 9.49268C10.9812 9.49268 9.75 10.7239 9.75 12.2427Z" fill="currentColor"/></svg></a>
+                    <a href="#" target="_blank"><svg viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6761 4.24268H20.4362L14.4061 11.0201L21.5 20.2427H15.9456L11.5951 14.6493L6.61723 20.2427H3.85544L10.3052 12.9935L3.5 4.24268H9.19545L13.1279 9.3553L17.6761 4.24268ZM16.7073 18.6181H18.2368L8.36441 5.78196H6.7232L16.7073 18.6181Z" fill="currentColor"/></svg></a>
+                </div>
+                <div class="bottom-links d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+             <p class="text-center legal-text mt-4">© 2025 ELYX HEALTH. ALL RIGHTS RESERVED. 100 HEALTHY YEARS. ELYX HEALTH IS A HEALTHCARE TECHNOLOGY COMPANY AND NOT A LABORATORY OR MEDICAL PROVIDER. ALL LABORATORY AND MEDICAL SERVICES ARE PROVIDED BY INDEPENDENT THIRD PARTIES.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
