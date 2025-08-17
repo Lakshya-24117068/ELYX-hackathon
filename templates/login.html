@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Elyx</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Droid+Serif:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #0a192f; /* Dark Navy Blue */
+      --color-surface: #172a45; /* Lighter Navy for cards/inputs */
+      --color-accent: #33A3FF; /* Bright Blue for accents/links */
+      --color-text-primary: #ccd6f6; /* Light Blue-Grey for text */
+      --color-text-secondary: #a8b2d1; /* Slate Grey for secondary text */
+      --color-white: #FFFFFF;
+      --font-serif: 'Droid Serif', serif;
+      --font-sans: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: var(--color-bg);
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+      border-bottom: 1px solid var(--color-surface);
+    }
+    
+    .nav-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      color: var(--color-white);
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      margin-left: 40px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--color-text-primary);
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-accent);
+    }
+    
+    .join-button {
+        text-decoration: none;
+        color: var(--color-accent);
+        border: 1px solid var(--color-accent);
+        padding: 0.5rem 1.5rem;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .join-button:hover {
+        background-color: rgba(51, 163, 255, 0.1);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--color-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-container .sub-text {
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .login-container .sub-text a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+    .login-container .sub-text a:hover {
+        text-decoration: underline;
+    }
+    
+    form input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--color-surface);
+      border-radius: 8px;
+      background-color: var(--color-surface);
+      color: var(--color-white);
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    form input::placeholder {
+      color: var(--color-text-secondary);
+    }
+
+    form button {
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    form button:hover {
+      background: #57b1ff;
+    }
+    
+    .form-links {
+        margin-top: 1.5rem;
+    }
+
+    .form-links a {
+      color: var(--color-accent);
+      text-decoration: none;
+      display: block;
+      margin-top: 0.75rem;
+    }
+    
+    .form-links a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Footer */
+    footer {
+        width: 100%;
+        padding: 1.5rem 2.5rem;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--color-text-secondary);
+        font-size: 0.8rem;
+    }
+
+    .footer-left a, .footer-socials a {
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        margin: 0 0.5rem;
+    }
+
+    .footer-left a:hover {
+        text-decoration: underline;
+        color: var(--color-accent);
+    }
+    
+    .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .footer-socials svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--color-text-secondary);
+        transition: fill 0.3s;
+    }
+    .footer-socials a:hover svg {
+        fill: var(--color-accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .nav-links { display: none; }
+        footer {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-left">
+        <a href="/" class="logo">ELYX</a>
+        <div class="nav-links">
+          <a href="#">How it works</a>
+          <a href="#">What's included</a>
+          <a href="#">FAQ</a>
+          <a href="#">Employers</a>
+          <a href="#">About</a>
+          <a href="#">Contact us</a>
+        </div>
+    </div>
+    <a href="#" class="join-button">Join Elyx</a>
+  </nav>
+
+  <div class="main-content">
+    <div class="login-container">
+      <h1>Member Login</h1>
+      <p class="sub-text">Questions? — Visit <a href="#">FAQs</a> or <a href="#">open a chat</a></p>
+      
+      <form id="loginForm" action="/dashboard">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button type="submit">Login</button>
+      </form>
+      
+      <div class="form-links">
+        <a href="#">Forgot Password?</a>
+        <p class="sub-text" style="margin-top: 1rem; margin-bottom: 0;">Not a member yet? — <a href="#">Sign up here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+        <span>© 2025 Elyx Health, Inc. All rights reserved.</span>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+    </div>
+    <div class="footer-right">
+        <div class="footer-socials">
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M16.5 3H7.5C5.0145 3 3 5.0145 3 7.5V16.5C3 18.9855 5.0145 21 7.5 21H16.5C18.9855 21 21 18.9855 21 16.5V7.5C21 5.0145 18.9855 3 16.5 3ZM19.5 16.5C19.5 17.8815 18.381 19.5 16.5 19.5H7.5C5.619 19.5 4.5 17.8815 4.5 16.5V7.5C4.5 5.619 5.619 4.5 7.5 4.5H16.5C18.381 4.5 19.5 5.619 19.5 7.5V16.5Z"/><path d="M12 7.00001C9.2385 7.00001 7 9.23851 7 12C7 14.7615 9.2385 17 12 17C14.7615 17 17 14.7615 17 12C17 9.23851 14.7615 7.00001 12 7.00001ZM12 15.5C10.067 15.5 8.5 13.933 8.5 12C8.5 10.067 10.067 8.5 12 8.5C13.933 8.5 15.5 10.067 15.5 12C15.5 13.933 13.933 15.5 12 15.5Z"/><circle cx="16.75" cy="7.25001" r="1.25"/></svg></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M17.34 4H20.34L14.75 10.23L21.34 20H15.34L11.25 14.88L6.66001 20H3.66001L9.63001 13.3L3.16001 4H9.16001L12.75 8.6L17.34 4ZM16.34 18.4H17.84L8.16001 5.4H6.51001L16.34 18.4Z"/></svg></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.32843 4.30843 5 3.48 5C2.65157 5 1.98 4.32843 1.98 3.5C1.98 2.67157 2.65157 2 3.48 2C4.30843 2 4.98 2.67157 4.98 3.5ZM5 8H2V21H5V8ZM12.99 7.5C12.99 7.5 11.29 7.5 10.09 8.5C9.5 9.04 8.94 9.92 8.94 11.25V21H11.94V14.5C11.94 12.5 12.44 11 14.44 11C16.44 11 16.44 12.75 16.44 14.5V21H19.44V13.75C19.44 9.75 16.99 8 14.99 8H12.99V7.5Z"/></svg></a>
+        </div>
+        </div>
+  </footer>
+
+</body>
+</html>
